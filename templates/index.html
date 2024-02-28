@@ -14,6 +14,7 @@
         <p>{{ result }}</p>
         <form action="/" method="post">
             <input type="hidden" name="image_url" value="{{ image_url }}">
+            <input type="text" id="user_input" name="user_input" placeholder="Message AI (optional)"><br><br>
             <button type="submit" class="regenerate-button">Regenerate</button>
             <button type="button" onclick="window.location.href='/'" class="search-button">Search another image</button>
         </form>
@@ -21,8 +22,9 @@
         <h1>Enter Image URL</h1>
         <form action="/" method="post">
             <input type="text" id="image_url" name="image_url" placeholder="Enter Image URL"><br><br>
+            <input type="text" id="user_input" name="user_input" placeholder="Message AI (optional)"><br><br>
             <input type="submit" value="Submit">
-        </form>
+        </form>        
         {% endif %}
     </div>
 </body>

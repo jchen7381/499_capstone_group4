@@ -1,9 +1,13 @@
+# Important: Requires requests library: pip install requests
 import requests
 import json
 import io
 import base64
 from io import BytesIO
 
+# Retrieve text using the ocr.space API
+# Returns text if there is text, otherwise it returns an empty string
+# API doc: https://ocr.space/ocrapi
 def ocr(image_base64, api_key):
     api_url = 'https://api.ocr.space/parse/image'
     params = {'apikey': api_key, 'base64Image': image_base64, 'language': 'eng'}
@@ -17,31 +21,15 @@ def ocr(image_base64, api_key):
     else:
         return None
 
-def gemini(text, api_key):
-    api_url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent'
-    headers = {'Content-Type': 'application/json'}
-    data = {
-        "contents": [{
-            "parts":[{
-                "text": text
-            }]
-        }]
-    }
-    params = {'key': api_key}
-    response = requests.post(api_url, headers=headers, params=params, data=json.dumps(data))
-    if response.status_code == 200:
-        json_response = response.json()
-        return json_response['candidates'][0]['content']['parts'][0]['text']
-    else:
-        return None
-
-def geminiImage(text, image_base64, api_key):
+# Process the retrieved image and/or text using Google Gemini
+# API doc: https://ai.google.dev/tutorials/rest_quickstart
+def gemini(text, image_base64, api_key):
     api_url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent'
     headers = {'Content-Type': 'application/json'}
     data = {
         "contents": [{
             "parts": [
-                {"text": text if text else "What is this picture?"},
+                {"text": text if text else "Can you describe what is going on in the image, hightlighting the key element, and ideas? Also include a concise summary"},
                 {
                     "inline_data": {
                         "mime_type":"image/jpeg",
@@ -59,11 +47,12 @@ def geminiImage(text, image_base64, api_key):
     else:
         return None
 
-def aiGenerator(url):
+def aiGenerator(url, user_input):
     # API keys
     ocr_space_api_key = 'K89542527488957'
     gemini_api_key = 'AIzaSyAK1WqDRa8UiHQIw3W6SDkrJt2RYaxRJik'
 
+    # Downloads the image from the URL and resizes it and encodes it to base64
     response = requests.get(url)
     if response.status_code == 200:
         image_data = response.content
@@ -71,13 +60,9 @@ def aiGenerator(url):
         byte_data = byte_stream.read()
         image_base64 = base64.b64encode(byte_data).decode('utf-8')
 
-    text = ocr(image_base64, ocr_space_api_key)
+    text = ocr(image_base64, ocr_space_api_key) # Call OCR
 
-    if text != "":
-        input_text = "Please summarize the concept in the following text" + text
-        response = gemini(input_text, gemini_api_key)
-        return response
-    else:
-        input_text = "Please summarize the concept in the following image"
-        response = geminiImage(input_text, image_base64, gemini_api_key)
-        return response
+    input_text = user_input # AI query (change if needed)
+    response = gemini(input_text, image_base64, gemini_api_key)
+
+    return response
