@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> 
+</head>
+<body>
+    <div class="container">
+        {% if result %}
+        <h1>AI Output</h1>
+        <img src="{{ image_url }}" alt="Input Image" style="max-width: 100%; max-height: 300px;">
+        <p>{{ result }}</p>
+        <form action="/" method="post">
+            <input type="hidden" name="image_url" value="{{ image_url }}">
+            <button type="submit" class="regenerate-button">Regenerate</button>
+            <button type="button" onclick="window.location.href='/'" class="search-button">Search another image</button>
+        </form>
+        {% else %}
+        <h1>Enter Image URL</h1>
+        <form action="/" method="post">
+            <input type="text" id="image_url" name="image_url" placeholder="Enter Image URL"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+        {% endif %}
+    </div>
+</body>
+</html>
+
