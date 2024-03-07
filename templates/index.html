@@ -3,30 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image AI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> 
+    <title>Login/Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div class="container">
-        {% if result %}
-        <h1>AI Output</h1>
-        <img src="{{ image_url }}" alt="Input Image" style="max-width: 100%; max-height: 300px;">
-        <p>{{ result }}</p>
-        <form action="/" method="post">
-            <input type="hidden" name="image_url" value="{{ image_url }}">
-            <input type="text" id="user_input" name="user_input" placeholder="Message AI (optional)"><br><br>
-            <button type="submit" class="regenerate-button">Regenerate</button>
-            <button type="button" onclick="window.location.href='/'" class="search-button">Search another image</button>
-        </form>
-        {% else %}
-        <h1>Enter Image URL</h1>
-        <form action="/" method="post">
-            <input type="text" id="image_url" name="image_url" placeholder="Enter Image URL"><br><br>
-            <input type="text" id="user_input" name="user_input" placeholder="Message AI (optional)"><br><br>
-            <input type="submit" value="Submit">
-        </form>        
-        {% endif %}
+    <div id="login-container">
+        <h2>Login</h2>
+        <input type="email" id="login-email" placeholder="Email">
+        <input type="password" id="login-password" placeholder="Password">
+        <button id="login-button">Login</button>
+        <h2>Register</h2>
+        <input type="email" id="register-email" placeholder="Email">
+        <input type="password" id="register-password" placeholder="Password">
+        <button id="register-button">Register</button>
     </div>
+    <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-database.js"></script>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
 </html>
-
