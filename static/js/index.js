@@ -1,12 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
     const firebaseConfig = {
-      apiKey: "AIzaSyCc96lDeYpM5AvvevoLOxR_ZjvfiLeiCL4",
-      authDomain: "capstone-user-database.firebaseapp.com",
-      databaseURL: "https://capstone-user-database-default-rtdb.firebaseio.com",
-      projectId: "capstone-user-database",
-      storageBucket: "capstone-user-database.appspot.com",
-      messagingSenderId: "203034257754",
-      appId: "1:203034257754:web:f1a86d122e7399f5e5ab63"
+        apiKey: "AIzaSyDTK8P1Fz7dXaXuk0ZXUj6Foy_mMgGgzpM",
+        authDomain: "user-database-237b1.firebaseapp.com",
+        projectId: "user-database-237b1",
+        storageBucket: "user-database-237b1.appspot.com",
+        messagingSenderId: "663583633225",
+        appId: "1:663583633225:web:ab54e151d45cf6b8b87498"
     };
     firebase.initializeApp(firebaseConfig);
     
