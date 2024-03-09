@@ -20,3 +20,11 @@
 .submit {
     margin-top: 10px;
 }
+
+.tab-active {
+    display: block;
+}
+
+#login {
+    display: block;
+}

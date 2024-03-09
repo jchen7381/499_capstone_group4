@@ -9,13 +9,13 @@
 <body>
     <div id="container">
         <div>
-            <button class="tab-button active" onclick="showTab('login')">Login</button>
-            <button class="tab-button" onclick="showTab('register')">Register</button>
+            <button class="tab-button active" onclick="showTab('login', event)">Login</button>
+            <button class="tab-button" onclick="showTab('register', event)">Register</button>
         </div>
         
         <div id="login" class="tab">
             <h2>Login</h2>
-            <form>
+            <form onsubmit="signInWithEmail(event); return false;">
                 <label for="login-username">Username:</label><br>
                 <input type="text" id="login-email" name="login-email" placeholder="Email"><br>
                 <label for="login-password">Password:</label><br>
@@ -26,7 +26,7 @@
 
         <div id="register" class="tab">
             <h2>Register</h2>
-            <form>
+            <form onsubmit="signUpNewUser(event); return false;">
                 <label for="register-username">Username:</label><br>
                 <input type="text" id="register-email" name="register-email" placeholder="Email"><br>
                 <label for="register-password">Password:</label><br>
