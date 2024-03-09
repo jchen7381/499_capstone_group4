@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div id="container">
+        <div>
+            <button class="tab-button active" onclick="showTab('login')">Login</button>
+            <button class="tab-button" onclick="showTab('register')">Register</button>
+        </div>
+        
+        <div id="login" class="tab">
+            <h2>Login</h2>
+            <form>
+                <label for="login-username">Username:</label><br>
+                <input type="text" id="login-email" name="login-email" placeholder="Email"><br>
+                <label for="login-password">Password:</label><br>
+                <input type="password" id="login-password" name="login-password" placeholder="Password"><br>
+                <input class="submit" type="submit" value="Submit">
+            </form>
+        </div>
+
+        <div id="register" class="tab">
+            <h2>Register</h2>
+            <form>
+                <label for="register-username">Username:</label><br>
+                <input type="text" id="register-email" name="register-email" placeholder="Email"><br>
+                <label for="register-password">Password:</label><br>
+                <input type="password" id="register-password" name="register-password" placeholder="Password"><br>
+                <input class = "submit" type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</body>
+</html>
