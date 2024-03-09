@@ -44,10 +44,11 @@ async function signUpNewUser(event) {
         },
     })
 
-    if (data) {  // If registration is successful
-        window.location.href = '/welcome';  // Redirect to another page
-    } else {
+    if (error) {  // If sign-in failed
         console.error(error.message);
+        alert('Sign-in failed: ' + error.message);  // Display error message to the user
+    } else {
+        window.location.href = '/welcome';  // Redirect to another page
     }
 }
 
@@ -60,13 +61,13 @@ async function signInWithEmail(event) {
         password: password,
     })
 
-    if (data) {  // If sign-in is successful
-        window.location.href = '/welcome';  // Redirect to another page
-    } else {
+    if (error) {  // If sign-in failed
         console.error(error.message);
+        alert('Sign-in failed: ' + error.message);  // Display error message to the user
+    } else {
+        window.location.href = '/welcome';  // Redirect to another page
     }
 }
-
 
 async function signOut() {
     const { error } = await supabase.auth.signOut()
