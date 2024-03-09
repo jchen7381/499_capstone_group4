@@ -40,9 +40,15 @@ async function signUpNewUser(event) {
         email: email,
         password: password,
         options: {
-            emailRedirectTo: 'https://example.com/welcome',
+            emailRedirectTo: 'welcome.html',
         },
     })
+
+    if (data) {  // If registration is successful
+        window.location.href = '/welcome';  // Redirect to another page
+    } else {
+        console.error(error.message);
+    }
 }
 
 async function signInWithEmail(event) {
@@ -53,7 +59,14 @@ async function signInWithEmail(event) {
         email: email,
         password: password,
     })
+
+    if (data) {  // If sign-in is successful
+        window.location.href = '/welcome';  // Redirect to another page
+    } else {
+        console.error(error.message);
+    }
 }
+
 
 async function signOut() {
     const { error } = await supabase.auth.signOut()
