@@ -1,5 +1,6 @@
+import { createClient } from '@supabase/supabase-js'
 // Initialize Supabase
-var supabase = Supabase.createClient('https://rrzufyvihrhlnprspyvh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyenVmeXZpaHJobG5wcnNweXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk4NTkyNzksImV4cCI6MjAyNTQzNTI3OX0.SoZusxJyuRrcdf-lNlRUxlDAV15A7bLb7ICyK63Mztk');
+const supabase = supabase.createClient('https://rrzufyvihrhlnprspyvh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyenVmeXZpaHJobG5wcnNweXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk4NTkyNzksImV4cCI6MjAyNTQzNTI3OX0.SoZusxJyuRrcdf-lNlRUxlDAV15A7bLb7ICyK63Mztk');
 
 window.onload = function() {
     // Show the login tab by default
@@ -10,7 +11,7 @@ function showTab(tabName, event) {
     // Get all elements with class="tab" and hide them
     var tabs = document.getElementsByClassName("tab");
     for (var i = 0; i < tabs.length; i++) {
-        tabs[i].classList.remove("tab-active");
+        tabs[i].style.display = "none";  // Hide all tabs
     }
 
     // Get all elements with class="tab-button" and remove the class "active"
@@ -20,7 +21,7 @@ function showTab(tabName, event) {
     }
 
     // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(tabName).classList.add("tab-active");
+    document.getElementById(tabName).style.display = "block";  // Show the current tab
     if (event) {
         event.currentTarget.className += " active";
     }
