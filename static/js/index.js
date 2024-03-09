@@ -1,7 +1,3 @@
-import { createClient } from '@supabase/supabase-js'
-// Initialize Supabase
-const supabase = supabase.createClient('https://rrzufyvihrhlnprspyvh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyenVmeXZpaHJobG5wcnNweXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk4NTkyNzksImV4cCI6MjAyNTQzNTI3OX0.SoZusxJyuRrcdf-lNlRUxlDAV15A7bLb7ICyK63Mztk');
-
 window.onload = function() {
     // Show the login tab by default
     showTab('login');

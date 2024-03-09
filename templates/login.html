@@ -35,6 +35,15 @@
             </form>
         </div>
     </div>
+    <script>
+        function loadSupabase() {
+            const { createClient } = supabase;
+            const supabaseClient = createClient('https://rrzufyvihrhlnprspyvh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyenVmeXZpaHJobG5wcnNweXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk4NTkyNzksImV4cCI6MjAyNTQzNTI3OX0.SoZusxJyuRrcdf-lNlRUxlDAV15A7bLb7ICyK63Mztk');
+            
+            console.log('Supabase Instance:', supabaseClient);
+        }
+        window.addEventListener('load', loadSupabase);
+    </script>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </body>
