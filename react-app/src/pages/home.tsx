@@ -1,4 +1,3 @@
-import React from 'react';
 import './home.css';
 // @ts-ignore
 import Sidebar from '../components/Sidebar/Sidebar';
