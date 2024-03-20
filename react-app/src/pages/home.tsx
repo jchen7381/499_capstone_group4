@@ -1,4 +1,3 @@
-// pages/HomePage.tsx
 import React from 'react';
 import './home.css';
 // @ts-ignore
