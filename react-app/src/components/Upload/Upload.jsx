@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import './css/upload.css'
+import './Upload.css'
 
-function FileUpload(){    
+function Upload(){    
     const [files, setFiles] = useState([])
     useEffect(() => {
         if (files.length){
@@ -60,4 +60,4 @@ function FileUpload(){
     )
 }
 
-export default FileUpload
+export default Upload
