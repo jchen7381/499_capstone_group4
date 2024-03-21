@@ -1,7 +1,9 @@
 import './home.css';
 // @ts-ignore
 import Sidebar from '../components/Sidebar/Sidebar';
+// @ts-ignore
 import Upload from '../components/Upload/Upload';
+// @ts-ignore
 import Editor from '../components/Editor/Editor';
 function Home() {
   return (
