@@ -1,3 +1,5 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App from './App';
 import Home from './pages/home';
@@ -12,3 +14,10 @@ export default function Router() {
     </BrowserRouter>
   );
 }
+
+ReactDOM.render(
+  <React.StrictMode>
+    <Router />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
