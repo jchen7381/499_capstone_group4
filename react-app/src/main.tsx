@@ -1,10 +1,23 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import App from './App';
+import Home from './pages/home';
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+export default function Router() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/home" element={<Home />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router />
   </React.StrictMode>,
-)
+  document.getElementById('root')
+);
