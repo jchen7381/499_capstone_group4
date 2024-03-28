@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App from './App';
-import Home from './pages/home';
+import Dashboard from './pages/dashboard';
 import Workspace from './pages/workspace';
 
 export default function Router() {
@@ -10,7 +10,7 @@ export default function Router() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/dashbaord" element={<Dashboard />} />
         <Route path="/workspace" element={<Workspace />} />
       </Routes>
     </BrowserRouter>
