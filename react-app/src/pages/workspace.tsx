@@ -1,4 +1,4 @@
-import './home.css';
+import './workspace.css';
 // @ts-ignore
 import Sidebar from '../components/Sidebar/Sidebar';
 // @ts-ignore
