@@ -5,6 +5,8 @@ import Sidebar from '../components/Sidebar/Sidebar';
 import Upload from '../components/Upload/Upload';
 // @ts-ignore
 import Editor from '../components/Editor/Editor';
+// @ts-ignore
+import PdfViewer from '../components/Pdf/PdfViewer';
 function Workspace() {
   return (
     <div className="app-container">
