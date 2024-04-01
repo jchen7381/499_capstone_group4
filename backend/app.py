@@ -1,11 +1,15 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 import requests
 import json
 import io
 import base64
 from io import BytesIO
+from supabase import create_client
+from flask_cors import CORS
+import os
 
 app = Flask(__name__)
+CORS(app)
 
 # OCR function
 def ocr(image_base64, api_key):
@@ -70,6 +74,10 @@ def process_image():
     response = gemini(input_text, image_base64, gemini_api_key)
 
     return jsonify({'result': response})
+
+supabase_url = "https://rrzufyvihrhlnprspyvh.supabase.co/"
+supabase_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyenVmeXZpaHJobG5wcnNweXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk4NTkyNzksImV4cCI6MjAyNTQzNTI3OX0.SoZusxJyuRrcdf-lNlRUxlDAV15A7bLb7ICyK63Mztk"
+supabase = create_client(supabase_url, supabase_key)
 
 if __name__ == '__main__':
     app.run(debug=True)
