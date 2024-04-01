@@ -10,6 +10,7 @@ import os
 
 app = Flask(__name__)
 CORS(app)
+cors = CORS(app, resources={r"/get_pdf/*": {"origins": "*"}})
 
 # OCR function
 def ocr(image_base64, api_key):
