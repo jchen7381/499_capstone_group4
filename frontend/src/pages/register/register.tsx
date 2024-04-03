@@ -20,13 +20,7 @@ const Register = () =>{
                      body: JSON.stringify(registerData)
                   })
                 const data = await res.json()
-                if (!data){
-                    navigate('/login')
-                }
-                else{
-                    alert('Sign up failed!')
-                }
-                console.log(data)
+                {/*Add something for when fail*/}
               }
               catch (error){
                   console.log('Error!', error)
