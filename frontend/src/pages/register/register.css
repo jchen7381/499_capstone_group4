@@ -1,0 +1,49 @@
+.container{
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(209, 237, 255);
+}
+.form-container{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: rgb(255, 255, 255);
+    min-width: 50vh;
+    min-height: 50vh;
+    border-radius: 5%;
+    border: 2px solid rgb(165, 164, 255);
+}
+.form-container form{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    flex-direction: column;
+}
+.form-container label{
+    display: block;
+    margin: 10px;
+    width: fit-content;
+}
+.form-container input{
+    display: flex;
+    padding: 10px;
+    width: 90%;
+    border-radius: 10px;
+}
+
+.form-container button{
+    padding: 10px;
+    margin: 20px;
+    background-color: rgb(87, 81, 124);
+    color: rgb(239, 242, 255);
+    width: 50%;
+}
+
+.form-container Link{
+    text-decoration: none;
+    font-size: 100px;
+}
