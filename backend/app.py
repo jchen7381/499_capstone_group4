@@ -90,6 +90,39 @@ def get_pdf(file_name):
     except Exception as e:
         print("Error:", e)
         return "Error downloading file", 500
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    try:
+        email = request.json.get('email')
+        password = request.json.get('password')
+        response = supabase.auth.sign_up({'email': email, 'password': password})
+        if response.user is not None:
+            return jsonify({'message': 'Sign up successful'})
+        else:
+            return jsonify({'error': response.error_description})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/login', methods=['POST'])
+def login():
+    try:
+        email = request.json.get('email')
+        password = request.json.get('password')
+        response = supabase.auth.sign_in_with_password({'email': email, 'password': password})
+        if response.user is not None:
+            session = supabase.auth.get_session()
+            session_data = {
+                'access_token': session.access_token,
+                'refresh_token': session.refresh_token,
+            }
+            return {'message': 'Login successful', 'session': session_data}
+        else:
+            return {'error': response.error_description}
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
    
 if __name__ == '__main__':
     app.run(debug=True)
