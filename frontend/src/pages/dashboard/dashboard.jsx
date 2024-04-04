@@ -45,7 +45,7 @@ function Dashboard(){
                 {workspaces.length > 0 ?
                     <div className='items'>
                     {workspaces.map(workspace => (
-                        <Link to={'/workspace/' + workspace.workspace_id}><div className='display-item'></div></Link>
+                        <Link to={'/workspace'}><div className='display-item'></div></Link>
                         ))}
                     </div>
                     :
