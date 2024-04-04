@@ -1,39 +1,59 @@
 import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
-import {createClient} from '../../utility/client' 
 // @ts-ignore
 import './dashboard.css'
 
 function Dashboard(){
-    const supabase = createClient()
     const [workspaces, setWorkspaces] = useState([])
     useEffect(() =>{
-        session()
-        getWorkspace()
+        if (!workspaces.length){
+            getWorkspaces()
+        }
     }, [])
-    async function session(){
+    function getTokens(){
         var result = document.cookie.match(new RegExp('session' + '=([^;]+)'))
         result && (result = JSON.parse(result[1]));
-        const {data, error} = await supabase.auth.setSession(result)
+        return result
     }
-    async function getWorkspace(){
-        const {data, error} =  await supabase.rpc('get_workspaces')
-        if (data){
-            console.log('Success!', data)
-            setWorkspaces(data)
-        }
-        else{
-            console.log('Failed!', error)
+    async function getWorkspaces(){
+        try {
+            const res = await fetch('http://127.0.0.1:5000/get-workspaces', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(getTokens())
+            });
+            const ret = await res.json();
+            if (res.ok) {
+                setWorkspaces(ret)
+            } else {
+                alert('fail!');
+            }
+        } catch (error) {
+            console.log('Error:', error);
         }
     }
     async function createWorkspace(){
-        const {data, error} = await supabase.rpc('create_workspace')
-        if (data){
-            console.log('Success!', data)
-            getWorkspace()
-        }
-        else{
-            console.log('Failed!', error)
+        try {
+            const res = await fetch('http://127.0.0.1:5000/create-workspace', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(getTokens())
+            });
+            const ret = await res.json();
+            if (res.ok) {
+                alert('success')
+            } else {
+                alert('fail!');
+            }
+        } catch (error) {
+            console.log('Error:', error);
+            alert('Login failed!');
         }
     }
 
@@ -45,7 +65,7 @@ function Dashboard(){
                 {workspaces.length > 0 ?
                     <div className='items'>
                     {workspaces.map(workspace => (
-                        <Link to={'/workspace'}><div className='display-item'></div></Link>
+                        <Link to={'/workspace'} key={workspace.workspace_id}><div className='display-item'></div></Link>
                         ))}
                     </div>
                     :
