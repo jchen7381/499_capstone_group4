@@ -8,10 +8,14 @@ function Dashboard(){
     const supabase = createClient()
     const [workspaces, setWorkspaces] = useState([])
     useEffect(() =>{
-        if (!workspaces.length){
-            getWorkspace()
-        }
-    }, [workspaces])
+        session()
+        getWorkspace()
+    }, [])
+    async function session(){
+        var result = document.cookie.match(new RegExp('session' + '=([^;]+)'))
+        result && (result = JSON.parse(result[1]));
+        const {data, error} = await supabase.auth.setSession(result)
+    }
     async function getWorkspace(){
         const {data, error} =  await supabase.rpc('get_workspaces')
         if (data){
