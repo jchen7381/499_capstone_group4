@@ -36,6 +36,20 @@ const Register = () => {
 
     const handle_register = (event) => {
         event.preventDefault();
+        const email = event.target.email.value;
+        const password = event.target.password.value;
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(email)) {
+            alert('Please enter a valid email address.');
+            return; 
+        }
+        if (password.length < 6) {
+            alert('Password must be at least 6 characters long.');
+            return; 
+        }
+
         setRegisterData({ 'email': event.target.email.value, 'password': event.target.password.value });
     };
 
