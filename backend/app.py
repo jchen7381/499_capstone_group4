@@ -117,12 +117,35 @@ def login():
                 'access_token': session.access_token,
                 'refresh_token': session.refresh_token,
             }
+            res = supabase.rpc('create_workspace').execute()
+            print(res)
             return {'message': 'Login successful', 'session': session_data}
         else:
             return {'error': response.error_description}
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-   
+@app.route('/create-workspace', methods=["POST"])
+def create_workspace():
+    try:
+        access_token = request.json.get('access_token')
+        refresh_token = request.json.get('refresh_token')
+        response = supabase.auth.set_session(access_token, refresh_token)
+        result = supabase.rpc('create_workspace').execute()
+        return jsonify(result.data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/get-workspaces', methods=['POST'])
+def get_workspaces():
+    try:
+        access_token = request.json.get('access_token')
+        refresh_token = request.json.get('refresh_token')
+        response = supabase.auth.set_session(access_token, refresh_token)
+        result = supabase.rpc('get_workspaces').execute()
+        return result.data
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 if __name__ == '__main__':
     app.run(debug=True)
