@@ -1,57 +1,61 @@
-import React,{useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { createClient } from '../../utility/client.ts';
 
-import './register.css'
+import './register.css';
 
-const Register = () =>{
-    const supabase = createClient()
-    const navigate = useNavigate()
+const Register = () => {
+    const navigate = useNavigate();
     const [registerData, setRegisterData] = useState();
-    useEffect(() =>{
-        async function register(){
-            try{
+
+    useEffect(() => {
+        async function register() {
+            try {
                 const res = await fetch('http://127.0.0.1:5000/signup', {
                     method: 'POST',
-                    headers:{
+                    headers: {
                         'Accept': 'application/json',
-                        "Content-Type": "application/json"
-                     },
-                     body: JSON.stringify(registerData)
-                  })
-                const data = await res.json()
-                {/*Add something for when fail*/}
-              }
-              catch (error){
-                  console.log('Error!', error)
-              } 
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(registerData)
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    navigate('/login');
+                } else {
+                    alert('Registration failed!');
+                }
+            } catch (error) {
+                console.log('Error:', error);
+                alert('Registration failed!');
+            }
         }
-        if (registerData){
-            console.log(registerData)
-            register()
+        if (registerData) {
+            register();
         }
-    }, [registerData])
-    const handle_login = async (event) =>{
+    }, [registerData, navigate]);
+
+    const handle_register = (event) => {
         event.preventDefault();
-        setRegisterData({'email': event.target.email.value, 'password': event.target.password.value})
-    }
-    
-    return(
+        setRegisterData({ 'email': event.target.email.value, 'password': event.target.password.value });
+    };
+
+    return (
         <div className='container'>
             <div className='form-container'>
-                <h1>Sign up</h1>
-                <form onSubmit={handle_login}>
+                <h1>Create an account</h1>
+                <form onSubmit={handle_register}>
                     <label htmlFor='email'>Email Address</label>
-                    <input type='email' name='email'/>
+                    <input type='email' name='email' />
                     <label htmlFor='password'>Password</label>
-                    <input type='' name='password'/>    
-                    {/*<div><input type='checkbox'></input><label htmlFor=''>Keep me logged in</label></div>*/}
+                    <input type='password' name='password' />
                     <button id='submit-button' type='submit'>Register</button>
                 </form>
-                <div><p>Already have an account? <Link to='/login'>Sign in!</Link></p></div>
+                <div>
+                    <p>Already have an account? <Link to='/login'>Sign in</Link></p>
+                </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Register;
