@@ -4,8 +4,8 @@ import { IoHeartOutline, IoBookmarkOutline, IoExitOutline, IoDocumentOutline, Io
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
-  const [sidebarVisible, setSidebarVisible] = useState(true);
-  const [buttonVisible, setButtonVisible] = useState(true);
+  const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [buttonVisible, setButtonVisible] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
@@ -24,9 +24,11 @@ const Sidebar = () => {
         <div className={`button ${buttonVisible ? 'visible' : ''}`}>
           <ul>
             <li><button className="favorite"><IoHeartOutline/></button></li>
-            <li><button className="library"><IoBookmarkOutline/></button></li>
-            <li><button className="history"><IoDocumentOutline/></button></li>
-            <Link to="/home">
+            <Link to="/dashboard">
+            <li><button className="library"><IoDocumentOutline/></button></li>
+            </Link>
+            <li><button className="history"><IoBookmarkOutline/></button></li>
+            <Link to="/login">
               <button className="logout"><IoExitOutline/></button>
             </Link>
           </ul>

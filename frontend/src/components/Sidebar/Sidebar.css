@@ -1,12 +1,14 @@
 .box {
   position: relative;
+  align-items: center;
+  flex-direction: column;
+  display: flex;
 }
 
 .logo {
   cursor: pointer;
   position: absolute;
-  top: 10px; 
-  left: 16px; 
+  margin-top: 1vh; 
   z-index: 1; 
 }
 
