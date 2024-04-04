@@ -20,8 +20,8 @@ const Login = () => {
                 });
                 const ret = await res.json();
                 if (res.ok) {
-                    const access_token = ret.session.access_token;
-                    const refresh_token = ret.session.refresh_token;
+                    const new_cookie = {access_token: ret.session.access_token, refresh_token: ret.session.refresh_token}
+                    document.cookie = `session=` + JSON.stringify(new_cookie)
                     navigate('/dashboard');
                 } else {
                     alert('Login failed!');
