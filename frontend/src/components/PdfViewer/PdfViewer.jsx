@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css'; // Import AnnotationLayer CSS
 import 'react-pdf/dist/esm/Page/TextLayer.css'; // Import TextLayer CSS
+import './PdfViewer.css'; // Import CSS file
 
 // Initialize PDF.js worker using the workerSrc property
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const PdfViewer = () => {
-  const pdfUrl = 'http://localhost:5000/get_pdf/beginners_python_cheat_sheet_pcc_all.pdf'; // Updated URL
+  const pdfUrl = 'http://localhost:5000/get_pdf/beginners_python_cheat_sheet_pcc_all.pdf'; 
   const [numPages, setNumPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [inputPage, setInputPage] = useState(1);

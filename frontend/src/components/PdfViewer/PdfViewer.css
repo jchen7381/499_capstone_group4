@@ -1,0 +1,22 @@
+.pdf-viewer-container {
+    width: 100%;
+    height: 1000px;
+    margin: auto;
+  }
+  
+  .pdf-navigation {
+    margin-bottom: 10px;
+  }
+  
+  .pdf-navigation button {
+    margin-right: 5px;
+  }
+  
+  .pdf-content {
+    width: 100%;
+    height: calc(100% - 40px);
+    overflow: auto;
+    background-color: gray;
+    border: 1px solid black;
+  }
+  
