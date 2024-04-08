@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css'; // Import AnnotationLayer CSS
 import 'react-pdf/dist/esm/Page/TextLayer.css'; // Import TextLayer CSS
@@ -25,19 +25,25 @@ const PdfViewer = () => {
   };
 
   const handleInputChange = (event) => {
-    setInputPage(event.target.value);
-  };
-
-  const goToPage = () => {
-    const pageNumber = parseInt(inputPage, 10);
-    if (pageNumber >= 1 && pageNumber <= numPages) {
-      setCurrentPage(pageNumber);
+    let value = parseInt(event.target.value, 10);
+    if (isNaN(value)) {
+      value = '';
+    } else if (value < 1) {
+      value = 1;
+    } else if (value > numPages) {
+      value = numPages;
     }
+    setInputPage(value);
+    setCurrentPage(value);
   };
 
   const handleLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
+
+  useEffect(() => {
+    setInputPage(currentPage);
+  }, [currentPage]);
 
   return (
     <div className="pdf-viewer-container">
@@ -45,6 +51,7 @@ const PdfViewer = () => {
         <button onClick={handlePreviousPage} disabled={currentPage === 1}>
           Previous
         </button>
+        <span>Page </span>
         <input
           type="number"
           min="1"
@@ -52,8 +59,7 @@ const PdfViewer = () => {
           value={inputPage}
           onChange={handleInputChange}
         />
-        <button onClick={goToPage}>Go</button>
-        <span>Page {currentPage} of {numPages}</span>
+        <span> of {numPages}</span>
         <button onClick={handleNextPage} disabled={currentPage === numPages}>
           Next
         </button>
