@@ -8,7 +8,7 @@ import './PdfViewer.css'; // Import CSS file
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const PdfViewer = () => {
-  const pdfUrl = 'http://localhost:5000/get_pdf/beginners_python_cheat_sheet_pcc_all.pdf'; 
+  const pdfUrl = 'http://127.0.0.1:5000/get_pdf/beginners_python_cheat_sheet_pcc_all.pdf'; 
   const [numPages, setNumPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [inputPage, setInputPage] = useState(1);
