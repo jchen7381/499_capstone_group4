@@ -9,9 +9,12 @@
   },
   "dependencies": {
     "@supabase/ssr": "^0.1.0",
+    "pdf.js": "^0.1.0",
+    "pdfjs-dist": "^4.0.379",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
+    "react-pdf": "^7.7.1",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.22.3"
   },
