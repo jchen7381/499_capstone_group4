@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css'; // Import AnnotationLayer CSS
-import 'react-pdf/dist/esm/Page/TextLayer.css'; // Import TextLayer CSS
-import './PdfViewer.css'; // Import CSS file
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css'; 
+import 'react-pdf/dist/esm/Page/TextLayer.css'; 
+import html2canvas from 'html2canvas'; 
+import './PdfViewer.css'; 
 
-// Initialize PDF.js worker using the workerSrc property
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const PdfViewer = () => {
-  const pdfUrl = 'http://127.0.0.1:5000/get_pdf/beginners_python_cheat_sheet_pcc_all.pdf'; 
+  const pdfUrl = 'http://127.0.0.1:5000/get_pdf/beginners_python_cheat_sheet_pcc_all.pdf';
   const [numPages, setNumPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [inputPage, setInputPage] = useState(1);
+  const pdfContainerRef = useRef(null);
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
@@ -46,6 +47,16 @@ const PdfViewer = () => {
     setInputPage(currentPage);
   }, [currentPage]);
 
+  const handleScreenshot = () => {
+    html2canvas(pdfContainerRef.current).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.download = 'pdf_screenshot.png';
+      link.href = imgData;
+      link.click();
+    });
+  };
+
   return (
     <div className="pdf-viewer-container">
       <div className="pdf-navigation">
@@ -64,8 +75,9 @@ const PdfViewer = () => {
         <button onClick={handleNextPage} disabled={currentPage === numPages}>
           Next
         </button>
+        <button onClick={handleScreenshot}>Take Screenshot</button>
       </div>
-      <div className="pdf-content">
+      <div className="pdf-content" ref={pdfContainerRef}>
         <Document file={pdfUrl} onLoadSuccess={handleLoadSuccess}>
           <Page pageNumber={currentPage} />
         </Document>
