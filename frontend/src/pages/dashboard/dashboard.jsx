@@ -1,21 +1,21 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-// @ts-ignore
-import './dashboard.css'
+//@ts-ignore
+import './dashboard.css';
 
-function Dashboard(){
-    const [workspaces, setWorkspaces] = useState([])
-    useEffect(() =>{
-        if (!workspaces.length){
-            getWorkspaces()
+function Dashboard() {
+    const [workspaces, setWorkspaces] = useState([]);
+    useEffect(() => {
+        if (!workspaces.length) {
+            getWorkspaces();
         }
-    }, [])
-    function getTokens(){
-        var result = document.cookie.match(new RegExp('session' + '=([^;]+)'))
+    }, []);
+    function getTokens() {
+        var result = document.cookie.match(new RegExp('session' + '=([^;]+)'));
         result && (result = JSON.parse(result[1]));
-        return result
+        return result;
     }
-    async function getWorkspaces(){
+    async function getWorkspaces() {
         try {
             const res = await fetch('http://127.0.0.1:5000/get-workspaces', {
                 method: 'POST',
@@ -27,7 +27,7 @@ function Dashboard(){
             });
             const ret = await res.json();
             if (res.ok) {
-                setWorkspaces(ret)
+                setWorkspaces(ret);
             } else {
                 alert('fail!');
             }
@@ -35,7 +35,7 @@ function Dashboard(){
             console.log('Error:', error);
         }
     }
-    async function createWorkspace(){
+    async function createWorkspace() {
         try {
             const res = await fetch('http://127.0.0.1:5000/create-workspace', {
                 method: 'POST',
@@ -47,7 +47,7 @@ function Dashboard(){
             });
             const ret = await res.json();
             if (res.ok) {
-                alert('success')
+                alert('success');
             } else {
                 alert('fail!');
             }
@@ -57,25 +57,35 @@ function Dashboard(){
         }
     }
 
-    return(
-        <div id='dashboard-container'>
-            <div id='header'><h1>Dashboard</h1></div>  
-            <div><button onClick={createWorkspace}>Create workspace</button></div>
-            <div id='content'>
-                {workspaces.length > 0 ?
-                    <div className='items'>
-                    {workspaces.map(workspace => (
-                        <Link to={'/workspace'}><div className='display-item'></div></Link>
-                        ))}
-                    </div>
-                    :
-                    <div>
-                        Get started by creating a new workspace
-                        <button onClick={createWorkspace}>Create new workspace</button>
-                    </div>
+    return (
+        <div className="website-container">
+            <header>
+                <h3>Dashboard</h3>
+            </header>
+            <div className="main-container">
+            <nav>
+                <ul>
+                    <li><Link to="/">Home</Link></li>
+                    <li><Link to="/workspace">Workspace</Link></li>
+                </ul>
+            </nav>
+            <div className="dashboard-container">
+                    <div className='content-container'>
+                        <div className='buttons'>
+                            <button onClick={createWorkspace}>New workspace</button>
+                        </div>
+                        {workspaces.length > 0 ?
+                            <div className='items'>
+                                {workspaces.map(workspace => (
+                                    <Link to={`/workspace`}><div className='display-item'></div></Link>
+                                ))}
+                            </div>
+                            :
+                            <div><button onClick = {createWorkspace}></button></div>
                     
-                    
-                }
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     );
