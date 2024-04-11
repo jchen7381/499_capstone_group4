@@ -89,7 +89,7 @@ const PdfViewer = () => {
       <div className="pdf-navigation">
         {imageModalVisible ? (
           <>
-            <button onClick={handleConfirm}>Crop & Download</button>
+            <button onClick={handleConfirm}>Send to AI</button>
             <button onClick={handleClose}>Exit</button>
           </>
         ) : (
@@ -109,7 +109,7 @@ const PdfViewer = () => {
             <button onClick={handleNextPage} disabled={currentPage === numPages}>
               Next
             </button>
-            <button onClick={handleScreenshot}>Take Screenshot</button>
+            <button onClick={handleScreenshot}>Snip</button>
           </>
         )}
       </div>
