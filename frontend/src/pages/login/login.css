@@ -12,13 +12,13 @@
 
 .form-container {
     width: 200px; /* Adjust the width as needed */
-    height: 470px;
+    height: 500px;
     padding: 2em; /* Padding similar to the mixin style */
     display: flex;
     flex-direction: column;
     text-align: center;
     background-color: hsl(213deg 85% 97%);
-    border-radius: 30px; /* Same border radius as the mixin */
+    border-radius: 100px; /* Same border radius as the mixin */
     box-shadow: 0 0 2em hsl(231deg 62% 94%); /* Same box shadow as the mixin */
 }
 
@@ -39,7 +39,7 @@
 
 .form-container input {
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 50px;
     border: 2px solid hsl(231deg 62% 94%); /* Similar border color to the mixin */
     margin-bottom: 1em; /* Adjust as needed */
 }
