@@ -1,9 +1,10 @@
 .pdf-viewer-container {
-  width: 100%;
+  width: 99%;
   height: 66vh; 
   margin: auto;
   position: relative; 
   background-color: #e3f2fd;
+  margin-top: -0.75%;
 }
 
 .pdf-navigation {
