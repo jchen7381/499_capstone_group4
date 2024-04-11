@@ -1,44 +1,59 @@
-.container{
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+.container {
+    font-family: 'Poppins', sans-serif;
     display: flex;
     min-height: 100vh;
     width: 100%;
     align-items: center;
     justify-content: center;
-    background-color: rgb(209, 237, 255);
+    background-color: hsl(218deg 50% 91%);
 }
-.form-container{
+
+.form-container {
+    width: 200px; /* Adjust the width as needed */
+    height: 470px;
+    padding: 2em; /* Padding similar to the mixin style */
     display: flex;
     flex-direction: column;
     text-align: center;
-    background-color: rgb(255, 255, 255);
-    min-width: 50vh;
-    min-height: 50vh;
-    border-radius: 5%;
-    border: 2px solid rgb(165, 164, 255);
-}
-.form-container form{
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: fit-content;
-    flex-direction: column;
-}
-.form-container label{
-    display: block;
-    margin: 10px;
-    width: fit-content;
-}
-.form-container input{
-    display: flex;
-    padding: 10px;
-    width: 90%;
-    border-radius: 10px;
+    background-color: hsl(213deg 85% 97%);
+    border-radius: 30px; /* Same border radius as the mixin */
+    box-shadow: 0 0 2em hsl(231deg 62% 94%); /* Same box shadow as the mixin */
 }
 
-.form-container button{
-    padding: 10px;
-    margin: 20px;
-    background-color: rgb(87, 81, 124);
-    color: rgb(239, 242, 255);
-    width: 50%;
+.form-container h1 {
+    font-size: 30px; /* Adjust as needed */
 }
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em; /* Adjust as needed */
+}
+
+.form-container label {
+    display: block;
+    margin-bottom: 0.5em; /* Adjust as needed */
+}
+
+.form-container input {
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid hsl(231deg 62% 94%); /* Similar border color to the mixin */
+    margin-bottom: 1em; /* Adjust as needed */
+}
+
+.form-container button {
+    padding: 10px;
+    background-color: hsl(233deg 36% 38%);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+  
+  
+  
