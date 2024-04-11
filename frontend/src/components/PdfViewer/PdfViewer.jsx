@@ -10,7 +10,7 @@ import './PdfViewer.css';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const PdfViewer = () => {
-  const pdfUrl = 'http://127.0.0.1:5000/get_pdf/beginners_python_cheat_sheet_pcc_all.pdf';
+  const pdfUrl = 'http://127.0.0.1:5000/get_pdf/beginners_python_cheat_sheet_pcc_all.pdf'; // Change this to the URL of your PDF
   const [numPages, setNumPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [inputPage, setInputPage] = useState(1);
@@ -18,10 +18,21 @@ const PdfViewer = () => {
   const [imageModalVisible, setImageModalVisible] = useState(false);
   const [screenshotImage, setScreenshotImage] = useState('');
   const cropperRef = useRef(null);
+  const [pdfWidth, setPdfWidth] = useState(null);
+  const [pdfHeight, setPdfHeight] = useState(null);
+  const [scale, setScale] = useState(1);
 
   useEffect(() => {
     setInputPage(currentPage);
   }, [currentPage]);
+
+  useEffect(() => {
+    if (pdfContainerRef.current) {
+      const boundingRect = pdfContainerRef.current.getBoundingClientRect();
+      setPdfWidth(boundingRect.width);
+      setPdfHeight(boundingRect.height);
+    }
+  }, [pdfContainerRef.current]);
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
@@ -54,7 +65,11 @@ const PdfViewer = () => {
 
   const handleScreenshot = () => {
     const pdfContentElement = pdfContainerRef.current;
-    html2canvas(pdfContentElement).then((canvas) => {
+    const scale = 3; 
+    const options = {
+      scale: scale,
+    };
+    html2canvas(pdfContentElement, options).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       setScreenshotImage(imgData);
       setImageModalVisible(true);
@@ -82,6 +97,28 @@ const PdfViewer = () => {
 
   const handleClose = () => {
     setImageModalVisible(false);
+  };
+
+  const handleResize = () => {
+    const boundingRect = pdfContainerRef.current.getBoundingClientRect();
+    setPdfWidth(boundingRect.width);
+    setPdfHeight(boundingRect.height);
+    setScale(1);
+  };
+
+  const renderPdf = () => {
+    if (!pdfWidth || !pdfHeight) return null;
+    const scaleWidth = pdfWidth / 612; 
+    const scaleHeight = pdfHeight / 792; 
+    const computedScale = Math.min(scaleWidth, scaleHeight);
+    if (computedScale !== scale) {
+      setScale(computedScale);
+    }
+    return (
+      <Document file={pdfUrl} onLoadSuccess={handleLoadSuccess}>
+        <Page pageNumber={currentPage} width={612} scale={computedScale} />
+      </Document>
+    );
   };
 
   return (
@@ -113,11 +150,9 @@ const PdfViewer = () => {
           </>
         )}
       </div>
-      <div className="pdf-viewer-container">
-        <div className="pdf-content" ref={pdfContainerRef}>
-          <Document file={pdfUrl} onLoadSuccess={handleLoadSuccess}>
-            <Page pageNumber={currentPage} />
-          </Document>
+      <div className="pdf-viewer-container" ref={pdfContainerRef} onResize={handleResize}>
+        <div className="pdf-content" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
+          {renderPdf()}
         </div>
         {imageModalVisible && (
           <div className="screenshot-modal">
@@ -125,7 +160,7 @@ const PdfViewer = () => {
               ref={cropperRef}
               src={screenshotImage}
               style={{ height: '95%', width: '100%' }}
-              aspectRatio={pdfContainerRef.current.clientWidth / pdfContainerRef.current.clientHeight}
+              aspectRatio={pdfWidth / pdfHeight}
               guides={true}
             />
           </div>
