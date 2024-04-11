@@ -8,13 +8,13 @@
 .logo {
   cursor: pointer;
   position: absolute;
-  margin-top: 2vh; 
+  margin-top: 1rem; 
   z-index: 1; 
 }
 
 .sidebar {
-  background-color: #adcade;
-  width: 4vw;
+  background-color: #b3dffd;
+  width: 50px;
   height: 100vh;
   transition: width 0.3s ease;
   display: flex; 
@@ -40,7 +40,7 @@
 }
 
 .sidebar ul li {
-  margin-bottom: 2vh;
+  margin-bottom: 1rem;
 }
 
 .sidebar button {
@@ -48,21 +48,20 @@
   background: none;
   border: none;
   cursor: pointer;
-  margin-bottom: 1vh;
-  color: #ffffff;
+  color: #000000;
 }
 
 .favorite {
-  margin-top: 10vh;
+  margin-top: 4rem;
 }
 
 .favorite:hover svg,
 .library:hover svg,
 .history:hover svg,
 .logout:hover svg {
-  color: rgb(232, 232, 232) !important; 
+  color: #f0feff !important; 
 }
 
 .logout {
-  margin-top: 58vh; 
+  margin-top: auto; 
 }

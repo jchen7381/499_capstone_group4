@@ -1,0 +1,36 @@
+nav {
+    background-color: #d1eafc;
+    width: 250px;
+    padding-left: 2rem;
+    padding-top: 3rem;
+    flex-direction: column;
+    position: fixed;
+    top: 50px; 
+    bottom: 0;
+    overflow-y: auto;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    margin-bottom: 1rem;
+}
+
+
+nav ul li a {
+    font-family:'Times New Roman', Times, serif;
+    color: #000000;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    color: #ffffff;
+}
+
+nav ul li a.active-link {
+    color: rgb(255, 255, 255);
+}

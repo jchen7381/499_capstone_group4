@@ -6,7 +6,7 @@ import PdfViewer from '../../components/PdfViewer/PdfViewer'
 function Workspace() {
   return (
     <div className="app-container">
-      <div className="main-container">
+      <div className="workspace-container">
         <div>
         <Sidebar />
         </div>
