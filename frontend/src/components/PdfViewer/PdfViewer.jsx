@@ -10,7 +10,7 @@ import './PdfViewer.css';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const PdfViewer = () => {
-  const pdfUrl = 'http://127.0.0.1:5000/get_pdf/pdftest.pdf'; // Change this to the URL of your PDF
+  const pdfUrl = 'http://127.0.0.1:5000/get_pdf/beginners_python_cheat_sheet_pcc_all.pdf'; // Change this to the URL of your PDF
   const [numPages, setNumPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [inputPage, setInputPage] = useState(1);
@@ -160,7 +160,6 @@ const PdfViewer = () => {
               ref={cropperRef}
               src={screenshotImage}
               style={{ height: '100%', width: '100%' }}
-              aspectRatio={pdfWidth / pdfHeight}
               guides={true}
             />
           </div>
