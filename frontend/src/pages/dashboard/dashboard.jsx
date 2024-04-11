@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 //@ts-ignore
+import Navbar from '../../components/Navbar/Navbar';
 import './dashboard.css';
+//@ts-ignore
+
 
 function Dashboard() {
     const [workspaces, setWorkspaces] = useState([]);
@@ -60,19 +63,18 @@ function Dashboard() {
     return (
         <div className="website-container">
             <header>
-                <h3>Dashboard</h3>
+            <Link to= '/dashboard'><h3>Memo</h3></Link>
             </header>
             <div className="main-container">
-            <nav>
-                <ul>
-                    <li><Link to="/">Home</Link></li>
-                    <li><Link to="/workspace">Workspace</Link></li>
-                </ul>
-            </nav>
-            <div className="dashboard-container">
+                <div>
+                <Navbar />
+                </div>
+                <div className="contentview-container">
                     <div className='content-container'>
-                        <div className='buttons'>
-                            <button onClick={createWorkspace}>New workspace</button>
+                        <h2 className="text-color">Dashboard</h2>
+                        <div className='new-workspace'>
+                            
+                            <button onClick={createWorkspace}>+ New workspace</button>
                         </div>
                         {workspaces.length > 0 ?
                             <div className='items'>

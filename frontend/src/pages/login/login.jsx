@@ -22,7 +22,7 @@ const Login = () => {
                 if (res.ok) {
                     const new_cookie = {access_token: ret.session.access_token, refresh_token: ret.session.refresh_token}
                     document.cookie = `session=` + JSON.stringify(new_cookie)
-                    navigate('/workspace');
+                    navigate('/dashboard');
                 } else {
                     alert('Login failed!');
                 }

@@ -14,7 +14,6 @@ const Sidebar = () => {
   };
   
 
-
   return (
     <div className="box">
       <div className="logo" onClick={toggleSidebar}>
@@ -23,14 +22,10 @@ const Sidebar = () => {
       <div className={`sidebar ${sidebarVisible ? 'visible' : ''}`}>
         <div className={`button ${buttonVisible ? 'visible' : ''}`}>
           <ul>
-            <li><button className="favorite"><IoHeartOutline/></button></li>
-            <Link to="/dashboard">
-            <li><button className="library"><IoDocumentOutline/></button></li>
-            </Link>
-            <li><button className="history"><IoBookmarkOutline/></button></li>
-            <Link to="/login">
-              <button className="logout"><IoExitOutline/></button>
-            </Link>
+            <Link to="/favorite"><li><button className="favorite"><IoHeartOutline/></button></li></Link>
+            <Link to="/dashboard"><li><button className="library"><IoDocumentOutline/></button></li></Link>
+            <Link to="/library"><li><button className="history"><IoBookmarkOutline/></button></li></Link>
+            <Link to="/login"><button className="logout"><IoExitOutline/></button></Link>
           </ul>
         </div>
       </div>
