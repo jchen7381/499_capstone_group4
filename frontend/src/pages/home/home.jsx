@@ -6,8 +6,8 @@ const Home = () => {
       <Link to="/login">
         <button>Return to Login</button>
       </Link>
-      <Link to="/workspace">
-        <button>Go to Workspace</button>
+      <Link to="/dashboard">
+        <button>Go to Dashboard</button>
       </Link>
     </div>
   );
