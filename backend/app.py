@@ -117,8 +117,6 @@ def login():
                 'access_token': session.access_token,
                 'refresh_token': session.refresh_token,
             }
-            res = supabase.rpc('create_workspace').execute()
-            print(res)
             return {'message': 'Login successful', 'session': session_data}
         else:
             return {'error': response.error_description}
