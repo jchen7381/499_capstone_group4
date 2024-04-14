@@ -22,10 +22,10 @@ const PdfViewer = () => {
   const [pdfHeight, setPdfHeight] = useState(null);
   const [scale, setScale] = useState(1);
   const [selectedSubject, setSelectedSubject] = useState('');
-  const [aiOutput, setAiOutput] = useState({ result: '', image: '' }); 
-  const [processing, setProcessing] = useState(false); // New state variable for processing status
-  const [originalImage, setOriginalImage] = useState(''); // Store original image
-  const [originalSubject, setOriginalSubject] = useState(''); // Store original subject
+  const [aiOutput, setAiOutput] = useState({ result: '', image: '' });
+  const [processing, setProcessing] = useState(false);
+  const [originalImage, setOriginalImage] = useState('');
+  const [originalSubject, setOriginalSubject] = useState('');
 
   useEffect(() => {
     setInputPage(currentPage);
@@ -37,6 +37,26 @@ const PdfViewer = () => {
       setPdfWidth(boundingRect.width);
       setPdfHeight(boundingRect.height);
     }
+  }, [pdfContainerRef.current]);
+
+  useEffect(() => {
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+          const boundingRect = pdfContainerRef.current.getBoundingClientRect();
+          setPdfWidth(boundingRect.width);
+          setPdfHeight(boundingRect.height);
+          setScale(1);
+        }
+      });
+    });
+
+    const config = { attributes: true, attributeFilter: ['style'] };
+    if (pdfContainerRef.current) {
+      observer.observe(pdfContainerRef.current, config);
+    }
+
+    return () => observer.disconnect(); // Cleanup function
   }, [pdfContainerRef.current]);
 
   const handlePreviousPage = () => {
@@ -73,6 +93,7 @@ const PdfViewer = () => {
     const scale = 3;
     const options = {
       scale: scale,
+      willReadFrequently: true
     };
 
     options.willReadFrequently = true;
@@ -94,8 +115,8 @@ const PdfViewer = () => {
       const croppedCanvas = cropperRef.current.cropper.getCroppedCanvas();
       if (croppedCanvas) {
         const croppedImage = croppedCanvas.toDataURL('image/png');
-        setAiOutput({ result: 'Processing...', image: croppedImage }); 
-        setProcessing(true); 
+        setAiOutput({ result: 'Processing...', image: croppedImage });
+        setProcessing(true);
         const base64Image = croppedImage.replace(/^data:image\/(png|jpg);base64,/, '');
 
         const imageData = {
@@ -113,32 +134,24 @@ const PdfViewer = () => {
         .then(response => response.json())
         .then(data => {
           console.log('Response from backend:', data);
-          setAiOutput({ result: data.result, image: croppedImage }); 
-          setProcessing(false); 
+          setAiOutput({ result: data.result, image: croppedImage });
+          setProcessing(false);
           setSelectedSubject('');
-          // Store original image and subject
           setOriginalImage(croppedImage);
           setOriginalSubject(selectedSubject);
         })
         .catch(error => {
           console.error('Error uploading image:', error);
-          setProcessing(false); 
+          setProcessing(false);
           setSelectedSubject('');
         });
       }
     }
     setImageModalVisible(false);
-  };  
+  };
 
   const handleClose = () => {
     setImageModalVisible(false);
-  };  
-
-  const handleResize = () => {
-    const boundingRect = pdfContainerRef.current.getBoundingClientRect();
-    setPdfWidth(boundingRect.width);
-    setPdfHeight(boundingRect.height);
-    setScale(1);
   };
 
   const renderPdf = () => {
@@ -168,11 +181,9 @@ const PdfViewer = () => {
 
   const handleRegenerate = () => {
     if (originalImage && originalSubject) {
-      // Regenerate AI output using original image and subject
       setAiOutput({ result: 'Processing...', image: originalImage });
       setProcessing(true);
 
-      // Simulate AI processing time
       setTimeout(() => {
         const base64Image = originalImage.replace(/^data:image\/(png|jpg);base64,/, '');
         const imageData = {
@@ -190,17 +201,17 @@ const PdfViewer = () => {
         .then(response => response.json())
         .then(data => {
           console.log('Response from backend:', data);
-          setAiOutput({ result: data.result, image: originalImage }); 
+          setAiOutput({ result: data.result, image: originalImage });
           setProcessing(false);
         })
         .catch(error => {
           console.error('Error re-running AI processing:', error);
           setProcessing(false);
         });
-      }, 2000); 
+      }, 2000);
     }
   };
-  
+
   return (
     <>
       <div className="pdf-navigation">
@@ -213,7 +224,7 @@ const PdfViewer = () => {
               <option value="English">English</option>
               <option value="Other">Other</option>
             </select>
-            <button onClick={handleConfirm} disabled={processing}>Send to AI</button> {/* Disable button when processing */}
+            <button onClick={handleConfirm} disabled={processing}>Send to AI</button>
             <button onClick={handleClose}>Exit</button>
           </>
         ) : (
@@ -237,7 +248,7 @@ const PdfViewer = () => {
           </>
         )}
       </div>
-      <div className="pdf-viewer-container" ref={pdfContainerRef} onResize={handleResize}>
+      <div className="pdf-viewer-container" ref={pdfContainerRef}>
         <div className="pdf-content" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
           {renderPdf()}
         </div>
@@ -255,17 +266,21 @@ const PdfViewer = () => {
       <div className="outputs">
         <div className="snipped-image-preview">
           <h3 className="output-header">Snipped Image Preview</h3>
-          {aiOutput.image && <img src={aiOutput.image} alt="Snipped" style={{ maxWidth: '100px', maxHeight: '100px' }} />}
+          {aiOutput.image && <img src={aiOutput.image} alt="Snipped" style={{ maxWidth: '100%', maxHeight: '100%' }} />}
         </div>
         <div className="ai-output">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h3 className="output-header">AI Output</h3>
             <div>
               <button onClick={handleCopyToClipboard}>Copy to Clipboard</button>
-              <button onClick={handleRegenerate}>Regenerate</button> 
+              <button onClick={handleRegenerate}>Regenerate</button>
             </div>
           </div>
-          <p>{aiOutput.result}</p>
+          <div className="ai-output-text">
+            {aiOutput.result.split('\n').map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
+          </div>
         </div>
       </div>
     </>
