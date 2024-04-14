@@ -58,23 +58,26 @@ def gemini(text, image_base64, api_key):
     else:
         return None
 
-@app.route('/process', methods=['POST'])
-def process_image():
+# Process with user input
+@app.route('/process_feedback', methods=['POST'])
+def process_feedback():
     data = request.json
+    user_input = data['user_input']  # Get user input
     image = data['image']
-    user_input = data['input']
-    
+
     # API keys
     ocr_space_api_key = 'K89542527488957'
     gemini_api_key = 'AIzaSyAK1WqDRa8UiHQIw3W6SDkrJt2RYaxRJik'
 
-    text = ocr(image, ocr_space_api_key) # Call OCR
-    
-    input_text = user_input # AI query (change if needed)
-    response = gemini(input_text, image, gemini_api_key)  
+    text = ocr(image, ocr_space_api_key)  # Call OCR
+
+    # Combine user input with AI output for refinement
+    input_text = user_input + " " + text
+    response = gemini(input_text, image, gemini_api_key)
+
     return jsonify({'result': response})
 
-# Process but with subject
+# Process with subject
 @app.route('/process_subject', methods=['POST'])
 def process_subject():
     data = request.json

@@ -10,7 +10,7 @@ import './PdfViewer.css';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const PdfViewer = () => {
-  const pdfUrl = 'http://127.0.0.1:5000/get_pdf/beginners_python_cheat_sheet_pcc_all.pdf';
+  const pdfUrl = 'http://127.0.0.1:5000/get_pdf/lecture_slip_cs499_2024_3_11.pdf';
   const [numPages, setNumPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [inputPage, setInputPage] = useState(1);
@@ -22,7 +22,10 @@ const PdfViewer = () => {
   const [pdfHeight, setPdfHeight] = useState(null);
   const [scale, setScale] = useState(1);
   const [selectedSubject, setSelectedSubject] = useState('');
-  const [aiOutput, setAiOutput] = useState({ result: '' }); 
+  const [aiOutput, setAiOutput] = useState({ result: '', image: '' }); 
+  const [processing, setProcessing] = useState(false); // New state variable for processing status
+  const [originalImage, setOriginalImage] = useState(''); // Store original image
+  const [originalSubject, setOriginalSubject] = useState(''); // Store original subject
 
   useEffect(() => {
     setInputPage(currentPage);
@@ -71,6 +74,9 @@ const PdfViewer = () => {
     const options = {
       scale: scale,
     };
+
+    options.willReadFrequently = true;
+
     html2canvas(pdfContentElement, options).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       setScreenshotImage(imgData);
@@ -84,20 +90,19 @@ const PdfViewer = () => {
       return;
     }
 
-    setAiOutput({ result: 'Loading...' });
-  
     if (cropperRef.current && cropperRef.current.cropper) {
       const croppedCanvas = cropperRef.current.cropper.getCroppedCanvas();
       if (croppedCanvas) {
         const croppedImage = croppedCanvas.toDataURL('image/png');
-  
+        setAiOutput({ result: 'Processing...', image: croppedImage }); 
+        setProcessing(true); 
         const base64Image = croppedImage.replace(/^data:image\/(png|jpg);base64,/, '');
-  
+
         const imageData = {
           image: base64Image,
           subject: selectedSubject
         };
-  
+
         fetch('http://localhost:5000/process_subject', {
           method: 'POST',
           headers: {
@@ -108,16 +113,23 @@ const PdfViewer = () => {
         .then(response => response.json())
         .then(data => {
           console.log('Response from backend:', data);
-          setAiOutput(data); 
+          setAiOutput({ result: data.result, image: croppedImage }); 
+          setProcessing(false); 
+          setSelectedSubject('');
+          // Store original image and subject
+          setOriginalImage(croppedImage);
+          setOriginalSubject(selectedSubject);
         })
         .catch(error => {
           console.error('Error uploading image:', error);
+          setProcessing(false); 
+          setSelectedSubject('');
         });
       }
     }
     setImageModalVisible(false);
   };  
-  
+
   const handleClose = () => {
     setImageModalVisible(false);
   };  
@@ -144,6 +156,51 @@ const PdfViewer = () => {
     );
   };
 
+  const handleCopyToClipboard = () => {
+    navigator.clipboard.writeText(aiOutput.result)
+      .then(() => {
+        alert('AI output copied to clipboard!');
+      })
+      .catch(err => {
+        console.error('Failed to copy AI output: ', err);
+      });
+  };
+
+  const handleRegenerate = () => {
+    if (originalImage && originalSubject) {
+      // Regenerate AI output using original image and subject
+      setAiOutput({ result: 'Processing...', image: originalImage });
+      setProcessing(true);
+
+      // Simulate AI processing time
+      setTimeout(() => {
+        const base64Image = originalImage.replace(/^data:image\/(png|jpg);base64,/, '');
+        const imageData = {
+          image: base64Image,
+          subject: originalSubject
+        };
+
+        fetch('http://localhost:5000/process_subject', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(imageData)
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Response from backend:', data);
+          setAiOutput({ result: data.result, image: originalImage }); 
+          setProcessing(false);
+        })
+        .catch(error => {
+          console.error('Error re-running AI processing:', error);
+          setProcessing(false);
+        });
+      }, 2000); 
+    }
+  };
+  
   return (
     <>
       <div className="pdf-navigation">
@@ -156,7 +213,7 @@ const PdfViewer = () => {
               <option value="English">English</option>
               <option value="Other">Other</option>
             </select>
-            <button onClick={handleConfirm}>Send to AI</button>
+            <button onClick={handleConfirm} disabled={processing}>Send to AI</button> {/* Disable button when processing */}
             <button onClick={handleClose}>Exit</button>
           </>
         ) : (
@@ -195,9 +252,21 @@ const PdfViewer = () => {
           </div>
         )}
       </div>
-      <div className="ai-output">
-          <h3>AI Output</h3>
+      <div className="outputs">
+        <div className="snipped-image-preview">
+          <h3 className="output-header">Snipped Image Preview</h3>
+          {aiOutput.image && <img src={aiOutput.image} alt="Snipped" style={{ maxWidth: '100px', maxHeight: '100px' }} />}
+        </div>
+        <div className="ai-output">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h3 className="output-header">AI Output</h3>
+            <div>
+              <button onClick={handleCopyToClipboard}>Copy to Clipboard</button>
+              <button onClick={handleRegenerate}>Regenerate</button> 
+            </div>
+          </div>
           <p>{aiOutput.result}</p>
+        </div>
       </div>
     </>
   );

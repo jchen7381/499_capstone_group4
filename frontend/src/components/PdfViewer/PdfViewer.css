@@ -1,7 +1,6 @@
 .pdf-viewer-container {
-  width: 99%;
-  height: 66vh; 
-  margin: auto;
+  height: 60vh; 
+  margin: 5px;
   position: relative; 
   background-color: #e3f2fd;
   margin-top: -0.75%;
@@ -13,6 +12,7 @@
   justify-content: center;
   align-items: center;
   background-color: #b3dffd;
+  font-family: sans-serif;
 }
 
 .pdf-navigation button {
@@ -45,8 +45,36 @@
   object-fit: contain;
 }
 
-.ai-output {
-  height: 25vh;
-  background-color: white;
+.outputs{
+  margin-top: 10px;
   margin: 5px;
+  height: 25vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.snipped-image-preview {
+  background-color: white;
+  width: 19vh;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid black;
+  padding: 10px;
+  font-family: sans-serif;
+}
+
+.ai-output {
+  background-color: white;
+  width: 75vh;
+  height: 100%;
+  overflow-y: auto;
+  border: 1px solid black;
+  padding: 10px;
+  font-family: sans-serif;
+}
+
+.output-header {
+  font-family: sans-serif;
 }
