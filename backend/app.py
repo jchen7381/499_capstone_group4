@@ -10,7 +10,6 @@ import os
 
 app = Flask(__name__)
 CORS(app)
-cors = CORS(app, resources={r"/get_pdf/*": {"origins": "*"}})
 
 # OCR function
 def ocr(image_base64, api_key):
@@ -47,34 +46,60 @@ def gemini(text, image_base64, api_key):
     response = requests.post(api_url, headers=headers, params=params, data=json.dumps(data))
     if response.status_code == 200:
         json_response = response.json()
-        return json_response['candidates'][0]['content']['parts'][0]['text']
+        if 'candidates' in json_response and json_response['candidates']:
+            # Check if 'content' key is present in the response
+            if 'content' in json_response['candidates'][0]:
+                # Access 'content' key and retrieve 'text'
+                return json_response['candidates'][0]['content']['parts'][0]['text']
+            else:
+                return "No AI Output, please try again."
+        else:
+            return "No AI Output, please try again."
     else:
         return None
 
-@app.route('/process_image', methods=['POST'])
+@app.route('/process', methods=['POST'])
 def process_image():
     data = request.json
-    url = data['url']
+    image = data['image']
     user_input = data['input']
     
     # API keys
     ocr_space_api_key = 'K89542527488957'
     gemini_api_key = 'AIzaSyAK1WqDRa8UiHQIw3W6SDkrJt2RYaxRJik'
 
-    # Downloads the image from the URL and resizes it and encodes it to base64
-    response = requests.get(url)
-    if response.status_code == 200:
-        image_data = response.content
-        byte_stream = io.BytesIO(image_data)
-        byte_data = byte_stream.read()
-        image_base64 = base64.b64encode(byte_data).decode('utf-8')
-
-    text = ocr(image_base64, ocr_space_api_key) # Call OCR
-
+    text = ocr(image, ocr_space_api_key) # Call OCR
+    
     input_text = user_input # AI query (change if needed)
-    response = gemini(input_text, image_base64, gemini_api_key)
+    response = gemini(input_text, image, gemini_api_key)  
+    return jsonify({'result': response})
+
+# Process but with subject
+@app.route('/process_subject', methods=['POST'])
+def process_subject():
+    data = request.json
+    image = data['image']
+    subject = data['subject']  # Added subject parameter
+    
+    # API keys
+    ocr_space_api_key = 'K89542527488957'
+    gemini_api_key = 'AIzaSyAK1WqDRa8UiHQIw3W6SDkrJt2RYaxRJik'
+
+    text = ocr(image, ocr_space_api_key) # Call OCR
+    
+    # Mapping subjects to their corresponding queries
+    subject_queries = {
+        'Math': 'This is a math-related image, please summarize this and solve any problems shown, if there are any text, it is shown here: ',
+        'CS': 'This is a Computer Science related image, please summarize this concept and give some code examples if possible, if there are any text, it is shown here: ',
+        'English': 'This is a English (subject) related image, summarize this, if there are any text, it is shown here:',
+        'Other': 'Summarize this image, if there are any text, it is shown here:'
+    }
+
+    input_text = subject_queries.get(subject, "Summarize the text in this image, if there are any text, it is shown here:") + " " + text
+    response = gemini(input_text, image, gemini_api_key)  # Pass subject parameter
 
     return jsonify({'result': response})
+
 
 supabase_url = "https://rrzufyvihrhlnprspyvh.supabase.co"
 supabase_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyenVmeXZpaHJobG5wcnNweXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk4NTkyNzksImV4cCI6MjAyNTQzNTI3OX0.SoZusxJyuRrcdf-lNlRUxlDAV15A7bLb7ICyK63Mztk"

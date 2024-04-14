@@ -10,7 +10,7 @@ import './PdfViewer.css';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const PdfViewer = () => {
-  const pdfUrl = 'http://127.0.0.1:5000/get_pdf/beginners_python_cheat_sheet_pcc_all.pdf'; // Change this to the URL of your PDF
+  const pdfUrl = 'http://127.0.0.1:5000/get_pdf/beginners_python_cheat_sheet_pcc_all.pdf';
   const [numPages, setNumPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [inputPage, setInputPage] = useState(1);
@@ -21,6 +21,8 @@ const PdfViewer = () => {
   const [pdfWidth, setPdfWidth] = useState(null);
   const [pdfHeight, setPdfHeight] = useState(null);
   const [scale, setScale] = useState(1);
+  const [selectedSubject, setSelectedSubject] = useState('');
+  const [aiOutput, setAiOutput] = useState({ result: '' }); 
 
   useEffect(() => {
     setInputPage(currentPage);
@@ -65,7 +67,7 @@ const PdfViewer = () => {
 
   const handleScreenshot = () => {
     const pdfContentElement = pdfContainerRef.current;
-    const scale = 3; 
+    const scale = 3;
     const options = {
       scale: scale,
     };
@@ -77,27 +79,48 @@ const PdfViewer = () => {
   };
 
   const handleConfirm = () => {
+    if (!selectedSubject) {
+      alert("Please select a subject before sending to AI.");
+      return;
+    }
+
+    setAiOutput({ result: 'Loading...' });
+  
     if (cropperRef.current && cropperRef.current.cropper) {
       const croppedCanvas = cropperRef.current.cropper.getCroppedCanvas();
       if (croppedCanvas) {
         const croppedImage = croppedCanvas.toDataURL('image/png');
-
-        const link = document.createElement('a');
-        link.href = croppedImage;
-        link.download = 'cropped_image.png';
-
-        document.body.appendChild(link);
-        link.click();
-
-        document.body.removeChild(link);
+  
+        const base64Image = croppedImage.replace(/^data:image\/(png|jpg);base64,/, '');
+  
+        const imageData = {
+          image: base64Image,
+          subject: selectedSubject
+        };
+  
+        fetch('http://localhost:5000/process_subject', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(imageData)
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Response from backend:', data);
+          setAiOutput(data); 
+        })
+        .catch(error => {
+          console.error('Error uploading image:', error);
+        });
       }
     }
     setImageModalVisible(false);
-  };
-
+  };  
+  
   const handleClose = () => {
     setImageModalVisible(false);
-  };
+  };  
 
   const handleResize = () => {
     const boundingRect = pdfContainerRef.current.getBoundingClientRect();
@@ -108,8 +131,8 @@ const PdfViewer = () => {
 
   const renderPdf = () => {
     if (!pdfWidth || !pdfHeight) return null;
-    const scaleWidth = pdfWidth / 612; 
-    const scaleHeight = pdfHeight / 792; 
+    const scaleWidth = pdfWidth / 612;
+    const scaleHeight = pdfHeight / 792;
     const computedScale = Math.min(scaleWidth, scaleHeight);
     if (computedScale !== scale) {
       setScale(computedScale);
@@ -126,6 +149,13 @@ const PdfViewer = () => {
       <div className="pdf-navigation">
         {imageModalVisible ? (
           <>
+            <select onChange={(e) => setSelectedSubject(e.target.value)}>
+              <option value="">Select Subject</option>
+              <option value="Math">Math</option>
+              <option value="CS">Computer Science</option>
+              <option value="English">English</option>
+              <option value="Other">Other</option>
+            </select>
             <button onClick={handleConfirm}>Send to AI</button>
             <button onClick={handleClose}>Exit</button>
           </>
@@ -164,6 +194,10 @@ const PdfViewer = () => {
             />
           </div>
         )}
+      </div>
+      <div className="ai-output">
+          <h3>AI Output</h3>
+          <p>{aiOutput.result}</p>
       </div>
     </>
   );

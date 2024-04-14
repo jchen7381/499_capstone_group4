@@ -1,6 +1,6 @@
 .pdf-viewer-container {
   width: 99%;
-  height: 80vh; 
+  height: 66vh; 
   margin: auto;
   position: relative; 
   background-color: #e3f2fd;
@@ -43,4 +43,10 @@
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+}
+
+.ai-output {
+  height: 25vh;
+  background-color: white;
+  margin: 5px;
 }
