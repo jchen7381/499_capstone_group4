@@ -16,9 +16,8 @@
 }
 
 .pdf-navbar button {
-  margin-right: 5px;
-  margin-left: 5px;
   background-color: #d1eafc;
+  margin: 5px;
 }
 
 .pdf-content {
