@@ -25,7 +25,7 @@ const Sidebar = () => {
             <Link to="/favorite"><li><button className="favorite"><IoHeartOutline/></button></li></Link>
             <Link to="/dashboard"><li><button className="library"><IoDocumentOutline/></button></li></Link>
             <Link to="/library"><li><button className="history"><IoBookmarkOutline/></button></li></Link>
-            <Link to="/login"><button className="logout"><IoExitOutline/></button></Link>
+            <Link to="/dashboard"><button className="logout"><IoExitOutline/></button></Link>
           </ul>
         </div>
       </div>
