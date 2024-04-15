@@ -9,8 +9,8 @@ import './PdfViewer.css';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const PdfViewer = () => {
-  const pdfUrl = 'http://127.0.0.1:5000/get_pdf/lecture_slip_cs499_2024_3_11.pdf'; // MODIFY THIS 
+const PdfViewer = (url) => {
+  const pdfUrl = url;
   const [numPages, setNumPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [inputPage, setInputPage] = useState(1);
@@ -236,7 +236,7 @@ const PdfViewer = () => {
   };  
 
   return (
-    <>
+    <div>
       <div className="pdf-navbar">
         {imageModalVisible ? (
           <>
@@ -314,7 +314,7 @@ const PdfViewer = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

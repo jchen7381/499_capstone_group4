@@ -1,23 +1,39 @@
 import React, {useState, useEffect} from 'react';
+import { useWorkspaceContext } from '../../utility/WorkspaceContext';
 import './Upload.css'
 
-function Upload(){    
+function Upload({id, setPDF}){    
     const [files, setFiles] = useState([])
     useEffect(() => {
         if (files.length){
-            console.log(files)
         }
     }, [files])
+    function getTokens(){
+        var result = document.cookie.match(new RegExp('session' + '=([^;]+)'))
+        result && (result = JSON.parse(result[1]));
+        return result
+    }
     async function upload(){
-        const {data, error} = await supabase.auth.getUser()
-        const path = "/" + data.user.id + "/"
+        const tokens = getTokens()
         for (let i = 0; i < files.length; i++){
-            const {data, error} = await supabase.storage.from('test').upload(path + files[i].name, files[i])
-            if (error){
-                console.log('Error:' + error)
+            const fd = new FormData()
+            fd.append('file', files[i])
+            fd.append('access_token', tokens.access_token)
+            fd.append('refresh_token', tokens.refresh_token)
+            fd.append('workspace_id', id.id)
+            try{
+                const res = await fetch('http://127.0.0.1:5000/upload', {
+                    method: 'POST',
+                    body: fd
+                })
+                const pdf_link = await res.json()
+                if (res.ok){
+                    console.log(setPDF)
+                    setPDF(pdf_link.link)
+                }
             }
-            else{
-                console.log('File uploaded:' + data)
+            catch{
+    
             }
         }
     }
@@ -37,7 +53,7 @@ function Upload(){
     }
 
     return ( 
-        <div className='upload-container'>
+        <div className='upload-container'>  
             <div id='dropbox'
             onDrop={e => handleDragEvent(e)}
             onDragOver={e => handleDragEvent(e)}

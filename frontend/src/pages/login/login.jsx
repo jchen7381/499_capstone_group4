@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
 import './login.css';
+import { useAuthContext } from '../../utility/AuthContext';
 
 const Login = () => {
     const navigate = useNavigate();
     const [loginData, setLoginData] = useState();
-
+    const {user, setUser} = useAuthContext()
     useEffect(() => {
         async function login() {
             try {
@@ -22,19 +22,19 @@ const Login = () => {
                 if (res.ok) {
                     const new_cookie = {access_token: ret.session.access_token, refresh_token: ret.session.refresh_token}
                     document.cookie = `session=` + JSON.stringify(new_cookie)
+                    setUser(true)
                     navigate('/dashboard');
                 } else {
-                    alert('Login failed!');
+                    console.log(ret)
                 }
             } catch (error) {
                 console.log('Error:', error);
-                alert('Login failed!');
             }
         }
         if (loginData) {
             login();
         }
-    }, [loginData, navigate]);
+    }, [loginData]);
 
     const handle_login = (event) => {
         event.preventDefault();

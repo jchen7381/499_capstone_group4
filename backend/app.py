@@ -144,9 +144,10 @@ def create_workspace():
         access_token = request.json.get('access_token')
         refresh_token = request.json.get('refresh_token')
         response = supabase.auth.set_session(access_token, refresh_token)
-        result = supabase.rpc('create_workspace').execute()
-        return jsonify(result.data)
+        data, count = supabase.rpc('create_workspace').execute()
+        return jsonify(data[1])
     except Exception as e:
+        print(e)
         return jsonify({'error': str(e)}), 500
 
 @app.route('/get-workspaces', methods=['POST'])
@@ -159,6 +160,93 @@ def get_workspaces():
         return result.data
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+@app.route('/get-workspace', methods=["POST"] )
+def get_workspace():
+    try:
+        access_token = request.json.get('access_token')
+        refresh_token = request.json.get('refresh_token')
+        response = supabase.auth.set_session(access_token, refresh_token)
+        result = supabase.rpc('get_workspace', {'workspace_id'}).execute()
+        return result.data
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+@app.route('/workspace/delete', methods=["POST"])
+def deleteWorkspace():
+    try:
+        access_token = request.json.get('access_token')
+        refresh_token = request.json.get('refresh_token')
+        workspace_id = request.json.get('workspace_id')
+        response = supabase.auth.set_session(access_token, refresh_token)
+        print('WorkspaceID' , workspace_id)
+        result = supabase.rpc('delete_workspace', {'id': workspace_id}).execute()
+
+        return jsonify('a')
+    except Exception as e:
+        print(e)
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/editor/save', methods=["POST"])
+def editorSave():
+    try:
+        access_token = request.json.get('access_token')
+        refresh_token = request.json.get('refresh_token')
+        editor_id = request.json.get('editor_id')
+        editor_data = request.json.get('data')
+        response = supabase.auth.set_session(access_token, refresh_token)
+        result = supabase.table('editor').update({'data': editor_data}).eq('id', editor_id).execute()
+        return jsonify({'message': 'saved'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+@app.route('/editor/get', methods=["POST"])
+def editorGet():
+    try:
+        access_token = request.json.get('access_token')
+        refresh_token = request.json.get('refresh_token')
+        editor_id = request.json.get('editor_id')
+        response = supabase.auth.set_session(access_token, refresh_token)
+        result = supabase.table('editor').select('data').eq('id', editor_id).execute()
+        print(result.data)
+        return result.data
+    except Exception as e:
+        print(e)
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    try:
+        req = request.form
+        file = request.files['file']
+        session = supabase.auth.set_session(req['access_token'], req['refresh_token'])
+        path = "/" + session.user.id        
+        pdf = supabase.table('pdf').insert({'name': file.filename, "path": session.user.id}).execute()  #Insert into pdf table, returning the row
+        path += "/" + pdf.data[0]['id']
+        res = supabase.table('workspaces').update({"pdf_id": pdf.data[0]['id']}).eq('workspace_id', req['workspace_id']).execute() #use the row id from pdf
+        result = supabase.storage.from_('user buckets').upload(path, file.read(), file_options={"content-type": file.content_type})
+        link = supabase.storage.from_('user buckets').get_public_url(path)
+        return jsonify({'link': link})
+    except Exception as e:
+        print(e)
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/get-file', methods=['POST'])
+def get_file():
+    try:
+        access_token = request.json.get('access_token')
+        refresh_token = request.json.get('refresh_token')
+        workspace = request.json.get('workspace_id')
+        response = supabase.auth.set_session(access_token, refresh_token)
+        pdf = supabase.rpc('get_file', {'workspaceid': workspace}).execute()
+        print(pdf)
+        if pdf.data == None:
+            return jsonify({'link': ""})
+        
+        link = supabase.storage.from_('user buckets').get_public_url(pdf.data)
+        print(link)
+        return jsonify({'link': link})
+    except Exception as e:
+        print(e)
+        return jsonify({'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const Sidebar = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [buttonVisible, setButtonVisible] = useState(false);
-
+  const [favorite, setFavorite] = useState(false)
   const toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
     setButtonVisible(!buttonVisible);

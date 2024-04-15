@@ -8,16 +8,19 @@ import Dashboard from './pages/dashboard/dashboard';
 import Favorite from './pages/favorite/favorite';
 import Library from './pages/library/library';
 import Recent from './pages/recent/recent';
+import DashboardContextProvider from './utility/DashboardContext';
+import WorkspaceContextProvider from './utility/WorkspaceContext';
 
 export default function App() {
-  return (
+  return (  
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/workspace" element={<Workspace />} />
-        <Route path="/dashboard/" element={<Dashboard />} />
+        <Route path="/workspace/:id" element={<><WorkspaceContextProvider><Workspace /></WorkspaceContextProvider></>} />
+        <Route path="/dashboard" element={<><DashboardContextProvider><Dashboard /></DashboardContextProvider></>} />
         <Route path="/favorite" element={<Favorite />} />
         <Route path="/recent" element={<Recent />} />
         <Route path="/library" element={<Library />} />
@@ -25,4 +28,3 @@ export default function App() {
     </BrowserRouter>
   );
 }
-
