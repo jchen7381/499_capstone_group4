@@ -105,7 +105,7 @@ const PdfViewer = () => {
     });
   };
 
-  const handleConfirm = () => {
+  const handleSend = () => {
     if (!selectedSubject) {
       alert("Please select a subject before sending to AI.");
       return;
@@ -214,7 +214,7 @@ const PdfViewer = () => {
 
   return (
     <>
-      <div className="pdf-navigation">
+      <div className="pdf-navbar">
         {imageModalVisible ? (
           <>
             <select onChange={(e) => setSelectedSubject(e.target.value)}>
@@ -224,7 +224,7 @@ const PdfViewer = () => {
               <option value="English">English</option>
               <option value="Other">Other</option>
             </select>
-            <button onClick={handleConfirm} disabled={processing}>Send to AI</button>
+            <button onClick={handleSend} disabled={processing}>Send to AI</button>
             <button onClick={handleClose}>Exit</button>
           </>
         ) : (
@@ -263,8 +263,8 @@ const PdfViewer = () => {
         )}
       </div>
       <div className="outputs">
-        <div className="snipped-image-preview">
-          <h3 className="output-header">Snipped Image Preview</h3>
+        <div className="snip-preview">
+          <h3 className="output-header">Snip Preview</h3>
           {aiOutput.image && <img src={aiOutput.image} alt="Snipped" style={{ maxWidth: '100%', maxHeight: '100%' }} />}
         </div>
         <div className="ai-output">
@@ -272,7 +272,7 @@ const PdfViewer = () => {
             <h3 className="output-header">AI Output</h3>
             <div>
               <button onClick={handleCopyToClipboard}>Copy to Clipboard</button>
-              <button onClick={handleRegenerate}>Regenerate</button>
+              <button onClick={handleRegenerate}>Regenerate Output</button>
             </div>
           </div>
           <div className="ai-output-text">
