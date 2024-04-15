@@ -58,31 +58,12 @@ def gemini(text, image_base64, api_key):
     else:
         return None
 
-# Process with user input
-@app.route('/process_feedback', methods=['POST'])
-def process_feedback():
-    data = request.json
-    user_input = data['user_input']  # Get user input
-    image = data['image']
-
-    # API keys
-    ocr_space_api_key = 'K89542527488957'
-    gemini_api_key = 'AIzaSyAK1WqDRa8UiHQIw3W6SDkrJt2RYaxRJik'
-
-    text = ocr(image, ocr_space_api_key)  # Call OCR
-
-    # Combine user input with AI output for refinement
-    input_text = user_input + " " + text
-    response = gemini(input_text, image, gemini_api_key)
-
-    return jsonify({'result': response})
-
-# Process with subject
-@app.route('/process_subject', methods=['POST'])
-def process_subject():
+@app.route('/process', methods=['POST'])
+def process():
     data = request.json
     image = data['image']
-    subject = data['subject']  # Added subject parameter
+    subject = data['subject']  
+    custom_query = data.get('customQuery') # Custom query/user input
     
     # API keys
     ocr_space_api_key = 'K89542527488957'
@@ -98,9 +79,15 @@ def process_subject():
         'Other': 'Summarize this image, if there are any text, it is shown here:'
     }
 
-    input_text = subject_queries.get(subject, "Summarize the text in this image, if there are any text, it is shown here:") + " " + text
+    if subject == "Custom":
+        # Use custom query if subject is "Custom"
+        input_text = custom_query + " " + text
+    else:
+        # Use the predefined queries based on the subject
+        input_text = subject_queries.get(subject) + " " + text
+    
     response = gemini(input_text, image, gemini_api_key)  # Pass subject parameter
-
+    
     return jsonify({'result': response})
 
 

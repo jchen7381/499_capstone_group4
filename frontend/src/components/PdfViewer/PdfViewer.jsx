@@ -10,7 +10,7 @@ import './PdfViewer.css';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const PdfViewer = () => {
-  const pdfUrl = 'http://127.0.0.1:5000/get_pdf/lecture_slip_cs499_2024_3_11.pdf';
+  const pdfUrl = 'http://127.0.0.1:5000/get_pdf/lecture_slip_cs499_2024_3_11.pdf'; // MODIFY THIS 
   const [numPages, setNumPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [inputPage, setInputPage] = useState(1);
@@ -26,6 +26,7 @@ const PdfViewer = () => {
   const [processing, setProcessing] = useState(false);
   const [originalImage, setOriginalImage] = useState('');
   const [originalSubject, setOriginalSubject] = useState('');
+  const [customQuery, setCustomQuery] = useState('');
 
   useEffect(() => {
     setInputPage(currentPage);
@@ -59,18 +60,21 @@ const PdfViewer = () => {
     return () => observer.disconnect(); 
   }, [pdfContainerRef.current]);
 
+  // Go to previous page
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
 
+  // Go to next page
   const handleNextPage = () => {
     if (currentPage < numPages) {
       setCurrentPage(currentPage + 1);
     }
   };
 
+  // Page limiter (cant go to non-existent pages)
   const handleInputChange = (event) => {
     let value = parseInt(event.target.value, 10);
     if (isNaN(value)) {
@@ -88,6 +92,7 @@ const PdfViewer = () => {
     setNumPages(numPages);
   };
 
+  // Function for getting a screenshot of the PDF content (after clicking on Snip)
   const handleScreenshot = () => {
     const pdfContentElement = pdfContainerRef.current;
     const scale = 3;
@@ -99,14 +104,21 @@ const PdfViewer = () => {
     options.willReadFrequently = true;
 
     html2canvas(pdfContentElement, options).then((canvas) => {
+      canvas.getContext('2d').willReadFrequently = true;
       const imgData = canvas.toDataURL('image/png');
       setScreenshotImage(imgData);
       setImageModalVisible(true);
     });
   };
 
+  // Function for sending to backend (after clicking on Send to AI)
   const handleSend = () => {
-    if (!selectedSubject) {
+    if (selectedSubject === "Custom" && !customQuery) {
+      alert("Please enter your query.");
+      return;
+    }
+
+    if (!selectedSubject && selectedSubject !== "Custom") {
       alert("Please select a subject before sending to AI.");
       return;
     }
@@ -121,10 +133,11 @@ const PdfViewer = () => {
 
         const imageData = {
           image: base64Image,
-          subject: selectedSubject
+          subject: selectedSubject,
+          customQuery: selectedSubject === "Custom" ? customQuery : null
         };
 
-        fetch('http://localhost:5000/process_subject', {
+        fetch('http://localhost:5000/process', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -139,11 +152,13 @@ const PdfViewer = () => {
           setSelectedSubject('');
           setOriginalImage(croppedImage);
           setOriginalSubject(selectedSubject);
+          setCustomQuery('');
         })
         .catch(error => {
           console.error('Error uploading image:', error);
           setProcessing(false);
           setSelectedSubject('');
+          setCustomQuery('');
         });
       }
     }
@@ -154,6 +169,7 @@ const PdfViewer = () => {
     setImageModalVisible(false);
   };
 
+  // Render the PDF
   const renderPdf = () => {
     if (!pdfWidth || !pdfHeight) return null;
     const scaleWidth = pdfWidth / 612;
@@ -169,6 +185,7 @@ const PdfViewer = () => {
     );
   };
 
+  // Function for copying to clipboard (or ctrl-c/cmd-c)
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(aiOutput.result)
       .then(() => {
@@ -179,19 +196,20 @@ const PdfViewer = () => {
       });
   };
 
+  // Function for regenerating output
   const handleRegenerate = () => {
-    if (originalImage && originalSubject) {
+    if (originalImage && (originalSubject || customQuery)) {
       setAiOutput({ result: 'Processing...', image: originalImage });
       setProcessing(true);
-
+  
       setTimeout(() => {
         const base64Image = originalImage.replace(/^data:image\/(png|jpg);base64,/, '');
         const imageData = {
           image: base64Image,
-          subject: originalSubject
+          subject: originalSubject === "Custom" ? customQuery : originalSubject
         };
-
-        fetch('http://localhost:5000/process_subject', {
+  
+        fetch('http://localhost:5000/process', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -210,7 +228,7 @@ const PdfViewer = () => {
         });
       }, 2000);
     }
-  };
+  };  
 
   return (
     <>
@@ -223,7 +241,16 @@ const PdfViewer = () => {
               <option value="CS">Computer Science</option>
               <option value="English">English</option>
               <option value="Other">Other</option>
+              <option value="Custom">Custom</option>
             </select>
+            {selectedSubject === "Custom" && (
+              <input
+                type="text"
+                placeholder="Enter your query"
+                value={customQuery}
+                onChange={(e) => setCustomQuery(e.target.value)}
+              />
+            )}
             <button onClick={handleSend} disabled={processing}>Send to AI</button>
             <button onClick={handleClose}>Exit</button>
           </>

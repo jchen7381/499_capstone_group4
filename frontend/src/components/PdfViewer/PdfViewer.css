@@ -1,5 +1,5 @@
 .pdf-viewer-container {
-  height: 60vh; 
+  height: 66vh; 
   margin: 5px;
   position: relative; 
   background-color: #b3dffd;
@@ -51,7 +51,7 @@
 .outputs {
   margin-top: 10px;
   margin: 5px;
-  height: 25vh;
+  height: 27vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
