@@ -11,12 +11,12 @@
   display: flex; 
   justify-content: center;
   align-items: center;
-  background-color: #b3dffd;
+  background-color: #d1eafc;
   font-family: sans-serif;
 }
 
 .pdf-navbar button {
-  background-color: #d1eafc;
+  background-color: #e6f3fd;
   margin: 5px;
 }
 
@@ -64,6 +64,7 @@
   height: 100%;
   border: 1px solid black;
   padding: 10px;
+  padding-top: 15px;
   font-family: sans-serif;
   overflow-y: auto;
 }
@@ -74,14 +75,14 @@
   height: 100%;
   overflow-y: auto;
   border: 1px solid black;
-  padding: 10px;
   font-family: sans-serif;
+  padding: 5px;
 }
 
 .ai-output button {
   margin-right: 5px;
   margin-left: 5px;
-  background-color: #d1eafc;
+  background-color: #e6f3fd;
 }
 
 .output-header {
