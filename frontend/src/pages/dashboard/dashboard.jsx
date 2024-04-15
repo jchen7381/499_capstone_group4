@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
+import { useAuthContext } from '../../utility/AuthContext';
 import Navbar from '../../components/Navbar/Navbar';
 import './dashboard.css';
 import { useDashboardContext } from '../../utility/DashboardContext';
