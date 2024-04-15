@@ -56,7 +56,7 @@ const PdfViewer = () => {
       observer.observe(pdfContainerRef.current, config);
     }
 
-    return () => observer.disconnect(); // Cleanup function
+    return () => observer.disconnect(); 
   }, [pdfContainerRef.current]);
 
   const handlePreviousPage = () => {
@@ -249,7 +249,7 @@ const PdfViewer = () => {
         )}
       </div>
       <div className="pdf-viewer-container" ref={pdfContainerRef}>
-        <div className="pdf-content" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
+        <div className="pdf-content">
           {renderPdf()}
         </div>
         {imageModalVisible && (
@@ -257,7 +257,6 @@ const PdfViewer = () => {
             <Cropper
               ref={cropperRef}
               src={screenshotImage}
-              style={{ height: '100%', width: '100%' }}
               guides={true}
             />
           </div>
