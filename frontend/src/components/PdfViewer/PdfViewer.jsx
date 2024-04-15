@@ -27,6 +27,7 @@ const PdfViewer = () => {
   const [originalImage, setOriginalImage] = useState('');
   const [originalSubject, setOriginalSubject] = useState('');
   const [customQuery, setCustomQuery] = useState('');
+  const [originalCustomQuery, setOriginalCustomQuery] = useState('');
 
   useEffect(() => {
     setInputPage(currentPage);
@@ -153,6 +154,9 @@ const PdfViewer = () => {
           setOriginalImage(croppedImage);
           setOriginalSubject(selectedSubject);
           setCustomQuery('');
+          if (selectedSubject === "Custom") {
+            setOriginalCustomQuery(customQuery);
+          }
         })
         .catch(error => {
           console.error('Error uploading image:', error);
@@ -206,7 +210,8 @@ const PdfViewer = () => {
         const base64Image = originalImage.replace(/^data:image\/(png|jpg);base64,/, '');
         const imageData = {
           image: base64Image,
-          subject: originalSubject === "Custom" ? customQuery : originalSubject
+          subject: originalSubject,
+          customQuery: originalSubject === "Custom" ? originalCustomQuery : null
         };
   
         fetch('http://localhost:5000/process', {
