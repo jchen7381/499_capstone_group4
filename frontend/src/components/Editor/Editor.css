@@ -2,7 +2,9 @@
     box-sizing: border-box;
     font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
     position: sticky;
-    background-color: #19b7d3; 
+    background-color: #d1eafc; 
+    height: 6vh;
+    margin-top: 1px;
 }
 
 .ql-editor{
