@@ -94,17 +94,6 @@ def process():
 supabase_url = "https://rrzufyvihrhlnprspyvh.supabase.co"
 supabase_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyenVmeXZpaHJobG5wcnNweXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk4NTkyNzksImV4cCI6MjAyNTQzNTI3OX0.SoZusxJyuRrcdf-lNlRUxlDAV15A7bLb7ICyK63Mztk"
 supabase = create_client(supabase_url, supabase_key)
-supabase_bucket_name = "uploaded-pdfs"
-
-@app.route('/get_pdf/<file_name>', methods=['GET'])
-def get_pdf(file_name):
-    try:
-        res = supabase.storage.from_(supabase_bucket_name).download(file_name)
-        pdf_data = io.BytesIO(res)
-        return send_file(pdf_data, mimetype='application/pdf')
-    except Exception as e:
-        print("Error:", e)
-        return "Error downloading file", 500
 
 @app.route('/signup', methods=['POST'])
 def signup():
