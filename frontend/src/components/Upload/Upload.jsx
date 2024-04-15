@@ -63,7 +63,7 @@ function Upload({id, setPDF}){
                 <form id='dropbox' method="POST" encType="multipart/form-data">
                     <label>Drag files here to upload</label>
                     <span>Or<label id='file-btn-label'for='file-chooser'>browse your computer</label></span>
-                    <input type='file' id='file-chooser' onChange={handleChange} multiple hidden/>
+                    <input type='file' id='file-chooser' onChange={handleChange}/>
                     <button type='button' onClick={upload}>Upload</button>
                 </form>
             </div>
