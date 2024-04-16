@@ -70,10 +70,31 @@ function Editor({editor_id}){
         setValue(editor.getContents())
     }
 
+    const modules = {
+        toolbar: [
+            [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+            [{ 'script': 'sub'}, { 'script': 'super' }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{'list': 'ordered'}, {'list': 'bullet'}, 
+             {'indent': '-1'}, {'indent': '+1'}, 'direction'],
+            [{'align': []}],
+            ['link', 'image', 'video'],
+            ['clean']
+        ],
+        clipboard: {
+            matchVisual: false,
+        },
+        history: {
+            delay: 1000,
+            maxStack: 50,
+            userOnly: true
+        }
+    };
+
     return(
         <div className='text-editor-container'>
             <div className='quill-container'>
-                <ReactQuill theme="snow" value={value} onChange={handleChange}/>
+                <ReactQuill theme="snow" value={value} onChange={handleChange} modules ={modules}/>
             </div>
         </div>
     )
