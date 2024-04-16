@@ -7,12 +7,15 @@
     white-space: nowrap;
     width: 1px;
   }
-  .upload-container{
+  
+  .upload-container {
     display: flex;
-    align-items: center;
+    align-items: center; 
+    justify-content: center; 
     flex-direction: column;
     width: 100%;
-    height: 50%;
+    height: 100vh; 
+    background-color: #e6f3fd;
   }
 
   #file-btn-label:hover{
@@ -22,4 +25,14 @@
     background-color: orange;
     max-height: 50vh;
     overflow-y: auto;
+  }
+
+  #dropbox {
+    background-color: #b3dffd;
+    border-radius: 1px;
+    color: black;
+  }
+
+  #upload-button{
+    background-color: #d1eafc;
   }
