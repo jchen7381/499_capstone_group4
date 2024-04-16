@@ -4,6 +4,7 @@
     position: sticky;
     background-color: #d1eafc; 
     padding-top: 15px;
+    z-index: 1000;
 }
 
 .ql-editor{
@@ -14,4 +15,5 @@
     width: 100%;
     box-shadow: 0 0 5px 0 rgba(0,0,0, 0.5);
     background-color: rgb(245, 245, 245);
+    z-index: 999;
 }
