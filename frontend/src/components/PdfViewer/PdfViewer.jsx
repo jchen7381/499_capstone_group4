@@ -169,8 +169,14 @@ const PdfViewer = (url) => {
     setImageModalVisible(false);
   };
 
-  const handleClose = () => {
+  // Close SNip
+  const handleCloseSnip = () => {
     setImageModalVisible(false);
+  };
+
+  // Close PDF
+  const handleClosePDF = () => {
+    return;
   };
 
   // Render the PDF
@@ -257,7 +263,7 @@ const PdfViewer = (url) => {
               />
             )}
             <button onClick={handleSend} disabled={processing}>Send to AI</button>
-            <button onClick={handleClose}>Exit</button>
+            <button onClick={handleCloseSnip}>Close Snip</button>
           </>
         ) : (
           <>
@@ -277,6 +283,7 @@ const PdfViewer = (url) => {
               Next
             </button>
             <button onClick={handleScreenshot}>Snip</button>
+            <button onClick={handleClosePDF}>Close PDF</button>
           </>
         )}
       </div>
