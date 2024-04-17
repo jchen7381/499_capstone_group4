@@ -47,9 +47,7 @@ def gemini(text, image_base64, api_key):
     if response.status_code == 200:
         json_response = response.json()
         if 'candidates' in json_response and json_response['candidates']:
-            # Check if 'content' key is present in the response
             if 'content' in json_response['candidates'][0]:
-                # Access 'content' key and retrieve 'text'
                 return json_response['candidates'][0]['content']['parts'][0]['text']
             else:
                 return "No AI Output, please try again."
@@ -71,7 +69,7 @@ def process():
 
     text = ocr(image, ocr_space_api_key) # Call OCR
     
-    # Mapping subjects to their corresponding queries
+    # Mapping subjects to their queries
     subject_queries = {
         'Math': 'This is a math-related image, please summarize this and solve any problems shown, if there are any text, it is shown here: ',
         'CS': 'This is a Computer Science related image, please summarize this concept and give some code examples if possible, if there are any text, it is shown here: ',
@@ -80,13 +78,11 @@ def process():
     }
 
     if subject == "Custom":
-        # Use custom query if subject is "Custom"
         input_text = custom_query + " " + text
     else:
-        # Use the predefined queries based on the subject
-        input_text = subject_queries.get(subject) + " " + text
+        input_text = "Note: This is for a study guide. " + subject_queries.get(subject) + " " + text
     
-    response = gemini(input_text, image, gemini_api_key)  # Pass subject parameter
+    response = gemini(input_text, image, gemini_api_key) 
     
     return jsonify({'result': response})
 
@@ -236,6 +232,53 @@ def get_file():
         print(e)
         return jsonify({'error': str(e)}), 500
 
+@app.route('/convert', methods=['POST'])
+def convert():
+    convertapi_secret = 'vOlz7wkiOEGA54hD'
+    
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'})
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'})
+
+    # Check mime types
+    mime_to_endpoint = {
+        'application/msword': 'doc/to/pdf',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx/to/pdf',
+        'application/vnd.ms-powerpoint': 'ppt/to/pdf',
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'pptx/to/pdf',
+        'image/jpeg': 'jpg/to/pdf',
+        'image/png': 'png/to/pdf'
+    }
+
+    if file.mimetype in mime_to_endpoint:
+        file_data = base64.b64encode(file.read()).decode('utf-8')
+
+        # ConvertAPI request
+        payload = {
+            "Parameters": [
+                {
+                    "Name": "File",
+                    "FileValue": {
+                        "Name": file.filename,
+                        "Data": file_data
+                    }
+                }
+            ]
+        }
+
+        # Make request
+        response = requests.post(f'https://v2.convertapi.com/convert/{mime_to_endpoint[file.mimetype]}?Secret={convertapi_secret}', json=payload)
+
+        if response.status_code == 200:
+            pdf_data = response.json()["Files"][0]["FileData"]
+            pdf_content = base64.b64decode(pdf_data)
+            return pdf_content, 200, {'Content-Type': 'application/pdf', 'Content-Disposition': 'attachment; filename="converted_file.pdf"'}
+        else:
+            return jsonify({'error': 'Conversion failed'}), response.status_code
+    else:
+        return jsonify({'error': 'Unsupported file format'}), 400
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -16,28 +16,65 @@ function Upload({id, setPDF}){
     async function upload(){
         const tokens = getTokens()
         for (let i = 0; i < files.length; i++){
-            const fd = new FormData()
-            fd.append('file', files[i])
-            fd.append('access_token', tokens.access_token)
-            fd.append('refresh_token', tokens.refresh_token)
-            fd.append('workspace_id', id.id)
-            try{
-                const res = await fetch('http://127.0.0.1:5000/upload', {
-                    method: 'POST',
-                    body: fd
-                })
-                const pdf_link = await res.json()
-                if (res.ok){
-                    console.log(setPDF)
-                    setPDF(pdf_link.link)
+            const file = files[i];
+            try {
+                let uploadResponse;
+                if (file.type !== 'application/pdf') {
+                    const formData = new FormData();
+                    formData.append('file', file);
+                
+                    try {
+                        const convertResponse = await fetch('http://127.0.0.1:5000/convert', {
+                            method: 'POST',
+                            body: formData
+                        });
+                
+                        if (!convertResponse.ok) {
+                            console.error('Failed to convert file to PDF');
+                            return;
+                        }
+                
+                        const pdfBlob = await convertResponse.blob();
+                        const convertedFile = new File([pdfBlob], file.name.replace(/\.[^/.]+$/, ".pdf"), { type: 'application/pdf' });
+                
+                        const fd = new FormData()
+                        fd.append('file', convertedFile)
+                        fd.append('access_token', tokens.access_token)
+                        fd.append('refresh_token', tokens.refresh_token)
+                        fd.append('workspace_id', id.id)
+            
+                        uploadResponse = await fetch('http://127.0.0.1:5000/upload', {
+                            method: 'POST',
+                            body: fd
+                        });
+                    } catch (error) {
+                        console.error('Error occurred during conversion:', error);
+                    }
+                } else {
+                    const fd = new FormData()
+                    fd.append('file', convertedFile)
+                    fd.append('access_token', tokens.access_token)
+                    fd.append('refresh_token', tokens.refresh_token)
+                    fd.append('workspace_id', id.id)
+        
+                    uploadResponse = await fetch('http://127.0.0.1:5000/upload', {
+                        method: 'POST',
+                        body: fd
+                    });
                 }
-            }
-            catch{
-    
+        
+                if (uploadResponse.ok) {
+                    const pdf_link = await uploadResponse.json();
+                    setPDF(pdf_link.link);
+                } else {
+                    console.error('Failed to upload file');
+                }
+            } catch (error) {
+                console.error('Error processing file:', error);
             }
         }
     }
-
+    
     const handleChange = async (event) =>{
         setFiles([...files, ...event.target.files])
     }
