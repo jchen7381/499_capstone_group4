@@ -70,6 +70,7 @@ function Upload({id, setPDF}){
                     });
                 }
                 else {
+                    setFiles([]);
                     alert('Unsupported file type: ' + file.type);
                     console.error('Unsupported file type:', file.type);
                 }

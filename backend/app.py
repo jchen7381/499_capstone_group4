@@ -71,16 +71,16 @@ def process():
     
     # Mapping subjects to their queries
     subject_queries = {
-        'Math': 'This is a math-related image, please summarize this and solve any problems shown, if there are any text, it is shown here: ',
-        'CS': 'This is a Computer Science related image, please summarize this concept and give some code examples if possible, if there are any text, it is shown here: ',
-        'English': 'This is a English (subject) related image, summarize this, if there are any text, it is shown here:',
-        'Other': 'Summarize this image, if there are any text, it is shown here:'
+        'Math': 'The provided image is a math-related image, please summarize the concepts shown and solve any problems shown, if there are any text in the provided image, it is shown here: ',
+        'CS': 'The provided image is a Computer Science related image, please summarize the concepts shown and please give some relevant code examples/samples if possible, if there are any text in the provided image, it is shown here: ',
+        'English': 'The provided image is a English-subject related image, please summarize the concepts shown (from a literary stance if possible), if there are any text in the provided image, it is shown here: ',
+        'Other': 'Please summarize the concepts in the provided image, if there are any text in the provided image, it is shown here: '
     }
 
     if subject == "Custom":
         input_text = custom_query + " " + text
     else:
-        input_text = "Note: This is for a study guide. " + subject_queries.get(subject) + " " + text
+        input_text = "Important Note: This is for a study guide. " + subject_queries.get(subject) + " " + text
     
     response = gemini(input_text, image, gemini_api_key) 
     
