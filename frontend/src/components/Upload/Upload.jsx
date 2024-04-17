@@ -78,6 +78,7 @@ function Upload({id, setPDF}){
                 if (uploadResponse.ok) {
                     const pdf_link = await uploadResponse.json();
                     setPDF(pdf_link.link);
+                    setFiles([]);
                 } else {
                     console.error('Failed to upload file');
                 }

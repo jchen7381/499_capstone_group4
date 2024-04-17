@@ -9,7 +9,7 @@ import './PdfViewer.css';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const PdfViewer = (url) => {
+const PdfViewer = ({url, resetInterface}) => {
   const pdfUrl = url;
   const [numPages, setNumPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -176,7 +176,7 @@ const PdfViewer = (url) => {
 
   // Close PDF
   const handleClosePDF = () => {
-    return;
+    resetInterface();
   };
 
   // Render the PDF

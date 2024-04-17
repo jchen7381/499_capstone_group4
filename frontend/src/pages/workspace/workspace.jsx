@@ -58,6 +58,10 @@ function Workspace() {
     }
   }
 
+  function resetInterface() {
+    setPDF('');
+  }
+
   return (
     <div className="app-container">
       {loading ? 
@@ -70,7 +74,7 @@ function Workspace() {
         <div className="content">
           <div className="content-left gray-bg">
           { pdf ? 
-            <PdfViewer url={pdf}/> 
+            <PdfViewer url={pdf} resetInterface={resetInterface}/>
             : 
             <div><div className="rectangle padding"><Upload id={workspaceID} setPDF={setPDF}/></div></div>}
           </div>
