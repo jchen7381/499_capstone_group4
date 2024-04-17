@@ -15,11 +15,18 @@ function Upload({id, setPDF}){
     }
     async function upload(){
         const tokens = getTokens()
+        const allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+                         'application/msword', // .doc
+                         'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
+                         'application/vnd.ms-powerpoint', // .ppt
+                         'image/png', // .png
+                         'image/jpeg' // .jpg, .jpeg
+        ]; 
         for (let i = 0; i < files.length; i++){
             const file = files[i];
             try {
                 let uploadResponse;
-                if (file.type !== 'application/pdf') {
+                if (file.type !== 'application/pdf' && allowedTypes.includes(file.type)) {
                     const formData = new FormData();
                     formData.append('file', file);
                 
@@ -50,9 +57,9 @@ function Upload({id, setPDF}){
                     } catch (error) {
                         console.error('Error occurred during conversion:', error);
                     }
-                } else {
+                } else if (file.type == 'application/pdf') {
                     const fd = new FormData()
-                    fd.append('file', convertedFile)
+                    fd.append('file', file)
                     fd.append('access_token', tokens.access_token)
                     fd.append('refresh_token', tokens.refresh_token)
                     fd.append('workspace_id', id.id)
@@ -61,6 +68,10 @@ function Upload({id, setPDF}){
                         method: 'POST',
                         body: fd
                     });
+                }
+                else {
+                    alert('Unsupported file type: ' + file.type);
+                    console.error('Unsupported file type:', file.type);
                 }
         
                 if (uploadResponse.ok) {
@@ -99,8 +110,11 @@ function Upload({id, setPDF}){
             >
                 <form id='dropbox' method="POST" encType="multipart/form-data">
                     <span>Drag files here to upload or&nbsp;<label id='file-btn-label'for='file-chooser'>browse your computer&nbsp;</label></span>
+                    <br></br>
                     <input type='file' id='file-chooser' onChange={handleChange}/>
                     <button type='button' id='upload-button' onClick={upload}>Upload</button>
+                    <br></br>
+                    <span>Allowed file types: .pdf, .jpg, .jpeg, .png, .doc, .docx, .ppt, .pptx</span>
                 </form>
             </div>
             <div id='file-list'>
