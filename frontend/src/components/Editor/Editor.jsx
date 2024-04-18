@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './Editor.css'
+import { saveAs } from 'file-saver';
+import { pdfExporter } from 'quill-to-pdf';
 
 function Editor({editor_id}){
     const [value, setValue] = useState('');
@@ -70,6 +72,11 @@ function Editor({editor_id}){
         setValue(editor.getContents())
     }
 
+    async function downloadPdf() {
+        const pdf = await pdfExporter.generatePdf(value);
+        saveAs(pdf, 'document.pdf');
+    }
+    
     const modules = {
         toolbar: [
             [{ 'font': [] }, { 'size': []}],
@@ -93,6 +100,9 @@ function Editor({editor_id}){
 
     return(
         <div className='text-editor-container'>
+            <div id = 'text-editor-navbar'>
+                <button onClick={downloadPdf}>Download File</button>
+            </div>
             <div className='quill-container'>
                 <ReactQuill theme="snow" value={value} onChange={handleChange} modules ={modules}/>
             </div>
