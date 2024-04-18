@@ -72,7 +72,7 @@ function Editor({editor_id}){
 
     const modules = {
         toolbar: [
-            [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+            [{ 'font': [] }, { 'size': []}],
             [{ 'script': 'sub'}, { 'script': 'super' }],
             ['bold', 'italic', 'underline', 'strike', 'blockquote'],
             [{'list': 'ordered'}, {'list': 'bullet'}, 
