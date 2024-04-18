@@ -87,6 +87,9 @@
 
 .output-header {
   font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .preview-image-modal {
