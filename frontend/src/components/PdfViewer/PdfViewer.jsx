@@ -16,7 +16,9 @@ const PdfViewer = ({url, resetInterface}) => {
   const [inputPage, setInputPage] = useState(1);
   const pdfContainerRef = useRef(null);
   const [imageModalVisible, setImageModalVisible] = useState(false);
+  const [previewImageVisible, setPreviewImageVisible] = useState(false);
   const [screenshotImage, setScreenshotImage] = useState('');
+  const [enlargedImage, setEnlargedImage] = useState('');
   const cropperRef = useRef(null);
   const [pdfWidth, setPdfWidth] = useState(null);
   const [pdfHeight, setPdfHeight] = useState(null);
@@ -112,6 +114,17 @@ const PdfViewer = ({url, resetInterface}) => {
     });
   };
 
+  // Function for opening enlarged preview image modal
+  const handlePreviewImageClick = (image) => {
+    setEnlargedImage(image);
+    setPreviewImageVisible(true);
+  };
+
+  // Function for closing enlarged preview image modal
+  const handleClosePreviewImage = () => {
+    setPreviewImageVisible(false);
+  };
+
   // Function for sending to backend (after clicking on Send to AI)
   const handleSend = () => {
     if (selectedSubject === "Custom" && !customQuery) {
@@ -169,7 +182,7 @@ const PdfViewer = ({url, resetInterface}) => {
     setImageModalVisible(false);
   };
 
-  // Close SNip
+  // Close Snip
   const handleCloseSnip = () => {
     setImageModalVisible(false);
   };
@@ -304,7 +317,14 @@ const PdfViewer = ({url, resetInterface}) => {
       <div className="outputs">
         <div className="snip-preview">
           <h3 className="output-header">Snip Preview</h3>
-          {aiOutput.image && <img src={aiOutput.image} alt="Snipped" style={{ maxWidth: '100%', maxHeight: '100%' }} />}
+          {aiOutput.image && 
+            <img 
+              src={aiOutput.image} 
+              alt="Snipped" 
+              style={{ maxWidth: '100%', maxHeight: '100%' }} 
+              onClick={() => handlePreviewImageClick(aiOutput.image)} 
+            />
+          }
         </div>
         <div className="ai-output">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -321,6 +341,11 @@ const PdfViewer = ({url, resetInterface}) => {
           </div>
         </div>
       </div>
+      {previewImageVisible && (
+        <div className="preview-image-modal" onClick={handleClosePreviewImage}>
+          <img src={enlargedImage} alt="Enlarged Preview" />
+        </div>
+      )}
     </div>
   );
 };
