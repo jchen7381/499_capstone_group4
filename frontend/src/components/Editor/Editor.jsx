@@ -131,12 +131,7 @@ function Editor({editor_id, workspace_id, title}){
     return(
         <div className='text-editor-container'>
             <div id = 'text-editor-navbar'>
-                <input
-                    type="text"
-                    placeholder="Enter file name"
-                    value={workspaceTitle}
-                    onChange={(e) => changeWorkspaceTitle(e.target.value)} 
-                />
+                <input className='input-box' type="text" placeholder="Enter file name" value={workspaceTitle} onChange={(e) => changeWorkspaceTitle(e.target.value)} />
                 <button onClick={downloadPdf}>Download File</button>
             </div>
             <div className='quill-container'>

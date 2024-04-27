@@ -109,3 +109,7 @@ header {
     text-overflow: ellipsis;
     text-align: center;
 }
+
+.delete-button{
+    background-color: #c1ebff;;
+}

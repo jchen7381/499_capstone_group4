@@ -85,7 +85,7 @@ function Dashboard() {
                                 {workspaces.map(workspace => (
                                     <Link to={`/workspace/${workspace.workspace_id}`} key={workspace.workspace_id} state={workspace} >
                                         <div className='display-item'>
-                                            <button value={workspace.workspace_id} onClick={(e) => deleteWorkspace(e)}>
+                                            <button className='delete-button' value={workspace.workspace_id} onClick={(e) => deleteWorkspace(e)}>
                                                 Delete
                                             </button>
                                             <div className='workspace-title'>{workspace.title}</div>

@@ -1,6 +1,6 @@
 .ql-toolbar.ql-snow {
     box-sizing: border-box;
-    font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'Poppins', sans-serif;
     position: sticky;
     background-color: #d1eafc; 
     padding-top: 15px;
@@ -33,4 +33,8 @@
 
 .text-editor-container {
     background-color: #d1eafc;
+}
+
+.input-box {
+    font-family: 'Poppins', sans-serif;
 }

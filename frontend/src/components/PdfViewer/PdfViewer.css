@@ -92,6 +92,15 @@
   align-items: center;
 }
 
+.ai-output-header {
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .preview-image-modal {
   position: fixed;
   top: 0;
@@ -108,4 +117,13 @@
 .preview-image-modal img {
   max-width: 90%;
   max-height: 90%;
+}
+
+.input-box {
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+.dropdown-box {
+  font-family: 'Poppins', sans-serif;
 }

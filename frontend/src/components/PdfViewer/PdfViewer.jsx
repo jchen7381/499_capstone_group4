@@ -259,16 +259,16 @@ const PdfViewer = ({url, resetInterface}) => {
 		<div className="pdf-navbar">
 			{imageModalVisible ? (
 			<>
-				<select onChange={(e) => setSelectedSubject(e.target.value)}>
-				<option value="">Select Subject</option>
-				<option value="Math">Math</option>
-				<option value="CS">Computer Science</option>
-				<option value="English">English</option>
-				<option value="Other">Other</option>
-				<option value="Custom">Custom</option>
+				<select className='dropdown-box' onChange={(e) => setSelectedSubject(e.target.value)}>
+				<option className='dropdown-box' value="">Select Subject</option>
+				<option className='dropdown-box' value="Math">Math</option>
+				<option className='dropdown-box' value="CS">Computer Science</option>
+				<option className='dropdown-box' value="English">English</option>
+				<option className='dropdown-box' value="Other">Other</option>
+				<option className='dropdown-box' value="Custom">Custom</option>
 				</select>
 				{selectedSubject === "Custom" && (
-				<input
+				<input className='input-box'
 					type="text"
 					placeholder="Enter your query"
 					value={customQuery}
@@ -284,7 +284,7 @@ const PdfViewer = ({url, resetInterface}) => {
 				Previous
 				</button>
 				<span>Page </span>
-				<input
+				<input className='input-box'
 				type="number"
 				min="1"
 				max={numPages || ''}
@@ -328,7 +328,7 @@ const PdfViewer = ({url, resetInterface}) => {
 			</div>
 			<div className="ai-output">
 			<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-				<h3 className="output-header">AI Output</h3>
+				<h3 className="ai-output-header">AI Output</h3>
 				<div>
 				<button onClick={handleCopyToClipboard}>Copy to Clipboard</button>
 				<button onClick={handleRegenerate}>Regenerate Output</button>
