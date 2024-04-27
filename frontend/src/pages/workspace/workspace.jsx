@@ -79,7 +79,7 @@ function Workspace() {
             <div><div className="rectangle padding"><Upload id={workspaceID} setPDF={setPDF}/></div></div>}
           </div>
           <div className="content-right white-bg">
-            <div className="text-editor"><Editor editor_id={workspace.editor_id}/></div>
+            <div className="text-editor"><Editor editor_id={workspace.editor_id} workspace_id={workspaceID.id} title={workspace.title}/></div>
           </div>
         </div>
       </div>

@@ -5,8 +5,10 @@ import './Editor.css'
 import { saveAs } from 'file-saver';
 import { pdfExporter } from 'quill-to-pdf';
 
-function Editor({editor_id}){
+function Editor({editor_id, workspace_id, title}){
     const [value, setValue] = useState('');
+    const [workspaceTitle, setWorkspaceTitle] = useState(title);
+
     console.log(editor_id)
     useEffect(()=>{
         if (!value){
@@ -33,7 +35,7 @@ function Editor({editor_id}){
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
                 },
-            body: JSON.stringify({'access_token': tokens.access_token, 'refresh_token': tokens.refresh_token, 'editor_id':editor_id, 'data': value})
+            body: JSON.stringify({'access_token': tokens.access_token, 'refresh_token': tokens.refresh_token, 'editor_id': editor_id, 'data': value})
             })
             const ret = await res.json()
             if (res.ok){
@@ -45,6 +47,29 @@ function Editor({editor_id}){
 
         }
     }
+
+    async function workspaceSave(){
+        const tokens = getTokens()
+        try{    
+            const res = await fetch('http://127.0.0.1:5000/workspace/save', {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+            body: JSON.stringify({'access_token': tokens.access_token, 'refresh_token': tokens.refresh_token, 'workspace_id': workspace_id, 'workspace_title': workspaceTitle})
+            })
+            const ret = await res.json()
+            if (res.ok){
+                
+                console.log(ret, value)
+            }
+        }
+        catch{
+
+        }
+    }
+
     async function editorGet(){
         const tokens = getTokens()
         try{    
@@ -74,9 +99,14 @@ function Editor({editor_id}){
 
     async function downloadPdf() {
         const pdf = await pdfExporter.generatePdf(value);
-        saveAs(pdf, 'document.pdf');
+        saveAs(pdf, `${workspaceTitle}.pdf`);
     }
     
+    const changeWorkspaceTitle = (newWorkspaceTitle) => {
+        setWorkspaceTitle(newWorkspaceTitle);
+        workspaceSave();
+    }
+
     const modules = {
         toolbar: [
             [{ 'font': [] }, { 'size': []}],
@@ -101,6 +131,12 @@ function Editor({editor_id}){
     return(
         <div className='text-editor-container'>
             <div id = 'text-editor-navbar'>
+                <input
+                    type="text"
+                    placeholder="Enter file name"
+                    value={workspaceTitle}
+                    onChange={(e) => changeWorkspaceTitle(e.target.value)} 
+                />
                 <button onClick={downloadPdf}>Download File</button>
             </div>
             <div className='quill-container'>

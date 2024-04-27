@@ -169,6 +169,19 @@ def deleteWorkspace():
     except Exception as e:
         print(e)
         return jsonify({'error': str(e)}), 500
+    
+@app.route('/workspace/save', methods=["POST"])
+def workspaceSave():
+    try:
+        access_token = request.json.get('access_token')
+        refresh_token = request.json.get('refresh_token')
+        workspace_id = request.json.get('workspace_id')
+        workspace_title = request.json.get('workspace_title')
+        response = supabase.auth.set_session(access_token, refresh_token)
+        result = supabase.table('workspaces').update({'title': workspace_title}).eq('workspace_id', workspace_id).execute()
+        return jsonify({'message': 'saved'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/editor/save', methods=["POST"])
 def editorSave():
