@@ -1,5 +1,5 @@
 .pdf-viewer-container {
-  height: 66vh; 
+  height: 65vh; 
   margin: 5px;
   position: relative; 
   background-color: #b3dffd;
@@ -13,6 +13,7 @@
   align-items: center;
   background-color: #d1eafc;
   font-family: 'Poppins', sans-serif;
+  height: 5vh;
 }
 
 .pdf-navbar button {
@@ -48,9 +49,11 @@
 }
 
 .outputs {
-  margin-top: 10px;
-  margin: 5px;
-  height: 27vh;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  margin-left: 5px;
+  margin-right: 5px;
+  height: 28vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
