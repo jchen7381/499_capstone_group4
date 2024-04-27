@@ -1,36 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../../utility/AuthContext';
 import Navbar from '../../components/Navbar/Navbar';
 import './dashboard.css';
 import { useDashboardContext } from '../../utility/DashboardContext';
+import Header from '../../components/Header/Header';
+
 
 function Dashboard() {
-    const {workspaces, setWorkspace} = useDashboardContext();
-    const {user, setUser} = useAuthContext();
+    const {workspaces, dispatch} = useDashboardContext()
+    const navigate = useNavigate()
     useEffect(() => {
-        if (workspaces.length) {
-            console.log(workspaces)
-        }
-    }, [workspaces]);
-    function getTokens() {
-        var result = document.cookie.match(new RegExp('session' + '=([^;]+)'));
-        result && (result = JSON.parse(result[1]));
-        return result;
-    }
+        console.log(workspaces)
+    }, [workspaces])
+
     async function createWorkspace() {
         try {
             const res = await fetch('http://127.0.0.1:5000/create-workspace', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(getTokens())
             });
             const ret = await res.json();
             if (res.ok) {
-                setWorkspace([...workspaces, ...ret])
+                dispatch({type: 'createWorkspace', payload: ret})
             } else {
                 alert('fail!');
             }
@@ -38,27 +34,49 @@ function Dashboard() {
             console.log('Error:', error);
         }
     }
-    async function deleteWorkspace(e){
+    async function favorite(e){
         e.preventDefault()
         e.stopPropagation()
-        const tokens = getTokens()
-        console.log(e.target.value)
         try {
-            const res = await fetch('http://127.0.0.1:5000/workspace/delete', {
+            const res = await fetch('http://127.0.0.1:5000/workspace/favorite', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({'access_token': tokens.access_token, 'refresh_token': tokens.refresh_token, 'workspace_id': e.target.value})
+                body: JSON.stringify({'workspace_id': e.target.value})
             });
             const ret = await res.json();
             if (res.ok) {
-                setWorkspace(oldValues => {
-                    return oldValues.filter(workspaces => workspaces.workspace_id !== e.target.value)
-                  })
+                console.log('Workspace favorited')
+                dispatch({type:'favoriteWorkspace', payload: e.target.value})
+            }
+        } catch (error) {
+            console.log('Failed to favorite workspace:' + e.target.value)
+            console.log('Error:', error);
+        }
+    }
+    async function remove(e){
+        e.preventDefault()
+        e.stopPropagation()
+        console.log(e.target.value)
+        try {
+            const res = await fetch('http://127.0.0.1:5000/workspace/delete', {
+                method: 'POST',
+                credentials:'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({'workspace_id': e.target.value})
+            });
+            const ret = await res.json();
+            if (res.ok) {
+                console.log('Successfully deleted workspace: ')
+                dispatch(({type: 'deleteWorkspace', payload: e.target.value}))
             } else {
-                alert('fail!');
+                console.log('Failed to delete workspace');
             }
         } catch (error) {
             console.log('Error:', error);
@@ -67,34 +85,27 @@ function Dashboard() {
 
     return (
         <div className="website-container">
-            <header>
-            <Link to= '/dashboard'><h3>Memo</h3></Link>
-            </header>
-            <div className="main-container">
-                <div>
-                <Navbar />
-                </div>
-                <div className="contentview-container">
-                    <div className='content-container'>
-                        <h2 className="text-color">Dashboard</h2>
-                        <div className='new-workspace'>
-                            <button onClick={createWorkspace}>+ New workspace</button>
-                        </div>
-                        {workspaces.length > 0 &&
-                            <div className='items'>
-                                {workspaces.map(workspace => (
+            <Header />
+            <Navbar />
+            <div className='dashboard-content'>
+                <button onClick={createWorkspace}>+ New Workspace</button>
+                <div className='workspaces'>
+                    {workspaces.length ? 
+                        <div className='items'>
+                            {workspaces.map(workspace => (
                                     <Link to={`/workspace/${workspace.workspace_id}`} key={workspace.workspace_id} state={workspace} >
-                                        <div className='display-item'>
-                                            <button className='delete-button' value={workspace.workspace_id} onClick={(e) => deleteWorkspace(e)}>
+                                        <div className='workspace'>
+                                            <button value={workspace.workspace_id} onClick={(e) => remove(e)}>
                                                 Delete
                                             </button>
                                             <div className='workspace-title'>{workspace.title}</div>
                                         </div>
                                     </Link>
                                 ))}
-                            </div>
-                        }
-                    </div>
+                        </div>
+                        :
+                        <div>Get started by creating a workspace</div>
+                    }
                 </div>
             </div>
         </div>

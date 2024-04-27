@@ -26,27 +26,19 @@ function Editor({editor_id, workspace_id, title}){
         workspaceSave();
     }, [workspaceTitle]);
 
-    function getTokens() {
-        var result = document.cookie.match(new RegExp('session' + '=([^;]+)'));
-        result && (result = JSON.parse(result[1]));
-        return result;
-    }
+
     async function save(){
-        const tokens = getTokens()
         try{    
             const res = await fetch('http://127.0.0.1:5000/editor/save', {
                 method: 'POST',
+                credentials:'include',
                 headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
                 },
-            body: JSON.stringify({'access_token': tokens.access_token, 'refresh_token': tokens.refresh_token, 'editor_id': editor_id, 'data': value})
+            body: JSON.stringify({'editor_id': editor_id, 'data': value})
             })
             const ret = await res.json()
-            if (res.ok){
-                
-                console.log(ret, value)
-            }
         }
         catch{
 
@@ -58,17 +50,14 @@ function Editor({editor_id, workspace_id, title}){
         try{    
             const res = await fetch('http://127.0.0.1:5000/workspace/save', {
                 method: 'POST',
+                credentials:'include',
                 headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
                 },
-            body: JSON.stringify({'access_token': tokens.access_token, 'refresh_token': tokens.refresh_token, 'workspace_id': workspace_id, 'workspace_title': workspaceTitle})
+            body: JSON.stringify({'editor_id': editor_id, 'data': value})
             })
             const ret = await res.json()
-            if (res.ok){
-                
-                console.log(ret, value)
-            }
         }
         catch{
 
@@ -76,20 +65,19 @@ function Editor({editor_id, workspace_id, title}){
     }
 
     async function editorGet(){
-        const tokens = getTokens()
         try{    
             const res = await fetch('http://127.0.0.1:5000/editor/get', {
                 method: 'POST',
+                credentials:'include',
                 headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
                 },
-            body: JSON.stringify({'access_token': tokens.access_token, 'refresh_token': tokens.refresh_token, 'editor_id':editor_id})
+            body: JSON.stringify({'editor_id':editor_id})
             })
             const ret = await res.json()
             if (res.ok){
                 const data = ret[0].data.ops
-                console.log("Editor data:" , data)
                 setValue(data)
             }
         }

@@ -1,3 +1,8 @@
+  * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 a {
   font-weight: 500;
   color: #646cff;
@@ -11,7 +16,7 @@ body {
   margin: 0;
   place-items: center;
   min-width: 320px;
-  min-height: 100vh;
+  min-height: 100%;
   max-width: 100%;
   background-color: seashell;
 

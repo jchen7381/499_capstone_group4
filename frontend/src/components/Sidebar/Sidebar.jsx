@@ -15,12 +15,11 @@ const Sidebar = () => {
   
 
   return (
-    <div className="box">
-      <div className="logo" onClick={toggleSidebar}>
+    <div className="sidebar-container">
+      <div className="logo">
         <IoLogoOctocat size={25} color="black" />
       </div>
-      <div className={`sidebar ${sidebarVisible ? 'visible' : ''}`}>
-        <div className={`button ${buttonVisible ? 'visible' : ''}`}>
+      <div className='sidebar-content'>
           <ul>
             <Link to="/favorite"><li><button className="favorite"><IoHeartOutline/></button></li></Link>
             <Link to="/dashboard"><li><button className="library"><IoDocumentOutline/></button></li></Link>
@@ -29,7 +28,6 @@ const Sidebar = () => {
           </ul>
         </div>
       </div>
-    </div>
   );
 }
 

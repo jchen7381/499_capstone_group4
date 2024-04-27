@@ -2,26 +2,16 @@ import React, {useState, useEffect} from 'react';
 import { useWorkspaceContext } from '../../utility/WorkspaceContext';
 import './Upload.css'
 
-function Upload({id, setPDF}){    
+function Upload({id, setPDF, setFile}){    
     const [files, setFiles] = useState([])
-    useEffect(() => {
-        if (files.length){
-        }
-    }, [files])
-    function getTokens(){
-        var result = document.cookie.match(new RegExp('session' + '=([^;]+)'))
-        result && (result = JSON.parse(result[1]));
-        return result
-    }
+    const allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+    'application/msword', // .doc
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
+    'application/vnd.ms-powerpoint', // .ppt
+    'image/png', // .png
+    'image/jpeg' // .jpg, .jpeg
+    ]; 
     async function upload(){
-        const tokens = getTokens()
-        const allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
-                         'application/msword', // .doc
-                         'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
-                         'application/vnd.ms-powerpoint', // .ppt
-                         'image/png', // .png
-                         'image/jpeg' // .jpg, .jpeg
-        ]; 
         for (let i = 0; i < files.length; i++){
             const file = files[i];
             try {
@@ -46,12 +36,11 @@ function Upload({id, setPDF}){
                 
                         const fd = new FormData()
                         fd.append('file', convertedFile)
-                        fd.append('access_token', tokens.access_token)
-                        fd.append('refresh_token', tokens.refresh_token)
                         fd.append('workspace_id', id.id)
             
                         uploadResponse = await fetch('http://127.0.0.1:5000/upload', {
                             method: 'POST',
+                            credentials:'include',
                             body: fd
                         });
                     } catch (error) {
@@ -60,12 +49,11 @@ function Upload({id, setPDF}){
                 } else if (file.type == 'application/pdf') {
                     const fd = new FormData()
                     fd.append('file', file)
-                    fd.append('access_token', tokens.access_token)
-                    fd.append('refresh_token', tokens.refresh_token)
                     fd.append('workspace_id', id.id)
         
                     uploadResponse = await fetch('http://127.0.0.1:5000/upload', {
                         method: 'POST',
+                        credentials:'include',
                         body: fd
                     });
                 }
@@ -77,7 +65,7 @@ function Upload({id, setPDF}){
         
                 if (uploadResponse.ok) {
                     const pdf_link = await uploadResponse.json();
-                    setPDF(pdf_link.link);
+                    setFile(pdf_link);
                     setFiles([]);
                 } else {
                     console.error('Failed to upload file');
@@ -115,7 +103,7 @@ function Upload({id, setPDF}){
                 <form id='dropbox' method="POST" encType="multipart/form-data">
                     <span className='upload-text'>Drag files here to upload or&nbsp;<label id='file-btn-label'for='file-chooser'>browse your computer&nbsp;</label></span>
                     <br></br>
-                    <input type='file' id='file-chooser' onChange={handleChange}/>
+                    <input type='file' id='file-chooser' onChange={handleChange} accept={allowedTypes}/>
                     <button type='button' id='upload-button' onClick={upload}>Upload</button>
                     <br></br>
                     <span className='upload-text'>Allowed file types: .pdf, .jpg, .jpeg, .png, .doc, .docx, .ppt, .pptx</span>

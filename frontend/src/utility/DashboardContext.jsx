@@ -1,45 +1,96 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 
-export const DashboardContext = createContext({
+const initialState = {
     workspaces: [],
-    setWorkspace: () => {},       
-});
+    files: []
+}
+
+const DashboardContext = createContext();
+
+function reducer(state, action){
+    switch(action.type){
+        case 'favoriteWorkspace':{
+            const workspace = state.workspaces.find((workspace) => workspace.workspace_id == action.payload)
+            workspace.favorite ? workspace.favorite = false : workspace.favorite = true
+            return{
+                ...state,
+                workspaces: [...state.workspaces]
+            }
+        }
+        case 'deleteWorkspace':{
+            const newState = state.workspaces.filter((workspace) => workspace.workspace_id !== action.payload)
+            return{
+                ...state,
+                workspaces: [...newState]
+            }
+        }
+        case 'createWorkspace':{
+            return{
+                ...state,
+                workspaces: [...state.workspaces, ...action.payload]
+            }
+        }
+        case 'getWorkspaces':{
+            return{
+                ...state,
+                workspaces: action.payload
+            }
+        }
+        case 'getFiles':{
+            return{
+                ...state,
+                files: action.payload
+            }
+        }
+    }
+}
+
 //Wrap consumers inside this
 export default function DashboardContextProvider({children}){
-    const [workspaces, setWorkspace] = useState([])   
-    const [files, setFile] = useState([])
+    const [state, dispatch] = useReducer(reducer, initialState)   
     useEffect(() => {
-        if (!workspaces.length) {
-            getWorkspaces();
-        }
+        console.log('hi')
+        getWorkspaces()
+        getFiles()
     }, []);
-    function getTokens() {
-        var result = document.cookie.match(new RegExp('session' + '=([^;]+)'));
-        result && (result = JSON.parse(result[1]));
-        return result;
-    }
+
     async function getWorkspaces() {
         try {
-            const res = await fetch('http://127.0.0.1:5000/get-workspaces', {
+                const res = await fetch('http://127.0.0.1:5000/get-workspaces', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(getTokens())
             });
             const ret = await res.json();
-            if (res.ok) {
-                setWorkspace(ret);
-            } else {
-                alert('fail!');
-            }
+            dispatch({type:'getWorkspaces', payload: ret})
         } catch (error) {
+            console.log('Unable to fetch workspaces')
+            console.log('Error:', error);
+        }
+    }
+    async function getFiles(){
+        try{
+            const res = await fetch('http://127.0.0.1:5000/user/library/get',{
+                method: 'POST',
+                credentials: 'include',
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            });
+            const ret = await res.json()
+            dispatch({type:'getFiles', payload: ret})
+        }
+        catch (error){
+            console.log('Failed to get files')
             console.log('Error:', error);
         }
     }
     return(
-        <DashboardContext.Provider value={{workspaces, setWorkspace}}>
+        <DashboardContext.Provider value={{files: state.files, workspaces:state.workspaces, dispatch}}>
             {children}
         </DashboardContext.Provider>
     )

@@ -1,15 +1,17 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, make_response, jsonify, send_file
 import requests
 import json
 import io
 import base64
 from io import BytesIO
 from supabase import create_client
+from supabase.client import ClientOptions
 from flask_cors import CORS
 import os
 
 app = Flask(__name__)
 CORS(app)
+cors = CORS(app, supports_credentials=True)
 
 # OCR function
 def ocr(image_base64, api_key):
@@ -89,7 +91,7 @@ def process():
 
 supabase_url = "https://rrzufyvihrhlnprspyvh.supabase.co"
 supabase_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyenVmeXZpaHJobG5wcnNweXZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk4NTkyNzksImV4cCI6MjAyNTQzNTI3OX0.SoZusxJyuRrcdf-lNlRUxlDAV15A7bLb7ICyK63Mztk"
-supabase = create_client(supabase_url, supabase_key)
+supabase = create_client(supabase_url, supabase_key, options=ClientOptions(auto_refresh_token=False))
 
 @app.route('/signup', methods=['POST'])
 def signup():
@@ -112,25 +114,42 @@ def login():
         password = request.json.get('password')
         response = supabase.auth.sign_in_with_password({'email': email, 'password': password})
         if response.user is not None:
-            session = supabase.auth.get_session()
-            session_data = {
-                'access_token': session.access_token,
-                'refresh_token': session.refresh_token,
-            }
-            return {'message': 'Login successful', 'session': session_data}
+            resp = make_response()
+            resp.set_cookie('access_token', response.session.access_token, httponly=True, samesite='None', secure=True)
+            resp.set_cookie('refresh_token', response.session.refresh_token, httponly=True, samesite='None', secure=True)
+            return resp, 200
         else:
             return {'error': response.error_description}
     except Exception as e:
+        print(e)
+        return jsonify({'error': str(e)}), 500
+@app.route('/auth/check', methods=["POST"])
+def authCheck():
+    try:
+        access_token = request.json.get('access_token')
+        refresh_token = request.json.get('refresh_token')
+        response = supabase.auth.get_user(access_token)
+        data, count = supabase.rpc('create_workspace').execute()
+        return jsonify(data[1])
+    except Exception as e:
+        print(e)
         return jsonify({'error': str(e)}), 500
 
 @app.route('/create-workspace', methods=["POST"])
 def create_workspace():
     try:
-        access_token = request.json.get('access_token')
-        refresh_token = request.json.get('refresh_token')
+        access_token = request.cookies.get('access_token')
+        refresh_token = request.cookies.get('refresh_token')
+        print(access_token, refresh_token)
         response = supabase.auth.set_session(access_token, refresh_token)
-        data, count = supabase.rpc('create_workspace').execute()
-        return jsonify(data[1])
+        print(access_token, refresh_token)
+        result= supabase.rpc('create_workspace').execute()
+        json_data = jsonify(result.data)
+        resp = make_response(json_data)
+        if response.session.access_token != access_token:
+            resp.set_cookie('access_token', response.session.access_token, httponly=True, samesite='None', secure=True)
+            resp.set_cookie('refresh_token', response.session.refresh_token, httponly=True, samesite='None', secure=True)
+        return resp
     except Exception as e:
         print(e)
         return jsonify({'error': str(e)}), 500
@@ -138,34 +157,64 @@ def create_workspace():
 @app.route('/get-workspaces', methods=['POST'])
 def get_workspaces():
     try:
-        access_token = request.json.get('access_token')
-        refresh_token = request.json.get('refresh_token')
+        access_token = request.cookies.get('access_token')
+        refresh_token = request.cookies.get('refresh_token')
         response = supabase.auth.set_session(access_token, refresh_token)
         result = supabase.rpc('get_workspaces').execute()
-        return result.data
+        json_data = jsonify(result.data)
+        resp = make_response(json_data)
+        if response.session.access_token != access_token:
+            resp.set_cookie('access_token', response.session.access_token, httponly=True, samesite='None', secure=True)
+            resp.set_cookie('refresh_token', response.session.refresh_token, httponly=True, samesite='None', secure=True)
+        return resp
     except Exception as e:
+        print(e)
         return jsonify({'error': str(e)}), 500
 @app.route('/get-workspace', methods=["POST"] )
 def get_workspace():
     try:
-        access_token = request.json.get('access_token')
-        refresh_token = request.json.get('refresh_token')
+        access_token = request.cookies.get('access_token')
+        refresh_token = request.cookies.get('refresh_token')
+        workspace_id = request.json.get('workspace_id')
         response = supabase.auth.set_session(access_token, refresh_token)
         result = supabase.rpc('get_workspace', {'workspace_id'}).execute()
         return result.data
     except Exception as e:
+        print(e)
         return jsonify({'error': str(e)}), 500
+
 @app.route('/workspace/delete', methods=["POST"])
 def deleteWorkspace():
     try:
-        access_token = request.json.get('access_token')
-        refresh_token = request.json.get('refresh_token')
+        access_token = request.cookies.get('access_token')
+        refresh_token = request.cookies.get('refresh_token')
         workspace_id = request.json.get('workspace_id')
         response = supabase.auth.set_session(access_token, refresh_token)
-        print('WorkspaceID' , workspace_id)
         result = supabase.rpc('delete_workspace', {'id': workspace_id}).execute()
+        json_data = jsonify("Successfully deleted")
+        resp = make_response(json_data)
+        if response.session.access_token != access_token:
+            resp.set_cookie('access_token', response.session.access_token, httponly=True, samesite='None', secure=True)
+            resp.set_cookie('refresh_token', response.session.refresh_token, httponly=True, samesite='None', secure=True)
+        return resp
+    except Exception as e:
+        print(e)
+        return jsonify({'error': str(e)}), 500
 
-        return jsonify('a')
+@app.route('/workspace/favorite', methods=["POST"])
+def favoriteWorkspace():
+    try:
+        access_token = request.cookies.get('access_token')
+        refresh_token = request.cookies.get('refresh_token')
+        workspace_id = request.json.get('workspace_id')
+        response = supabase.auth.set_session(access_token, refresh_token)
+        result = supabase.rpc('favorite_workspace', {'id': workspace_id}).execute()
+        json_data = jsonify("Successfully favorited")
+        resp = make_response(json_data)
+        if response.session.access_token != access_token:
+            resp.set_cookie('access_token', response.session.access_token, httponly=True, samesite='None', secure=True)
+            resp.set_cookie('refresh_token', response.session.refresh_token, httponly=True, samesite='None', secure=True)
+        return resp
     except Exception as e:
         print(e)
         return jsonify({'error': str(e)}), 500
@@ -186,25 +235,35 @@ def workspaceSave():
 @app.route('/editor/save', methods=["POST"])
 def editorSave():
     try:
-        access_token = request.json.get('access_token')
-        refresh_token = request.json.get('refresh_token')
+        access_token = request.cookies.get('access_token')
+        refresh_token = request.cookies.get('refresh_token')
         editor_id = request.json.get('editor_id')
         editor_data = request.json.get('data')
         response = supabase.auth.set_session(access_token, refresh_token)
         result = supabase.table('editor').update({'data': editor_data}).eq('id', editor_id).execute()
-        return jsonify({'message': 'saved'})
+        json_data = jsonify('Data saved')
+        resp = make_response(json_data)
+        if response.session.access_token != access_token:
+            resp.set_cookie('access_token', response.session.access_token, httponly=True, samesite='None', secure=True)
+            resp.set_cookie('refresh_token', response.session.refresh_token, httponly=True, samesite='None', secure=True)
+        return resp
     except Exception as e:
+        print(e)
         return jsonify({'error': str(e)}), 500
 @app.route('/editor/get', methods=["POST"])
 def editorGet():
     try:
-        access_token = request.json.get('access_token')
-        refresh_token = request.json.get('refresh_token')
+        access_token = request.cookies.get('access_token')
+        refresh_token = request.cookies.get('refresh_token')
         editor_id = request.json.get('editor_id')
         response = supabase.auth.set_session(access_token, refresh_token)
         result = supabase.table('editor').select('data').eq('id', editor_id).execute()
-        print(result.data)
-        return result.data
+        json_data = jsonify(result.data)
+        resp = make_response(json_data)
+        if response.session.access_token != access_token:
+            resp.set_cookie('access_token', response.session.access_token, httponly=True, samesite='None', secure=True)
+            resp.set_cookie('refresh_token', response.session.refresh_token, httponly=True, samesite='None', secure=True)
+        return resp
     except Exception as e:
         print(e)
         return jsonify({'error': str(e)}), 500
@@ -214,14 +273,21 @@ def upload():
     try:
         req = request.form
         file = request.files['file']
-        session = supabase.auth.set_session(req['access_token'], req['refresh_token'])
-        path = "/" + session.user.id        
-        pdf = supabase.table('pdf').insert({'name': file.filename, "path": session.user.id}).execute()  #Insert into pdf table, returning the row
-        path += "/" + pdf.data[0]['id']
-        res = supabase.table('workspaces').update({"pdf_id": pdf.data[0]['id']}).eq('workspace_id', req['workspace_id']).execute() #use the row id from pdf
-        result = supabase.storage.from_('user buckets').upload(path, file.read(), file_options={"content-type": file.content_type})
-        link = supabase.storage.from_('user buckets').get_public_url(path)
-        return jsonify({'link': link})
+        access_token = request.cookies.get('access_token')
+        refresh_token = request.cookies.get('refresh_token')
+        response = supabase.auth.set_session(access_token, refresh_token)
+
+        file_info = supabase.rpc('upload_file', {'filename': file.filename, 'workspaceid': req['workspace_id']}).execute()
+        result = supabase.storage.from_('user buckets').upload(file_info.data[0]['file_path'], file.read(), file_options={"content-type": file.content_type})
+        link = supabase.storage.from_('user buckets').get_public_url(file_info.data[0]['file_path'])
+        res = supabase.table('pdf').update({"url":link}).eq('id', file_info.data[0]['new_file']).execute()        
+        file_list = supabase.rpc('get_workspace_files', {'workspaceid': req['workspace_id']}).execute()
+        json_data = jsonify(file_list.data)
+        resp = make_response(json_data)
+        if response.session.access_token != access_token:
+            resp.set_cookie('access_token', response.session.access_token, httponly=True, samesite='None', secure=True)
+            resp.set_cookie('refresh_token', response.session.refresh_token, httponly=True, samesite='None', secure=True)
+        return resp
     except Exception as e:
         print(e)
         return jsonify({'error': str(e)}), 500
@@ -229,69 +295,41 @@ def upload():
 @app.route('/get-file', methods=['POST'])
 def get_file():
     try:
-        access_token = request.json.get('access_token')
-        refresh_token = request.json.get('refresh_token')
+        access_token = request.cookies.get('access_token')
+        refresh_token = request.cookies.get('refresh_token')
         workspace = request.json.get('workspace_id')
         response = supabase.auth.set_session(access_token, refresh_token)
-        pdf = supabase.rpc('get_file', {'workspaceid': workspace}).execute()
-        print(pdf)
-        if pdf.data == None:
-            return jsonify({'link': ""})
-        
-        link = supabase.storage.from_('user buckets').get_public_url(pdf.data)
-        print(link)
-        return jsonify({'link': link})
+        link = ""
+        file_list = supabase.rpc('get_workspace_files', {'workspaceid': workspace}).execute()
+        json_data = jsonify(file_list.data)
+        resp = make_response(json_data)
+        if response.session.access_token != access_token:
+            resp.set_cookie('access_token', response.session.access_token, httponly=True, samesite='None', secure=True)
+            resp.set_cookie('refresh_token', response.session.refresh_token, httponly=True, samesite='None', secure=True)
+        print('File list:',file_list.data)
+        return resp
     except Exception as e:
         print(e)
         return jsonify({'error': str(e)}), 500
 
-@app.route('/convert', methods=['POST'])
-def convert():
-    convertapi_secret = 'vOlz7wkiOEGA54hD'
-    
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file part'})
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'})
+@app.route('/user/library/get', methods=["POST"])
+def getUserLibrary():
+    try:
+        access_token = request.cookies.get('access_token')
+        refresh_token = request.cookies.get('refresh_token')
+        response = supabase.auth.set_session(access_token, refresh_token)
+        files = supabase.rpc('user_library').execute()
+        print(files)
+        json_data = jsonify(files.data)
+        resp = make_response(json_data)
+        if response.session.access_token != access_token:
+            resp.set_cookie('access_token', response.session.access_token, httponly=True, samesite='None', secure=True)
+            resp.set_cookie('refresh_token', response.session.refresh_token, httponly=True, samesite='None', secure=True)
+        return resp
+    except Exception as e:
+        print(e)
+        return jsonify({'error': str(e)}), 500
 
-    # Check mime types
-    mime_to_endpoint = {
-        'application/msword': 'doc/to/pdf',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx/to/pdf',
-        'application/vnd.ms-powerpoint': 'ppt/to/pdf',
-        'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'pptx/to/pdf',
-        'image/jpeg': 'jpg/to/pdf',
-        'image/png': 'png/to/pdf'
-    }
-
-    if file.mimetype in mime_to_endpoint:
-        file_data = base64.b64encode(file.read()).decode('utf-8')
-
-        # ConvertAPI request
-        payload = {
-            "Parameters": [
-                {
-                    "Name": "File",
-                    "FileValue": {
-                        "Name": file.filename,
-                        "Data": file_data
-                    }
-                }
-            ]
-        }
-
-        # Make request
-        response = requests.post(f'https://v2.convertapi.com/convert/{mime_to_endpoint[file.mimetype]}?Secret={convertapi_secret}', json=payload)
-
-        if response.status_code == 200:
-            pdf_data = response.json()["Files"][0]["FileData"]
-            pdf_content = base64.b64decode(pdf_data)
-            return pdf_content, 200, {'Content-Type': 'application/pdf', 'Content-Disposition': 'attachment; filename="converted_file.pdf"'}
-        else:
-            return jsonify({'error': 'Conversion failed'}), response.status_code
-    else:
-        return jsonify({'error': 'Unsupported file format'}), 400
 
 if __name__ == '__main__':
     app.run(debug=True)

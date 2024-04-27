@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Home from './pages/home/home';
 import Login from './pages/login/login';
 import Register from './pages/register/register';
 import Workspace from './pages/workspace/workspace';
@@ -8,9 +7,9 @@ import Dashboard from './pages/dashboard/dashboard';
 import Favorite from './pages/favorite/favorite';
 import Library from './pages/library/library';
 import Recent from './pages/recent/recent';
+import Test from './pages/Test/test';
 import DashboardContextProvider from './utility/DashboardContext';
 import WorkspaceContextProvider from './utility/WorkspaceContext';
-
 export default function App() {
   return (  
     <BrowserRouter>
@@ -21,9 +20,10 @@ export default function App() {
         <Route path="/workspace" element={<Workspace />} />
         <Route path="/workspace/:id" element={<><WorkspaceContextProvider><Workspace /></WorkspaceContextProvider></>} />
         <Route path="/dashboard" element={<><DashboardContextProvider><Dashboard /></DashboardContextProvider></>} />
-        <Route path="/favorite" element={<Favorite />} />
+        <Route path="/favorite" element={<DashboardContextProvider><Favorite /></DashboardContextProvider>} />
         <Route path="/recent" element={<Recent />} />
-        <Route path="/library" element={<Library />} />
+        <Route path="/library" element={<DashboardContextProvider><Library /></DashboardContextProvider>} />
+        <Route path="/test" element={< Test/>} />
       </Routes>
     </BrowserRouter>
   );

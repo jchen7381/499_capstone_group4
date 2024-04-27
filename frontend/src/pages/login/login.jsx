@@ -12,18 +12,17 @@ const Login = () => {
             try {
                 const res = await fetch('http://127.0.0.1:5000/login', {
                     method: 'POST',
+                    mode: "cors",
+                    credentials: "include",
                     headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(loginData)
                 });
-                const ret = await res.json();
+                console.log(res)
                 if (res.ok) {
-                    const new_cookie = {access_token: ret.session.access_token, refresh_token: ret.session.refresh_token}
-                    document.cookie = `session=` + JSON.stringify(new_cookie)
                     setUser(true)
-                    navigate('/dashboard');
+                    navigate('/dashboard')
                 } else {
                     console.log(ret)
                     alert('Invalid Email or Password');
