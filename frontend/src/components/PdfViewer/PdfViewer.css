@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://rsms.me/inter/inter.css');
+
 .pdf-viewer-container {
   height: 65vh; 
   margin: 5px;
@@ -80,6 +83,10 @@
   border: 1px solid black;
   font-family: 'Poppins', sans-serif;
   padding: 5px;
+}
+
+.ai-output-text {
+  font-family: 'Inter', sans-serif;
 }
 
 .ai-output button {
