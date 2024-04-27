@@ -21,6 +21,11 @@ function Editor({editor_id, workspace_id, title}){
             save()
         }
     }, [value])
+
+    useEffect(() => {
+        workspaceSave();
+    }, [workspaceTitle]);
+
     function getTokens() {
         var result = document.cookie.match(new RegExp('session' + '=([^;]+)'));
         result && (result = JSON.parse(result[1]));
@@ -104,9 +109,8 @@ function Editor({editor_id, workspace_id, title}){
     
     const changeWorkspaceTitle = (newWorkspaceTitle) => {
         setWorkspaceTitle(newWorkspaceTitle);
-        workspaceSave();
     }
-
+    
     const modules = {
         toolbar: [
             [{ 'font': [] }, { 'size': []}],
