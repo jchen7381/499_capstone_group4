@@ -22,7 +22,7 @@ const Register = () => {
                 if (res.ok) {
                     navigate('/login');
                 } else {
-                    alert('Registration failed!');
+                    alert('Registration failed! Account already exists.');
                 }
             } catch (error) {
                 console.log('Error:', error);

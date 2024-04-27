@@ -43,6 +43,7 @@
     border-radius: 50px;
     border: 2px solid hsl(231deg 62% 94%); /* Similar border color to the mixin */
     margin-bottom: 1em; /* Adjust as needed */
+    font-family: 'Poppins', sans-serif;
 }
 
 .form-container button {

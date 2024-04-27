@@ -26,6 +26,7 @@ const Login = () => {
                     navigate('/dashboard');
                 } else {
                     console.log(ret)
+                    alert('Invalid Email or Password');
                 }
             } catch (error) {
                 console.log('Error:', error);

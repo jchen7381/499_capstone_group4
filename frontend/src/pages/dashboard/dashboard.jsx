@@ -80,7 +80,7 @@ function Dashboard() {
                         <div className='new-workspace'>
                             <button onClick={createWorkspace}>+ New workspace</button>
                         </div>
-                        {workspaces.length > 0 ?
+                        {workspaces.length > 0 &&
                             <div className='items'>
                                 {workspaces.map(workspace => (
                                     <Link to={`/workspace/${workspace.workspace_id}`} key={workspace.workspace_id} state={workspace} >
@@ -93,9 +93,6 @@ function Dashboard() {
                                     </Link>
                                 ))}
                             </div>
-                            :
-                            <div><button onClick = {createWorkspace}></button></div>
-                    
                         }
                     </div>
                 </div>
