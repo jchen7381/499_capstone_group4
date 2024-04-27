@@ -12,7 +12,7 @@
   justify-content: center;
   align-items: center;
   background-color: #d1eafc;
-  font-family: sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .pdf-navbar button {
@@ -65,7 +65,7 @@
   border: 1px solid black;
   padding: 10px;
   padding-top: 14px;
-  font-family: sans-serif;
+  font-family: 'Poppins', sans-serif;
   overflow-y: auto;
 }
 
@@ -75,7 +75,7 @@
   height: 100%;
   overflow-y: auto;
   border: 1px solid black;
-  font-family: sans-serif;
+  font-family: 'Poppins', sans-serif;
   padding: 5px;
 }
 
@@ -86,7 +86,7 @@
 }
 
 .output-header {
-  font-family: sans-serif;
+  font-family: 'Poppins', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;

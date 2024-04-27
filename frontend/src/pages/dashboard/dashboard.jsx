@@ -88,6 +88,7 @@ function Dashboard() {
                                             <button value={workspace.workspace_id} onClick={(e) => deleteWorkspace(e)}>
                                                 Delete
                                             </button>
+                                            <div className='workspace-title'>{workspace.title}</div>
                                         </div>
                                     </Link>
                                 ))}

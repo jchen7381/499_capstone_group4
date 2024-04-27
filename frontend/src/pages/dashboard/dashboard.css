@@ -6,7 +6,7 @@
 
 h3 {
     color: black;
-    font-family:'Times New Roman', Times, serif
+    font-family: 'Poppins', sans-serif;
 }
 
 .website-container {
@@ -40,7 +40,7 @@ header {
 .content-container {
     padding-left: 19.6rem; 
     padding-top: 1rem;
-    font-family:'Times New Roman', Times, serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 .new-workspace {
@@ -50,7 +50,7 @@ header {
 }
 
 .new-workspace button {
-     font-family:'Times New Roman', Times, serif;
+    font-family: 'Poppins', sans-serif;
     background-color: #c1ebff;
     color: #000000;
     padding: .5rem;
@@ -59,7 +59,7 @@ header {
     cursor: pointer;
     margin-top: 1rem;
     margin-bottom: 1rem;
-    width: 150px;
+    width: 200px;
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
 }
 
@@ -96,3 +96,16 @@ header {
     white-space: nowrap;
     width: 1px;
   }
+
+.workspace-title {
+    color: black;
+    font-family: 'Poppins', sans-serif;
+    font-size: small;
+    max-width: 100%;
+    max-height: 70%; 
+    margin: 5%;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}

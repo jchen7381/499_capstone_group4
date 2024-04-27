@@ -111,12 +111,12 @@ function Upload({id, setPDF}){
             onDragLeave={e => handleDragEvent(e)}
             >
                 <form id='dropbox' method="POST" encType="multipart/form-data">
-                    <span>Drag files here to upload or&nbsp;<label id='file-btn-label'for='file-chooser'>browse your computer&nbsp;</label></span>
+                    <span className='upload-text'>Drag files here to upload or&nbsp;<label id='file-btn-label'for='file-chooser'>browse your computer&nbsp;</label></span>
                     <br></br>
                     <input type='file' id='file-chooser' onChange={handleChange}/>
                     <button type='button' id='upload-button' onClick={upload}>Upload</button>
                     <br></br>
-                    <span>Allowed file types: .pdf, .jpg, .jpeg, .png, .doc, .docx, .ppt, .pptx</span>
+                    <span className='upload-text'>Allowed file types: .pdf, .jpg, .jpeg, .png, .doc, .docx, .ppt, .pptx</span>
                 </form>
             </div>
             <div id='file-list'>
