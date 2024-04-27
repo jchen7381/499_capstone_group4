@@ -99,6 +99,8 @@ function Upload({id, setPDF}){
             const dt = e.dataTransfer;
             const droppedFiles = dt.files;
             setFiles([...files, ...droppedFiles])
+            const fileInput = document.getElementById('file-chooser');
+            fileInput.files = droppedFiles;
         }
     }
 
@@ -118,11 +120,6 @@ function Upload({id, setPDF}){
                     <br></br>
                     <span className='upload-text'>Allowed file types: .pdf, .jpg, .jpeg, .png, .doc, .docx, .ppt, .pptx</span>
                 </form>
-            </div>
-            <div id='file-list'>
-                {files.map((file) =>(
-                    <div key={file.name}>{file.name}</div>
-                ))}
             </div>
         </div>
     )

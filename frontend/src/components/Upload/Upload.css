@@ -22,11 +22,6 @@
   #file-btn-label:hover{
     cursor:pointer;
   }
-  #file-list{
-    background-color: orange;
-    max-height: 50vh;
-    overflow-y: auto;
-  }
 
   #dropbox {
     background-color: #b3dffd;
@@ -36,4 +31,8 @@
 
   #upload-button{
     background-color: #d1eafc;
+  }
+
+  #file-chooser{
+    font-family: 'Poppins', sans-serif;
   }
