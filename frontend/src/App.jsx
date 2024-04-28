@@ -7,7 +7,6 @@ import Dashboard from './pages/dashboard/dashboard';
 import Favorite from './pages/favorite/favorite';
 import Library from './pages/library/library';
 import Recent from './pages/recent/recent';
-import Test from './pages/Test/test';
 import DashboardContextProvider from './utility/DashboardContext';
 import WorkspaceContextProvider from './utility/WorkspaceContext';
 export default function App() {
@@ -23,7 +22,6 @@ export default function App() {
         <Route path="/favorite" element={<DashboardContextProvider><Favorite /></DashboardContextProvider>} />
         <Route path="/recent" element={<Recent />} />
         <Route path="/library" element={<DashboardContextProvider><Library /></DashboardContextProvider>} />
-        <Route path="/test" element={< Test/>} />
       </Routes>
     </BrowserRouter>
   );
