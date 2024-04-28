@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { useWorkspaceContext } from '../../utility/WorkspaceContext';
 import './Upload.css'
 
-function Upload({id, setPDF, setFile}){    
+function Upload({id, setFile}){    
     const [files, setFiles] = useState([])
     const allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
     'application/msword', // .doc
