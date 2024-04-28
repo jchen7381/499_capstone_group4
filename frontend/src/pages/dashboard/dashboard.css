@@ -24,7 +24,11 @@ h3 {
 }
 .dashboard-content button{
     width: fit-content;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 20px;
+    background-color: #c1ebff;
 }
+
 .workspaces{
     display: flex;
     flex-direction: column;
@@ -59,7 +63,7 @@ h3 {
 }
 
 .delete-button{
-    background-color: #c1ebff;;
+    background-color: #c1ebff;
 }
 
 .workspace:hover {
