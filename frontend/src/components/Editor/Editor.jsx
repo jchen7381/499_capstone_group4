@@ -46,7 +46,6 @@ function Editor({editor_id, workspace_id, title}){
     }
 
     async function workspaceSave(){
-        const tokens = getTokens()
         try{    
             const res = await fetch('http://127.0.0.1:5000/workspace/save', {
                 method: 'POST',
@@ -55,7 +54,7 @@ function Editor({editor_id, workspace_id, title}){
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
                 },
-            body: JSON.stringify({'editor_id': editor_id, 'data': value})
+            body: JSON.stringify({'workspace_id': workspace_id, 'workspace_title': workspaceTitle})
             })
             const ret = await res.json()
         }

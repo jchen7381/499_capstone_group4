@@ -222,14 +222,19 @@ def favoriteWorkspace():
 @app.route('/workspace/save', methods=["POST"])
 def workspaceSave():
     try:
-        access_token = request.json.get('access_token')
-        refresh_token = request.json.get('refresh_token')
+        access_token = request.cookies.get('access_token')
+        refresh_token = request.cookies.get('refresh_token')
         workspace_id = request.json.get('workspace_id')
         workspace_title = request.json.get('workspace_title')
         response = supabase.auth.set_session(access_token, refresh_token)
         result = supabase.table('workspaces').update({'title': workspace_title}).eq('workspace_id', workspace_id).execute()
-        return jsonify({'message': 'saved'})
+        resp = make_response('saved')
+        if response.session.access_token != access_token:
+            resp.set_cookie('access_token', response.session.access_token, httponly=True, samesite='None', secure=True)
+            resp.set_cookie('refresh_token', response.session.refresh_token, httponly=True, samesite='None', secure=True)
+        return resp
     except Exception as e:
+        print(e)
         return jsonify({'error': str(e)}), 500
 
 @app.route('/editor/save', methods=["POST"])
