@@ -103,7 +103,7 @@ function Upload({id, setPDF, setFile}){
                 <form id='dropbox' method="POST" encType="multipart/form-data">
                     <span className='upload-text'>Drag files here to upload or&nbsp;<label id='file-btn-label'for='file-chooser'>browse your computer&nbsp;</label></span>
                     <br></br>
-                    <input type='file' id='file-chooser' onChange={handleChange} accept={allowedTypes}/>
+                    <input type='file' id='file-chooser' onChange={handleChange}/>
                     <button type='button' id='upload-button' onClick={upload}>Upload</button>
                     <br></br>
                     <span className='upload-text'>Allowed file types: .pdf, .jpg, .jpeg, .png, .doc, .docx, .ppt, .pptx</span>
