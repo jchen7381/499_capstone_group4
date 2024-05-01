@@ -7,9 +7,12 @@
     align-items: center;
     height: 100%;
     width: 150px;
-
     background-color: #d1eafc;
+    font-size: 14px;
+    
+    
 }
+
 .navbar-container h3{
     display: flex;
     height: 5vh;
@@ -17,11 +20,16 @@
     width: 100%;
     align-items: center;
     background-color: #b3dffd;
+    font-size: 25px;
+    color: black;
+    font-family: 'Poppins', sans-serif;
+    
 
 }
 
 .navbar-container ul {
     margin-top: 20px;
+    
 }
 
 .navbar-container li{
@@ -36,6 +44,7 @@
 
 nav ul li a:hover {
     color: #ffffff;
+    
 }
 
 nav ul li a.active-link {
