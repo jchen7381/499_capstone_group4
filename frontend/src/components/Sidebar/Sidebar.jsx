@@ -21,9 +21,9 @@ const Sidebar = () => {
       </div>
       <div className='sidebar-content'>
           <ul>
+            <Link to="/dashboard"><li><button className="dashboard"><IoDocumentOutline/></button></li></Link>
             <Link to="/favorite"><li><button className="favorite"><IoHeartOutline/></button></li></Link>
-            <Link to="/dashboard"><li><button className="library"><IoDocumentOutline/></button></li></Link>
-            <Link to="/library"><li><button className="history"><IoBookmarkOutline/></button></li></Link>
+            <Link to="/library"><li><button className="library"><IoBookmarkOutline/></button></li></Link>
             <Link to="/login"><button className="logout"><IoExitOutline/></button></Link>
           </ul>
         </div>

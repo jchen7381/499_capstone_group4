@@ -104,7 +104,7 @@ function Dashboard() {
                                 ))}
                         </div>
                         :
-                        <div>Get started by creating a workspace</div>
+                        <div></div>
                     }
                 </div>
             </div>

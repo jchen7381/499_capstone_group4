@@ -17,11 +17,13 @@
   background-color: #d1eafc;
   font-family: 'Poppins', sans-serif;
   height: 5vh;
+  font-size: 12px;
 }
 
 .pdf-navbar button {
-  background-color: #e6f3fd;
+  background-color: #ffffff;
   margin: 5px;
+  
 }
 
 .pdf-content {
@@ -73,6 +75,7 @@
   padding-top: 14px;
   font-family: 'Poppins', sans-serif;
   overflow-y: auto;
+  font-size: 12px;
 }
 
 .ai-output {
@@ -83,6 +86,7 @@
   border: 1px solid black;
   font-family: 'Poppins', sans-serif;
   padding: 5px;
+  font-size: 12px;
 }
 
 .ai-output-text {

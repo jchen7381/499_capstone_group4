@@ -1,15 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-h3 {
-    color: black;
-    font-family: 'Poppins', sans-serif;
-}
 
 .website-container {
-    display: flex;
+    display:flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    background-color: #e6f3fd;
+   
     height: 100%;
 }
 
@@ -21,12 +17,30 @@ h3 {
     min-height: 100vh;
     margin-left: 150px;
     padding: 5vh;
+    
 }
+
 .dashboard-content button{
     width: fit-content;
     font-family: 'Poppins', sans-serif;
     margin-bottom: 20px;
     background-color: #c1ebff;
+    font-size: 12px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-content button:hover{
+    box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.1);
+    background-color: #17fbff;
+}
+
+.workspace button{
+    background-color: #c1ebff;
+}
+
+.workspace button:hover {
+    box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.1);
+    background-color: #d4edff;
 }
 
 .workspaces{
@@ -40,6 +54,7 @@ h3 {
     display: flex;
     flex-wrap: wrap;
     width: 1560px;
+    
 }
 
 .workspace{
@@ -47,6 +62,8 @@ h3 {
     height: 210px;
     background-color: white;
     margin: 0px 20px 20px 0px;
+    border-radius: 9px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 .workspace-title {
@@ -64,9 +81,10 @@ h3 {
 
 .delete-button{
     background-color: #c1ebff;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 .workspace:hover {
     box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.1);
-    background-color: rgb(243, 243, 243);
+    background-color: rgb(255, 253, 253);
 }
