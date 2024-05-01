@@ -137,3 +137,11 @@
 .dropdown-box {
   font-family: 'Poppins', sans-serif;
 }
+
+.spinner-container {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  height: 100%; 
+  margin-top: 25px;
+}
