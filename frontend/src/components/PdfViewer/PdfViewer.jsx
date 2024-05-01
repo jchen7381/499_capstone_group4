@@ -7,6 +7,7 @@ import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 import './PdfViewer.css';
 import {Oval} from "react-loader-spinner";
+import ReactMarkdown from 'react-markdown';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -341,9 +342,7 @@ const PdfViewer = ({url, resetInterface}) => {
 							<Oval color="#000000" secondaryColor="#808080" height={150} width={150} />
 						</div>
 					) : (
-						aiOutput.result.split('\n').map((paragraph, index) => (
-							<p key={index}>{paragraph}</p>
-						))
+						<ReactMarkdown>{aiOutput.result}</ReactMarkdown>
 					)}
 				</div>
 			</div>
