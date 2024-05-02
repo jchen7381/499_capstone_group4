@@ -90,8 +90,15 @@ function Editor({editor_id, workspace_id, title}){
     }
 
     async function downloadPdf() {
-        const pdf = await pdfExporter.generatePdf(value);
-        saveAs(pdf, `${workspaceTitle}.pdf`);
+        try {
+            if (!value || typeof value !== 'object' || !Array.isArray(value.ops)) {
+              throw new Error('Invalid value format');
+            }
+            const pdf = await pdfExporter.generatePdf({ ops: value.ops });
+            saveAs(pdf, `${workspaceTitle}.pdf`);
+          } catch (error) {
+            alert('Error downloading file: No text on editor');
+          }
     }
     
     const changeWorkspaceTitle = (newWorkspaceTitle) => {
@@ -122,7 +129,7 @@ function Editor({editor_id, workspace_id, title}){
     return(
         <div className='text-editor-container'>
             <div id = 'text-editor-navbar'>
-                <input className='input-box' type="text" placeholder="Enter file name" value={workspaceTitle} onChange={(e) => changeWorkspaceTitle(e.target.value)} />
+                <input className='input-box' id='input-box-editor' type="text" placeholder="Enter file name" value={workspaceTitle} onChange={(e) => changeWorkspaceTitle(e.target.value)} />
                 <button onClick={downloadPdf}>Download File</button>
             </div>
             <div className='quill-container'>

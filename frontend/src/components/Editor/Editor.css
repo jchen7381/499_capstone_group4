@@ -49,3 +49,18 @@
 .input-box {
     font-family: 'Poppins', sans-serif;
 }
+
+.input-box {
+    background-color: transparent;
+    border: none;
+    transition: border-color 0.3s ease; 
+}
+  
+.input-box:focus {
+    border-color: transparent; 
+    background-color:white;
+}
+
+#input-box-editor {
+    width: 250px;
+}
