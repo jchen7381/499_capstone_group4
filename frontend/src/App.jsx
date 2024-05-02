@@ -9,6 +9,8 @@ import Library from './pages/library/library';
 import Recent from './pages/recent/recent';
 import DashboardContextProvider from './utility/DashboardContext';
 import WorkspaceContextProvider from './utility/WorkspaceContext';
+import RequireAuth from './utility/AuthRoute'; 
+
 export default function App() {
   return (  
     <BrowserRouter>
@@ -17,8 +19,8 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/workspace" element={<Workspace />} />
-        <Route path="/workspace/:id" element={<><WorkspaceContextProvider><Workspace /></WorkspaceContextProvider></>} />
-        <Route path="/dashboard" element={<><DashboardContextProvider><Dashboard /></DashboardContextProvider></>} />
+        <Route path="/workspace/:id" element={<RequireAuth><WorkspaceContextProvider><Workspace /></WorkspaceContextProvider></RequireAuth>} />
+        <Route path="/dashboard" element={<RequireAuth><DashboardContextProvider><Dashboard /></DashboardContextProvider></RequireAuth>} />
         <Route path="/favorite" element={<DashboardContextProvider><Favorite /></DashboardContextProvider>} />
         <Route path="/recent" element={<Recent />} />
         <Route path="/library" element={<DashboardContextProvider><Library /></DashboardContextProvider>} />

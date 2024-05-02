@@ -126,23 +126,26 @@ def login():
 @app.route('/auth/check', methods=["POST"])
 def authCheck():
     try:
-        access_token = request.json.get('access_token')
-        refresh_token = request.json.get('refresh_token')
-        response = supabase.auth.get_user(access_token)
-        data, count = supabase.rpc('create_workspace').execute()
-        return jsonify(data[1])
+        access_token = request.cookies.get('access_token')
+        refresh_token = request.cookies.get('refresh_token')
+        response = supabase.auth.set_session(access_token, refresh_token)
+        print("RESPONSE", response)
+        resp = None
+        if response.user is not None:
+            resp = make_response(jsonify(True))
+            return resp
+        resp = make_response(jsonify(False))
+        return resp
     except Exception as e:
-        print(e)
-        return jsonify({'error': str(e)}), 500
+        resp = make_response(jsonify(False))
+        return resp
 
 @app.route('/create-workspace', methods=["POST"])
 def create_workspace():
     try:
         access_token = request.cookies.get('access_token')
         refresh_token = request.cookies.get('refresh_token')
-        print(access_token, refresh_token)
         response = supabase.auth.set_session(access_token, refresh_token)
-        print(access_token, refresh_token)
         result= supabase.rpc('create_workspace').execute()
         json_data = jsonify(result.data)
         resp = make_response(json_data)
@@ -311,7 +314,6 @@ def get_file():
         if response.session.access_token != access_token:
             resp.set_cookie('access_token', response.session.access_token, httponly=True, samesite='None', secure=True)
             resp.set_cookie('refresh_token', response.session.refresh_token, httponly=True, samesite='None', secure=True)
-        print('File list:',file_list.data)
         return resp
     except Exception as e:
         print(e)
@@ -324,7 +326,6 @@ def getUserLibrary():
         refresh_token = request.cookies.get('refresh_token')
         response = supabase.auth.set_session(access_token, refresh_token)
         files = supabase.rpc('user_library').execute()
-        print(files)
         json_data = jsonify(files.data)
         resp = make_response(json_data)
         if response.session.access_token != access_token:

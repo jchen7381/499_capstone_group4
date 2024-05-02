@@ -49,7 +49,6 @@ function reducer(state, action){
 export default function DashboardContextProvider({children}){
     const [state, dispatch] = useReducer(reducer, initialState)   
     useEffect(() => {
-        console.log('hi')
         getWorkspaces()
         getFiles()
     }, []);

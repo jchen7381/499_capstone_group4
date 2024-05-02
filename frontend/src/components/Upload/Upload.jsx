@@ -94,7 +94,7 @@ function Upload({id, setFile}){
 
     return ( 
         <div className='upload-container'>  
-            <div id='dropbox'
+            <div
             onDrop={e => handleDragEvent(e)}
             onDragOver={e => handleDragEvent(e)}
             onDragEnter={e => handleDragEvent(e)}

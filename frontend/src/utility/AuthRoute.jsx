@@ -3,7 +3,6 @@ import { useAuthContext } from "./AuthContext";
 
 const RequireAuth = ({children}) => {
     let auth = useAuthContext()
-    console.log(auth)
     let location = useLocation()
     return auth.user ? children : <Navigate to="/login" />
 }

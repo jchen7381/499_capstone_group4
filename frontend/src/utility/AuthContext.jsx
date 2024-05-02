@@ -10,29 +10,30 @@ export default function AuthContextProvider({children}){
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
     useEffect(() =>{
-        checkAuth()        
+        authCheck()        
     }, [])
-    useEffect(() =>{
-        console.log(user)        
-    }, [user])
-    function getTokens() {
-        var result = document.cookie.match(new RegExp('session' + '=([^;]+)'));
-        result && (result = JSON.parse(result[1]));
-        return result;
-    }
-    useEffect(() =>{
-        console.log(loading)        
-    }, [loading])
-    async function checkAuth() {
-        const tokens = getTokens()
-        if (!tokens){   
+
+    async function authCheck(){
+        try {
+            const res = await fetch('http://127.0.0.1:5000/auth/check', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            });
+              const auth_status = await res.json()
+              if (res.ok){
+                setUser(auth_status)
+                setLoading(false)
+              }
+        } catch (error) {
             setUser(false)
+            setLoading(false)
+            console.log('Error:', error);
         }
-        else(
-            setUser(true)
-        )
-        setLoading(false)    
-    }
+      }
     if (!loading){
         return(
             <AuthContext.Provider value={{user, setUser}}>
