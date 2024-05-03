@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { useWorkspaceContext } from '../../utility/WorkspaceContext';
 import './Upload.css'
 
-function Upload({id, setFile}){    
+function Upload({id, setFile, showFileCard}){    
     const [files, setFiles] = useState([])
     const allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
     'application/msword', // .doc
@@ -107,6 +107,8 @@ function Upload({id, setFile}){
                     <button type='button' id='upload-button' onClick={upload}>Upload</button>
                     <br></br>
                     <span className='upload-text'>Allowed file types: .pdf, .jpg, .jpeg, .png, .doc, .docx, .ppt, .pptx</span>
+                    <br></br>
+                    <span>Look for uploaded files&nbsp;<button id='file-card-button' onClick={showFileCard}>Files</button></span>
                 </form>
             </div>
         </div>

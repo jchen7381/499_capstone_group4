@@ -11,12 +11,14 @@
   }
   
   .upload-container {
-    display: block;
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    flex-direction: column;
     width: 100%;
+    height: 100vh; 
     background-color: #e6f3fd;
     font-family: 'Poppins', sans-serif;
-    font-size: 12px;
-    
   }
 
   #file-btn-label:hover{
@@ -24,33 +26,21 @@
   }
 
   #dropbox {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 300px;
     background-color: #b3dffd;
     border-radius: 1px;
     color: black;
-    content: center;
-    padding: 10px;
-    
   }
 
   #upload-button{
-    width: 100px;
-    background-color: #bcf9fd;
-    font-size: 12px;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-  }
-
-  #upload-button:hover{
-    background-color: #a8f7fd;
-    box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.1);
+    background-color: #d1eafc;
   }
 
   #file-chooser{
-    
     font-family: 'Poppins', sans-serif;
+  }
+
+  #file-card-button {
+    background-color: #d1eafc;
+    font-family: 'Poppins', sans-serif;
+    margin: 10px;
   }
