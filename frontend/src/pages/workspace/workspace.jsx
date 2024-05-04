@@ -14,8 +14,7 @@ function Workspace() {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPDF, setCurrentPDF] = useState(null);
-  const [showUpload, setShowUpload] = useState(true); // State to toggle between Upload and FileCard
-
+  const [showUpload, setShowUpload] = useState(true); 
   useEffect(() => {
     getFile();
   }, []);
@@ -40,6 +39,13 @@ function Workspace() {
     }
   }
 
+  useEffect(() => {
+    if (files.length > 0) {
+      setCurrentPDF(files[files.length-1]?.url);
+      setShowUpload(false);
+    }
+  }, [files]);
+
   function resetInterface() {
     setCurrentPDF('');
   }
@@ -51,15 +57,8 @@ function Workspace() {
   function showUploadForm() {
     setShowUpload(true);
   }
-
-  // Function to handle file upload completion
   async function handleUploadComplete() {
-    // Fetch the latest file list after upload
     await getFile();
-    // Set the current PDF to the URL of the uploaded file
-    setCurrentPDF(files[0]?.url);
-    // Hide the upload form
-    setShowUpload(false);
   }
 
   return (
