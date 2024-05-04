@@ -32,38 +32,62 @@ const PdfViewer = ({url, resetInterface}) => {
 	const [originalSubject, setOriginalSubject] = useState('');
 	const [customQuery, setCustomQuery] = useState('');
 	const [originalCustomQuery, setOriginalCustomQuery] = useState('');
+	const [zoom, setZoom] = useState(1); 
 
 	useEffect(() => {
-		setInputPage(currentPage);
-	}, [currentPage]);
+        setInputPage(currentPage);
+    }, [currentPage]);
 
-	useEffect(() => {
-		if (pdfContainerRef.current) {
-			const boundingRect = pdfContainerRef.current.getBoundingClientRect();
-			setPdfWidth(boundingRect.width);
-			setPdfHeight(boundingRect.height);
-		}
-	}, [pdfContainerRef.current]);
+    useEffect(() => {
+        if (pdfContainerRef.current) {
+            const boundingRect = pdfContainerRef.current.getBoundingClientRect();
+            setPdfWidth(boundingRect.width);
+            setPdfHeight(boundingRect.height);
+        }
+    }, [pdfContainerRef.current]);
 
-	useEffect(() => {
-		const observer = new MutationObserver(mutations => {
-			mutations.forEach(mutation => {
-				if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-					const boundingRect = pdfContainerRef.current.getBoundingClientRect();
-					setPdfWidth(boundingRect.width);
-					setPdfHeight(boundingRect.height);
-					setScale(1);
-				}
-			});
-		});
+    useEffect(() => {
+        const observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                    const boundingRect = pdfContainerRef.current.getBoundingClientRect();
+                    setPdfWidth(boundingRect.width);
+                    setPdfHeight(boundingRect.height);
+                    setScale(1);
+                }
+            });
+        });
 
-		const config = { attributes: true, attributeFilter: ['style'] };
-		if (pdfContainerRef.current) {
-			observer.observe(pdfContainerRef.current, config);
-		}
+        const config = { attributes: true, attributeFilter: ['style'] };
+        if (pdfContainerRef.current) {
+            observer.observe(pdfContainerRef.current, config);
+        }
 
-		return () => observer.disconnect(); 
-	}, [pdfContainerRef.current]);
+        return () => observer.disconnect();
+    }, [pdfContainerRef.current]);
+	
+	const zoomLevels = [0.5, 0.75, 1, 1.25, 1.5];
+
+	// Zoom in function
+    const handleZoomIn = () => {
+        const currentIndex = zoomLevels.indexOf(zoom);
+        if (currentIndex < zoomLevels.length - 1) {
+            setZoom(zoomLevels[currentIndex + 1]);
+        }
+    };
+
+    // Zoom out function
+    const handleZoomOut = () => {
+        const currentIndex = zoomLevels.indexOf(zoom);
+        if (currentIndex > 0) {
+            setZoom(zoomLevels[currentIndex - 1]);
+        }
+    };
+
+    // Set zoom level function
+    const handleSetZoomLevel = (level) => {
+        setZoom(level);
+    };
 
 	// Go to previous page
 	const handlePreviousPage = () => {
@@ -194,11 +218,11 @@ const PdfViewer = ({url, resetInterface}) => {
 		resetInterface();
 	};
 
-	// Render the PDF
+	// Function for rendering PDF
 	const renderPdf = () => {
 		if (!pdfWidth || !pdfHeight) return null;
-		const scaleWidth = pdfWidth / 612;
-		const scaleHeight = pdfHeight / 792;
+		const scaleWidth = (pdfWidth / 612) * zoom; // Adjust scale with zoom factor
+		const scaleHeight = (pdfHeight / 792) * zoom; // Adjust scale with zoom factor
 		const computedScale = Math.min(scaleWidth, scaleHeight);
 		if (computedScale !== scale) {
 			setScale(computedScale);
@@ -209,7 +233,7 @@ const PdfViewer = ({url, resetInterface}) => {
 			</Document>
 		);
 	};
-
+	
 	// Function for copying to clipboard (or ctrl-c/cmd-c)
 	const handleCopyToClipboard = () => {
 		navigator.clipboard.writeText(aiOutput.result)
@@ -297,6 +321,15 @@ const PdfViewer = ({url, resetInterface}) => {
 				<button onClick={handleNextPage} disabled={currentPage === numPages}>
 					Next
 				</button>
+				<button onClick={handleZoomOut}>-</button>
+				<select value={zoom} onChange={(e) => handleSetZoomLevel(parseFloat(e.target.value))}>
+                    {zoomLevels.map((level, index) => (
+                        <option key={index} value={level}>
+                            {`${(level * 100).toFixed(0)}%`}
+                        </option>
+                    ))}
+                </select>
+				<button onClick={handleZoomIn}>+</button>
 				<button onClick={handleScreenshot}>Snip</button>
 				<button onClick={handleClosePDF}>Close PDF</button>
 			</>

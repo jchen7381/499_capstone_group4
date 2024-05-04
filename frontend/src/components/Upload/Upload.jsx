@@ -108,7 +108,7 @@ function Upload({id, setFile, showFileCard}){
                     <br></br>
                     <span className='upload-text'>Allowed file types: .pdf, .jpg, .jpeg, .png, .doc, .docx, .ppt, .pptx</span>
                     <br></br>
-                    <span>Look for uploaded files&nbsp;<button id='file-card-button' onClick={showFileCard}>Files</button></span>
+                    <span>Uploaded files:&nbsp;<button id='file-card-button' onClick={showFileCard}>View files</button></span>
                 </form>
             </div>
         </div>
