@@ -1,8 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-* {
-    font-family: 'Poppins', sans-serif;
-}
-
 
 .fileCard{
     display: flex;
@@ -12,7 +8,7 @@
     border-radius: 25px;
     border: 2px solid rgb(107, 154, 195);
     background-color: aliceblue;
-
+    font-family: 'Poppins', sans-serif;
     width: 600px;
 }
 

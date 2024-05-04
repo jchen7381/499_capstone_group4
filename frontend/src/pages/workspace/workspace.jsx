@@ -82,7 +82,7 @@ function Workspace() {
                       onUploadComplete={handleUploadComplete}
                     />
                   ) : (
-                    <div>
+                    <div className="filecards-container">
                       Workspace Files:
                       <div>
                         {files.map((file, index) => (
