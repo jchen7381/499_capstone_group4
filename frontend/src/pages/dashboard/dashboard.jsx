@@ -88,7 +88,7 @@ function Dashboard() {
             <Header />
             <Navbar />
             <div className='dashboard-content'>
-                <button onClick={createWorkspace}>+ New Workspace</button>
+                <button className='create-workspace-button' onClick={createWorkspace}>+ New Workspace</button>
                 <div className='workspaces'>
                     {workspaces.length ? 
                         <div className='items'>

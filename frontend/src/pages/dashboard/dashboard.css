@@ -89,3 +89,7 @@
     box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.1);
     background-color: rgb(255, 253, 253);
 }
+
+.create-workspace-button {
+    margin-left: 3%;
+}
