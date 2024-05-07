@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Sidebar.css';
-import { IoHeartOutline, IoBookOutline, IoExitOutline, IoReturnUpBack, IoLogoOctocat } from "react-icons/io5";
+import { IoHeartOutline, IoBookOutline, IoExitOutline, IoHomeOutline, IoLogoOctocat } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
@@ -21,7 +21,7 @@ const Sidebar = () => {
       </div>
       <div className='sidebar-content'>
           <ul>
-            <Link to="/dashboard"><li><button className="dashboard"><IoReturnUpBack/></button></li></Link>
+            <Link to="/dashboard"><li><button className="dashboard"><IoHomeOutline/></button></li></Link>
             <Link to="/favorite"><li><button className="favorite"><IoHeartOutline/></button></li></Link>
             <Link to="/library"><li><button className="library"><IoBookOutline/></button></li></Link>
             <Link to="/login"><button className="logout"><IoExitOutline/></button></Link>
