@@ -52,4 +52,7 @@
   .delete-button:hover {
     color: #007bff;
   }
-  
+  .workspace-card:hover {
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+    background-color: rgb(255, 253, 253);
+}
