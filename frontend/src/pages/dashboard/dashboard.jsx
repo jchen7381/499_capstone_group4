@@ -1,6 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom'
-import { useAuthContext } from '../../utility/AuthContext';
+import React, { useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import './dashboard.css';
 import { useDashboardContext } from '../../utility/DashboardContext';
@@ -95,7 +93,7 @@ function Dashboard() {
                     {filteredWorkspaces.length ? 
                         <div className='items'>
                             {filteredWorkspaces.map(workspace => (
-                                    <WorkspaceCard workspace={workspace} onFavorite={favorite} onDelete={remove}/>
+                                    <WorkspaceCard key={workspace.workspace_id} workspace={workspace} onFavorite={favorite} onDelete={remove}/>
                                 ))}
                         </div>
                         :
