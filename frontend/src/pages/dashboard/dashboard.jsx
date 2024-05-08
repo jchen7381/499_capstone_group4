@@ -1,19 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../../utility/AuthContext';
 import Navbar from '../../components/Navbar/Navbar';
 import './dashboard.css';
 import { useDashboardContext } from '../../utility/DashboardContext';
 import Header from '../../components/Header/Header';
-
+import FilterDropdown from '../../components/FilterDropdown/FilterDropdown';
 
 function Dashboard() {
     const {workspaces, dispatch} = useDashboardContext()
-    const navigate = useNavigate()
-    useEffect(() => {
-        console.log(workspaces)
-    }, [workspaces])
-
+    const [filterOption, setFilterOption] = useState(null)
+    const filteredWorkspaces = filterOption ? workspaces.filter((workspace) => workspace.filterOption == true) : workspaces;
     async function createWorkspace() {
         try {
             const res = await fetch('http://127.0.0.1:5000/create-workspace', {
@@ -88,11 +85,14 @@ function Dashboard() {
             <Header />
             <Navbar />
             <div className='dashboard-content'>
-                <button className='create-workspace-button' onClick={createWorkspace}>+ New Workspace</button>
+                <div>
+                    <button className='create-workspace-button' onClick={createWorkspace}>+ New Workspace</button>
+                    <FilterDropdown onFilterSelect={setFilterOption}/>
+                </div>
                 <div className='workspaces'>
-                    {workspaces.length ? 
+                    {filteredWorkspaces.length ? 
                         <div className='items'>
-                            {workspaces.map(workspace => (
+                            {filteredWorkspaces.map(workspace => (
                                     <Link to={`/workspace/${workspace.workspace_id}`} key={workspace.workspace_id} state={workspace} >
                                         <div className='workspace'>
                                             <button className='delete-button'value={workspace.workspace_id} onClick={(e) => remove(e)}>
