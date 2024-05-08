@@ -26,7 +26,7 @@ const FilterDropdown = ({onFilterSelect}) => {
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
-    onFilterSelect(option == 'All' ? null : option)
+    onFilterSelect(option)
     setIsOpen(false);
   };
 
@@ -40,7 +40,7 @@ const FilterDropdown = ({onFilterSelect}) => {
           <div className="dropdown-option" onClick={() => handleOptionSelect('All')}>
             All
           </div>
-          <div className="dropdown-option" onClick={() => handleOptionSelect('Favorites')}>
+          <div className="dropdown-option" onClick={() => handleOptionSelect('Favorite')}>
             Favorites
           </div>
         </div>
