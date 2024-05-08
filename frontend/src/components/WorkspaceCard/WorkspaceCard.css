@@ -1,0 +1,50 @@
+.workspace-card {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+
+    border: 1px solid #ccc;
+    padding: 15px;
+    
+    flex: 0 0 auto; 
+    background-color: white;
+    margin: 0 20px 20px 0;
+    border-radius: 9px;
+
+    width: 150px;
+    height: 210px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .card-title{
+    color: black;
+    font-family: 'Poppins', sans-serif;
+    font-size: small;
+    margin: 5%;
+    text-align: center;
+  }
+
+  .card-content {
+    margin-bottom: 10px;
+  }
+  
+  .card-actions {
+    display: flex;
+    justify-content: center;
+}
+  
+  .favorite-button,
+  .delete-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .favorite-button:hover,
+  .delete-button:hover {
+    color: #007bff;
+  }
+  

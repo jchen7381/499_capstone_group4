@@ -6,11 +6,18 @@ import './dashboard.css';
 import { useDashboardContext } from '../../utility/DashboardContext';
 import Header from '../../components/Header/Header';
 import FilterDropdown from '../../components/FilterDropdown/FilterDropdown';
+import WorkspaceCard from '../../components/WorkspaceCard/WorkspaceCard';
 
 function Dashboard() {
     const {workspaces, dispatch} = useDashboardContext()
-    const [filterOption, setFilterOption] = useState(null)
-    const filteredWorkspaces = filterOption ? workspaces.filter((workspace) => workspace.filterOption == true) : workspaces;
+    console.log(workspaces)
+    const [filterOption, setFilterOption] = useState('All')
+    const filteredWorkspaces = filterOption == 'All' ? workspaces :workspaces.filter(workspace => {
+        switch(filterOption){
+            case 'Favorite':
+                return workspace.favorite == true;
+        }
+    });
     async function createWorkspace() {
         try {
             const res = await fetch('http://127.0.0.1:5000/create-workspace', {
@@ -31,9 +38,7 @@ function Dashboard() {
             console.log('Error:', error);
         }
     }
-    async function favorite(e){
-        e.preventDefault()
-        e.stopPropagation()
+    async function favorite(id){
         try {
             const res = await fetch('http://127.0.0.1:5000/workspace/favorite', {
                 method: 'POST',
@@ -42,22 +47,19 @@ function Dashboard() {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({'workspace_id': e.target.value})
+                body: JSON.stringify({'workspace_id': id})
             });
             const ret = await res.json();
             if (res.ok) {
                 console.log('Workspace favorited')
-                dispatch({type:'favoriteWorkspace', payload: e.target.value})
+                dispatch({type:'favoriteWorkspace', payload: id})
             }
         } catch (error) {
-            console.log('Failed to favorite workspace:' + e.target.value)
+            console.log('Failed to favorite workspace:' + id)
             console.log('Error:', error);
         }
     }
-    async function remove(e){
-        e.preventDefault()
-        e.stopPropagation()
-        console.log(e.target.value)
+    async function remove(id){
         try {
             const res = await fetch('http://127.0.0.1:5000/workspace/delete', {
                 method: 'POST',
@@ -66,12 +68,12 @@ function Dashboard() {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({'workspace_id': e.target.value})
+                body: JSON.stringify({'workspace_id': id})
             });
             const ret = await res.json();
             if (res.ok) {
                 console.log('Successfully deleted workspace: ')
-                dispatch(({type: 'deleteWorkspace', payload: e.target.value}))
+                dispatch(({type: 'deleteWorkspace', payload: id}))
             } else {
                 console.log('Failed to delete workspace');
             }
@@ -93,14 +95,7 @@ function Dashboard() {
                     {filteredWorkspaces.length ? 
                         <div className='items'>
                             {filteredWorkspaces.map(workspace => (
-                                    <Link to={`/workspace/${workspace.workspace_id}`} key={workspace.workspace_id} state={workspace} >
-                                        <div className='workspace'>
-                                            <button className='delete-button'value={workspace.workspace_id} onClick={(e) => remove(e)}>
-                                                Delete
-                                            </button>
-                                            <div className='workspace-title'>{workspace.title}</div>
-                                        </div>
-                                    </Link>
+                                    <WorkspaceCard workspace={workspace} onFavorite={favorite} onDelete={remove}/>
                                 ))}
                         </div>
                         :
