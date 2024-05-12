@@ -34,6 +34,7 @@
 
 .workspace button{
     background-color: #c1ebff;
+    
 }
 
 .workspace button:hover {
@@ -91,5 +92,5 @@
 }
 
 .create-workspace-button {
-    margin-left: 3%;
+    margin-left: 3.5%;
 }
