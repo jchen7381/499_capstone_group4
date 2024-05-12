@@ -6,16 +6,19 @@
     flex-direction: column;
     flex-wrap: nowrap;
     height: 100%;
+    
 }
 
 .dashboard-content{
     display: flex;
     flex-direction: column;
     background-color: aliceblue;
-    position: relative;
+    position: fixed;
     margin-left: 150px;
-    padding: 5vh;
-    
+    margin-top:50px;
+    padding: 50px;
+    height:100%;
+  
 }
 
 .dashboard-content button{

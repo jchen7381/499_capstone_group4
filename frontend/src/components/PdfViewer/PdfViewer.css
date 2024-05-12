@@ -1,7 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 @import url('https://rsms.me/inter/inter.css');
 
+body {
+  overflow: hidden;
+  margin:0;
+  padding: 0;
+  height: 100vh;
+}
+
 .pdf-viewer-container {
+
   height: 65vh; 
   margin: 1vh;
   position: relative; 
