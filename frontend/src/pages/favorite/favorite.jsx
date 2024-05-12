@@ -7,7 +7,7 @@ import WorkspaceCard from '../../components/WorkspaceCard/WorkspaceCard';
 
 function Dashboard() {
     const {workspaces, dispatch} = useDashboardContext();
-    const [filterOption] = useState('Favorite'); // Set default filter to 'Favorite'
+    const [filterOption] = useState('Favorite'); 
     const [filteredWorkspaces, setFilteredWorkspaces] = useState([]);
 
     useEffect(() => {

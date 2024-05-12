@@ -1,0 +1,76 @@
+.website-container {
+    background-color: aliceblue;
+    display:flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    min-height: 100vh;
+    
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    background-color: aliceblue;
+    position: relative;
+    margin-left: 180px;
+    padding: 5vh;
+   
+}
+
+.content-container {
+    background-color: aliceblue;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+
+}
+
+.text-color {
+    color: #000000; 
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.file-list {
+  
+}
+
+.file-card {
+    background:none;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+
+.file-card p {
+    font-weight: bold; 
+}
+
+.file-card a {
+    color: blue; 
+}
+
+.search-bar {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.search-bar input[type="text"] {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+.search-bar input[type="text"]:focus {
+    outline: none;
+    border-color: dodgerblue;
+}
+
+.search-bar i {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    color: #888;
+    cursor: pointer;
+}
