@@ -13,7 +13,8 @@
     background-color: aliceblue;
     position: relative;
     margin-left: 180px;
-    padding: 5vh;
+    padding: 4vh;
+    margin-top: 1vh;
    
 }
 
@@ -63,7 +64,7 @@
 
 .search-bar input[type="text"]:focus {
     outline: none;
-    border-color: dodgerblue;
+    border-color: rgb(255, 255, 255);
 }
 
 .search-bar i {

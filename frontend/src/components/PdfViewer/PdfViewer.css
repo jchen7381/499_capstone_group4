@@ -3,27 +3,25 @@
 
 .pdf-viewer-container {
   height: 65vh; 
-  margin: 5px;
+  margin: 1vh;
   position: relative; 
   background-color: #b3dffd;
-  margin-top: -0.75%;
 }
 
 .pdf-navbar {
-  margin-bottom: 10px;
+  margin-bottom: 1vh;
   display: flex; 
   justify-content: center;
   align-items: center;
   background-color: #d1eafc;
   font-family: 'Poppins', sans-serif;
   height: 5vh;
-  font-size: 12px;
+  font-size: 1.2vh;
 }
 
 .pdf-navbar button {
   background-color: #ffffff;
-  margin: 5px;
-  
+  margin: 0.5vw;
 }
 
 .pdf-content {
@@ -31,7 +29,7 @@
   height: 100%; 
   overflow: auto;
   background-color: gray;
-  border: 1px solid black;
+  border: 0.1vh solid black;
   position: relative; 
   display: flex;
   justify-content: center;
@@ -56,8 +54,8 @@
 .outputs {
   margin-top: 1vh;
   margin-bottom: 1vh;
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-left: 0.5vw;
+  margin-right: 0.5vw;
   height: 28vh;
   display: flex;
   align-items: center;
@@ -70,12 +68,12 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  border: 1px solid black;
-  padding: 10px;
-  padding-top: 14px;
+  border: 0.1vh solid black;
+  padding: 1vh;
+  padding-top: 1.4vh;
   font-family: 'Poppins', sans-serif;
   overflow-y: auto;
-  font-size: 12px;
+  font-size: 1.2vh;
 }
 
 .ai-output {
@@ -83,10 +81,10 @@
   width: 80%;
   height: 100%;
   overflow-y: auto;
-  border: 1px solid black;
+  border: 0.1vh solid black;
   font-family: 'Poppins', sans-serif;
-  padding: 5px;
-  font-size: 12px;
+  padding: 0.5vh;
+  font-size: 1.2vh;
 }
 
 .ai-output-text {
@@ -94,8 +92,8 @@
 }
 
 .ai-output button {
-  margin-right: 5px;
-  margin-left: 5px;
+  margin-right: 0.5vw;
+  margin-left: 0.5vw;
   background-color: #e6f3fd;
 }
 
@@ -147,5 +145,5 @@
   justify-content: center; 
   align-items: center; 
   height: 100%; 
-  margin-top: 25px;
+  margin-top: 2.5vh;
 }

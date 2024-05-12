@@ -48,7 +48,7 @@
     height: 100vh;
     overflow-y: auto; 
     background-color: aliceblue; 
-    padding: 5vh; 
+    padding: 1.5vh; 
 }
 
 .items {
@@ -91,6 +91,6 @@
 }
 
 .create-workspace-button {
-    margin-left: 3%;
+    margin-left: 1vw;
 }
 
