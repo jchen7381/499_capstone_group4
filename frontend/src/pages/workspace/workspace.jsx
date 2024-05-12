@@ -7,7 +7,7 @@ import FileCard from '../../components/FileCard/fileCard';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-function Workspace() {
+function Workspace({onFavorite}) {
   const location = useLocation();
   const workspaceID = useParams();
   const [workspace, setWorkspace] = useState(location.state);

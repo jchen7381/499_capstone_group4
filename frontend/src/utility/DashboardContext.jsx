@@ -95,8 +95,29 @@ export default function DashboardContextProvider({children}){
             console.log('Error:', error);
         }
     }
+    async function favorite(id){
+        try {
+            const res = await fetch('http://127.0.0.1:5000/workspace/favorite', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({'workspace_id': id})
+            });
+            const ret = await res.json();
+            if (res.ok) {
+                console.log('Workspace favorited')
+                dispatch({type:'favoriteWorkspace', payload: id})
+            }
+        } catch (error) {
+            console.log('Failed to favorite workspace:' + id)
+            console.log('Error:', error);
+        }
+    }
     return(
-        <DashboardContext.Provider value={{files: state.files, workspaces:state.workspaces, dispatch}}>
+        <DashboardContext.Provider value={{files: state.files, workspaces:state.workspaces, favorite, dispatch}}>
             {children}
         </DashboardContext.Provider>
     )

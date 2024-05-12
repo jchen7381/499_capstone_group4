@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import './Sidebar.css';
-import { IoHeartOutline, IoBookOutline, IoExitOutline, IoHomeOutline, IoLogoOctocat } from "react-icons/io5";
-import { Link } from 'react-router-dom';
-
+import { IoHeartOutline,IoHeartSharp, IoBookOutline, IoExitOutline, IoHomeOutline, IoLogoOctocat } from "react-icons/io5";
+import { Link, useParams } from 'react-router-dom';
+import { useDashboardContext } from '../../utility/DashboardContext';
 const Sidebar = () => {
-  const [sidebarVisible, setSidebarVisible] = useState(false);
-  const [buttonVisible, setButtonVisible] = useState(false);
-  
+  const location = useParams()
+  const {workspaces, favorite, dispatch} = useDashboardContext()
+  const currWorkspace = workspaces.find(workspace => workspace.workspace_id == location.id)
+
   return (
     <div className="sidebar-container">
       <div className="logo">
@@ -15,7 +16,9 @@ const Sidebar = () => {
       <div className='sidebar-content'>
           <ul>
             <Link to="/dashboard"><li><button className="dashboard"><IoHomeOutline/></button></li></Link>
-            <Link to="/favorite"><li><button className="favorite"><IoHeartOutline/></button></li></Link>
+            <Link to="/favorite"><li><button className="favorite" onClick={(e) => {e.preventDefault(); favorite(currWorkspace.workspace_id)}}>
+              {currWorkspace.favorite ? <IoHeartSharp/> : <IoHeartOutline />}
+            </button></li></Link>
             <Link to="/library"><li><button className="library"><IoBookOutline/></button></li></Link>
             <Link to="/login"><button className="logout"><IoExitOutline/></button></Link>
           </ul>

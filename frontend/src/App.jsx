@@ -17,11 +17,9 @@ export default function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/workspace" element={<Workspace />} />
-        <Route path="/workspace/:id" element={<RequireAuth><WorkspaceContextProvider><Workspace /></WorkspaceContextProvider></RequireAuth>} />
+        <Route path="/workspace/:id" element={<RequireAuth><DashboardContextProvider><Workspace /></DashboardContextProvider></RequireAuth>} />
         <Route path="/dashboard" element={<RequireAuth><DashboardContextProvider><Dashboard /></DashboardContextProvider></RequireAuth>} />
-        <Route path="/favorite" element={<DashboardContextProvider><Favorite /></DashboardContextProvider>} />
-        <Route path="/library" element={<DashboardContextProvider><Library /></DashboardContextProvider>} />
+        <Route path="/library" element={<RequireAuth><DashboardContextProvider><Library /></DashboardContextProvider></RequireAuth>} />
       </Routes>
     </BrowserRouter>
   );
