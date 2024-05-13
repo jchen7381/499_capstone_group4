@@ -13,19 +13,18 @@
     font-size: 1.5vw;
 }
 
-
 .navbar-container{
     display: flex;
     flex-direction: column;
     position: fixed;
     align-items: center;
-    height: 100vh;
-    width: 9vw;
+    height: 100%;
+    width: 10vw;
     background-color: #d1eafc;
+    font-size: .8vw;
     z-index: 9999
     
 }
-
 
 .navbar-container ul {
     margin-top: 4vh;
@@ -40,7 +39,6 @@
 .navbar-container a{
     font-family: 'Poppins', sans-serif;
     color: black;
-    font-size:.75vw;
 }
 
 nav ul li a:hover {
