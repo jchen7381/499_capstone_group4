@@ -1,5 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
+.navbar-container h3{
+    display: flex;
+    align-items: center;
+    height: 5vh;
+    background-color: #b3dffd;
+    font-family: 'Poppins', sans-serif;
+    color: black;
+    width: 100vw;
+    margin-left: 90vw;
+    padding-left: 2.7vw;
+    font-size: 1.5vw;
+}
+
 .navbar-container{
     display: flex;
     flex-direction: column;
@@ -11,20 +24,6 @@
     font-size: .8vw;
     z-index: 9999
     
-}
-
-.navbar-container h3{
-    display: flex;
-    height: 5vh;
-    justify-content: center;
-    width: 100%;
-    align-items: center;
-    background-color: #b3dffd;
-    font-size: 25px;
-    color: black;
-    font-family: 'Poppins', sans-serif;
-    
-
 }
 
 .navbar-container ul {
