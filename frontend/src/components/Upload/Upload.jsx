@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import { useWorkspaceContext } from '../../utility/WorkspaceContext';
 import './Upload.css'
+import { Oval } from 'react-loader-spinner';
 
 function Upload({id, setFile, showFileCard}){    
     const [files, setFiles] = useState([])
+    const [loading, setLoading] = useState(false);
     const allowedTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
     'application/msword', // .doc
     'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
@@ -11,10 +13,12 @@ function Upload({id, setFile, showFileCard}){
     'image/png', // .png
     'image/jpeg' // .jpg, .jpeg
     ]; 
+
     async function upload(){
         for (let i = 0; i < files.length; i++){
             const file = files[i];
             try {
+                setLoading(true)
                 let uploadResponse;
                 if (file.type !== 'application/pdf' && allowedTypes.includes(file.type)) {
                     const formData = new FormData();
@@ -72,6 +76,8 @@ function Upload({id, setFile, showFileCard}){
                 }
             } catch (error) {
                 console.error('Error processing file:', error);
+            } finally {
+                setLoading(false);
             }
         }
     }
@@ -103,8 +109,12 @@ function Upload({id, setFile, showFileCard}){
                 <form id='dropbox' method="POST" encType="multipart/form-data">
                     <span className='upload-text'>Drag files here to upload or&nbsp;<label id='file-btn-label'for='file-chooser'>browse your computer&nbsp;</label></span>
                     <br></br>
-                    <input type='file' id='file-chooser' onChange={handleChange}/>
-                    <button type='button' id='upload-button' onClick={upload}>Upload</button>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <input type='file' id='file-chooser' onChange={handleChange}/>
+                        <button type='button' id='upload-button' onClick={upload}>Upload</button>
+                        <span>&nbsp;&nbsp;</span>
+                        {loading && <Oval color='#000000' secondaryColor='#808080' height={30} width={30} />} {/* Conditional rendering of spinner */}
+                    </div>
                     <br></br>
                     <span className='upload-text'>Allowed file types: .pdf, .jpg, .jpeg, .png, .doc, .docx, .ppt, .pptx</span>
                     <br></br>
