@@ -9,6 +9,7 @@ function Editor({ editor_id, workspace_id, title }) {
     const [value, setValue] = useState('');
     const [workspaceTitle, setWorkspaceTitle] = useState(title);
     const [intervalID, SetIntveralID] = useState(null)
+
     useEffect(() => {
         const handleUnload = () => {
             save();
@@ -25,11 +26,7 @@ function Editor({ editor_id, workspace_id, title }) {
     }, []);
 
     useEffect(() => {
-        var intervalID = setInterval(() => {
-            save();
-            console.log('saved')
-        }, 2000);
-        clearInterval(intervalID)
+        save();
     }, [value]);
 
     useEffect(() => {

@@ -6,7 +6,6 @@ import { useDashboardContext } from '../../utility/DashboardContext';
 const Sidebar = ({favoriteStatus}) => {
   const [favorite, setFavorite] = useState(favoriteStatus)
   useEffect(() => {
-    console.log(favorite)
   }, [favorite])
   const location = useParams()
   async function favoriteWorkspace(){
