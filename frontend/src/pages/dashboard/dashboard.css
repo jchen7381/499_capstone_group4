@@ -15,7 +15,7 @@
     background-color: aliceblue;
     position: fixed;
     margin-left: 8vw;
-    margin-top:5vh;
+    margin-top: 5vh;
     padding: 50px;
     height:100%;
   
@@ -48,7 +48,7 @@
     display: flex;
     flex-direction: column;
     width: auto; 
-    height: 100vh;
+    height: 80vh;
     overflow-y: auto; 
     background-color: aliceblue; 
     padding: 1.5vh; 
@@ -63,10 +63,10 @@
 
 .workspace {
     flex: 0 0 auto; 
-    width: 150px;
-    height: 210px;
+    width: 20vw;
+    height: 30vh;
     background-color: white;
-    margin: 0 20px 20px 0;
+    margin: 0 2vw 2vh 0;
     border-radius: 9px;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
     word-wrap: break-word;

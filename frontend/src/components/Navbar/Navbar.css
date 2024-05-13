@@ -6,10 +6,10 @@
     position: fixed;
     align-items: center;
     height: 100%;
-    width: 150px;
+    width: 8vw;
     background-color: #d1eafc;
     font-size: 14px;
-    
+    z-index: 9999
     
 }
 
