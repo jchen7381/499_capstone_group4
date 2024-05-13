@@ -8,7 +8,6 @@ import WorkspaceCard from '../../components/WorkspaceCard/WorkspaceCard';
 
 function Dashboard() {
     const {workspaces, favorite, dispatch} = useDashboardContext()
-    console.log(workspaces)
     const [filterOption, setFilterOption] = useState('All')
     const filteredWorkspaces = filterOption == 'All' ? workspaces :workspaces.filter(workspace => {
         switch(filterOption){

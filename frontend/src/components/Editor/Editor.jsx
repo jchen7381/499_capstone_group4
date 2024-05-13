@@ -8,21 +8,25 @@ import { pdfExporter } from 'quill-to-pdf';
 function Editor({ editor_id, workspace_id, title }) {
     const [value, setValue] = useState('');
     const [workspaceTitle, setWorkspaceTitle] = useState(title);
-    
-    
+    const [intervalID, SetIntveralID] = useState(null)
+
     useEffect(() => {
-        if (!value) {
-            editorGet();
+        const handleUnload = () => {
+            save();
+            workspaceSave();
         }
+        
+        editorGet();
+        
+        window.addEventListener('beforeunload', handleUnload);
         return () => {
-            
+            window.removeEventListener('beforeunload', handleUnload);
         }
+
     }, []);
 
     useEffect(() => {
-        if (value) {
-            save();
-        }
+        save();
     }, [value]);
 
     useEffect(() => {
@@ -30,6 +34,7 @@ function Editor({ editor_id, workspace_id, title }) {
     }, [workspaceTitle]);
 
     async function save() {
+        console.log(value)
         try {
             const res = await fetch('http://127.0.0.1:5000/editor/save', {
                 method: 'POST',
