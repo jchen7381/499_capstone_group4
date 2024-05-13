@@ -1,0 +1,74 @@
+.website-container {
+    background-color: aliceblue;
+    display:flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    min-height: 100vh;
+    
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    background-color: aliceblue;
+    position: relative;
+    margin-left: 12vw;
+    padding: 4vh;
+    margin-top: 1vh;
+   
+}
+
+.content-container {
+    background-color: aliceblue;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+
+}
+
+.text-color {
+    color: #000000; 
+    font-size: 2vh;
+    margin-bottom: 2vh;
+}
+
+
+.file-card {
+    background:none;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 1.4vh;
+}
+
+.file-card p {
+    font-weight: bold; 
+}
+
+.file-card a {
+    color: blue; 
+}
+
+.search-bar {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.search-bar input[type="text"] {
+    padding: 1vh 1vw;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1.3vh;
+}
+
+.search-bar input[type="text"]:focus {
+    outline: none;
+    border-color: rgb(255, 255, 255);
+}
+
+.search-bar i {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    color: #888;
+    cursor: pointer;
+}

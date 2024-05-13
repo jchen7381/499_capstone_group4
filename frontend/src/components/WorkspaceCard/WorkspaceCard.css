@@ -1,58 +1,58 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-
 .workspace-card {
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-
-    border: 1px solid #ccc;
-    
-    flex: 0 0 auto; 
-    background-color: white;
-    margin: 0 20px 20px 0;
-    border-radius: 9px;
-
-    width: 150px;
-    height: 210px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    word-wrap: break-word;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .card-title{
-    color: black;
-    font-family: 'Poppins', sans-serif;
-    font-size: small;
-    margin: 5%;
-    text-align: center;
-  }
-
-  .card-content {
-    margin-bottom: 10px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-content: center;
   
-  .card-actions {
-    display: flex;
-    height: fit-content;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .card-actions > button{
-    margin: 1px;
-  }
-  .favorite-button,
-  .delete-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    margin-right: 10px;
-  }
-  
-  .favorite-button:hover,
-  .delete-button:hover {
-    color: #007bff;
-  }
-  .workspace-card:hover {
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
-    background-color: rgb(255, 253, 253);
+  flex: 0 0 auto; 
+  background-color: white;
+  margin: 0 2vw 3cqb 0; 
+  border-radius: 9px;
+
+  width: 154.5px; 
+  height: 223.5px; 
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-title {
+  color: black;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.2vh;
+  margin: 2%; 
+  text-align: center;
+}
+
+.card-content {
+  margin-bottom: 1vh; 
+}
+
+.card-actions {
+  display: flex;
+  height: fit-content;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-actions > button {
+  margin: 1px;
+}
+
+.favorite-button,
+.delete-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin-right: 1vw; 
+}
+
+.favorite-button:hover,
+.delete-button:hover {
+  color: #007bff;
+}
+
+.workspace-card:hover {
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+  background-color: rgb(255, 253, 253);
 }

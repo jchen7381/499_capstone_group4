@@ -10,8 +10,6 @@ function Navbar() {
         <nav>
             <ul>
                 <li className='link'><NavLink exact to="/dashboard" activeClassName="active-link">Dashboard</NavLink></li>
-                <li><NavLink exact to="/recent" activeClassName="active-link">Recent</NavLink></li>
-                <li><NavLink exact to="/favorite" activeClassName="active-link">Favorite</NavLink></li>
                 <li><NavLink exact to="/library" activeClassName="active-link">Library</NavLink></li>
                 <li><NavLink exact to="/login" activeClassName="active-link">Logout</NavLink></li>
             </ul>

@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { IoHeartOutline, IoTrashOutline, IoSettingsSharp  } from "react-icons/io5";
+import { IoHeartOutline, IoTrashOutline, IoSettingsSharp, IoHeartSharp  } from "react-icons/io5";
 import './WorkspaceCard.css';
 
 const WorkspaceCard = ({workspace, onFavorite, onDelete}) => {
@@ -11,20 +11,29 @@ const WorkspaceCard = ({workspace, onFavorite, onDelete}) => {
         e.preventDefault();
         setOpen(!isOpen)
     }
+    useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
     return(
-        <Link to={`/workspace/${workspace.workspace_id}`} key={workspace.workspace_id} state={workspace} >
+        <Link to={`/workspace/${workspace.workspace_id}`} key={workspace.workspace_id} state={workspace} ref={dropdownRef}>
         <div className="workspace-card" ref={dropdownRef}>
                 <div className="card-content">
+                    <div className="card-actions">
+                      <div onClick={(e) => {e.preventDefault(); onFavorite(workspace.workspace_id)}}>{workspace.favorite ? <IoHeartSharp /> : <IoHeartOutline />}</div>
+                      <div onClick={(e) => {e.preventDefault(); onDelete(workspace.workspace_id)}}><IoTrashOutline /></div>
+                  </div>
                     <div className="card-title">{workspace.title}</div>
-                </div>
-                <div className="card-action">
-                    <IoSettingsSharp onClick={toggleDropdown}/>
-                    {isOpen && (
-                        <div className="card-actions">
-                        <button onClick={(e) => {e.preventDefault(); onFavorite(workspace.workspace_id)}}><IoHeartOutline /> Favorite</button>
-                        <button onClick={(e) => {e.preventDefault(); onDelete(workspace.workspace_id)}}><IoTrashOutline />Delete</button>
-                    </div>
-                    )}
                 </div>
         </div>
         </Link>

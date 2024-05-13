@@ -40,7 +40,7 @@ const FilterDropdown = ({onFilterSelect}) => {
           <div className="dropdown-option" onClick={() => handleOptionSelect('All')}>
             All
           </div>
-          <div className="dropdown-option" onClick={() => handleOptionSelect('Favorite')}>
+          <div className="dropdown-option" onClick={() => handleOptionSelect('Favorites')}>
             Favorites
           </div>
         </div>

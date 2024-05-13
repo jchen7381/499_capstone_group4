@@ -7,43 +7,50 @@ const initialState = {
 
 const DashboardContext = createContext();
 
-function reducer(state, action){
-    switch(action.type){
-        case 'favoriteWorkspace':{
-            const workspace = state.workspaces.find((workspace) => workspace.workspace_id == action.payload)
-            workspace.favorite ? workspace.favorite = false : workspace.favorite = true
-            return{
+function reducer(state, action) {
+    switch (action.type) {
+        case 'favoriteWorkspace': {
+            const updatedWorkspaces = state.workspaces.map(workspace => {
+                if (workspace.workspace_id === action.payload) {
+                    return { ...workspace, favorite: !workspace.favorite };
+                }
+                return workspace;
+            });
+            return {
                 ...state,
-                workspaces: [...state.workspaces]
-            }
+                workspaces: updatedWorkspaces
+            };
         }
-        case 'deleteWorkspace':{
-            const newState = state.workspaces.filter((workspace) => workspace.workspace_id !== action.payload)
-            return{
+        case 'deleteWorkspace': {
+            const filteredWorkspaces = state.workspaces.filter(workspace => workspace.workspace_id !== action.payload);
+            return {
                 ...state,
-                workspaces: [...newState]
-            }
+                workspaces: filteredWorkspaces
+            };
         }
-        case 'createWorkspace':{
-            return{
+        case 'createWorkspace': {
+            return {
                 ...state,
                 workspaces: [...state.workspaces, ...action.payload]
-            }
+            };
         }
-        case 'getWorkspaces':{
-            return{
+        case 'getWorkspaces': {
+            return {
                 ...state,
                 workspaces: action.payload
-            }
+            };
         }
-        case 'getFiles':{
-            return{
+        case 'getFiles': {
+            return {
                 ...state,
                 files: action.payload
-            }
+            };
         }
+        default:
+            return state;
     }
 }
+
 
 //Wrap consumers inside this
 export default function DashboardContextProvider({children}){
@@ -88,8 +95,29 @@ export default function DashboardContextProvider({children}){
             console.log('Error:', error);
         }
     }
+    async function favorite(id){
+        try {
+            const res = await fetch('http://127.0.0.1:5000/workspace/favorite', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({'workspace_id': id})
+            });
+            const ret = await res.json();
+            if (res.ok) {
+                console.log('Workspace favorited')
+                dispatch({type:'favoriteWorkspace', payload: id})
+            }
+        } catch (error) {
+            console.log('Failed to favorite workspace:' + id)
+            console.log('Error:', error);
+        }
+    }
     return(
-        <DashboardContext.Provider value={{files: state.files, workspaces:state.workspaces, dispatch}}>
+        <DashboardContext.Provider value={{files: state.files, workspaces:state.workspaces, favorite, dispatch}}>
             {children}
         </DashboardContext.Provider>
     )

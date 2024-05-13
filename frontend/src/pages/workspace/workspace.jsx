@@ -67,7 +67,7 @@ function Workspace() {
         <div>Loading...</div>
         :
         <div className="workspace-container">
-          <Sidebar />
+          <Sidebar favoriteStatus={workspace.favorite}/>
           <div className="content">
             <div className="content-left gray-bg">
               {currentPDF ? (
