@@ -20,12 +20,11 @@ h3{
     position: fixed;
     align-items: center;
     height: 100vh;
-    width: 8vw;
+    width: 9vw;
     background-color: #d1eafc;
     z-index: 9999
     
 }
-
 
 
 .navbar-container ul {
