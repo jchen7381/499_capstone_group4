@@ -14,6 +14,9 @@ function Editor({ editor_id, workspace_id, title }) {
         if (!value) {
             editorGet();
         }
+        return () => {
+            
+        }
     }, []);
 
     useEffect(() => {
@@ -99,6 +102,7 @@ function Editor({ editor_id, workspace_id, title }) {
 
     const changeWorkspaceTitle = (newWorkspaceTitle) => {
         setWorkspaceTitle(newWorkspaceTitle);
+        workspaceSave();
     };
 
     const modules = {
@@ -123,7 +127,7 @@ function Editor({ editor_id, workspace_id, title }) {
     };
 
     return (
-        <div className='editor-container'>
+        <div className='text-editor-container'>
             <div id='text-editor-navbar'>
                 <input className='input-box' id='input-box-editor' type="text" placeholder="Enter file name" value={workspaceTitle} onChange={(e) => changeWorkspaceTitle(e.target.value)} />
                 <button className="download" onClick={downloadPdf}>Download File</button>
