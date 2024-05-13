@@ -13,9 +13,6 @@ function Editor({ editor_id, workspace_id, title }) {
         if (!value) {
             editorGet();
         }
-        return () => {
-            save();
-        }
     }, []);
 
     useEffect(() => {
