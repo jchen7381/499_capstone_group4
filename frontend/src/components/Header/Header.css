@@ -1,0 +1,10 @@
+header{
+    display: flex;
+    align-items: center;
+    height: 5vh;
+    background-color: #b3dffd;
+}
+
+h3{
+    color: black;
+}
