@@ -12,7 +12,7 @@
     flex-direction: column;
     background-color: aliceblue;
     position: relative;
-    margin-left: 10vw;
+    margin-left: 12vw;
     padding: 4vh;
     margin-top: 1vh;
    
@@ -27,8 +27,8 @@
 
 .text-color {
     color: #000000; 
-    font-size: 16px;
-    margin-bottom: 10px;
+    font-size: 2vh;
+    margin-bottom: 2vh;
 }
 
 
@@ -36,7 +36,7 @@
     background:none;
     padding: 10px;
     margin-bottom: 10px;
-    font-size: 12px;
+    font-size: 1.4vh;
 }
 
 .file-card p {
@@ -53,10 +53,10 @@
 }
 
 .search-bar input[type="text"] {
-    padding: 10px 15px;
+    padding: 1vh 1vw;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 12px;
+    font-size: 1.3vh;
 }
 
 .search-bar input[type="text"]:focus {

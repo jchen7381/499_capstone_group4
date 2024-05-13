@@ -6,9 +6,9 @@
     position: fixed;
     align-items: center;
     height: 100%;
-    width: 8vw;
+    width: 10vw;
     background-color: #d1eafc;
-    font-size: 14px;
+    font-size: .8vw;
     z-index: 9999
     
 }
@@ -28,14 +28,14 @@
 }
 
 .navbar-container ul {
-    margin-top: 20px;
+    margin-top: 4vh;
     
 }
 
 .navbar-container li{
     color: black;
     list-style: none;
-    padding: 20px;
+    padding: 2vh;
 }
 .navbar-container a{
     font-family: 'Poppins', sans-serif;

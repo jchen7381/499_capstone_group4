@@ -14,7 +14,7 @@
     flex-direction: column;
     background-color: aliceblue;
     position: fixed;
-    margin-left: 8vw;
+    margin-left: 10vw;
     margin-top: 5vh;
     padding: 50px;
     height:100%;
@@ -24,9 +24,9 @@
 .dashboard-content button{
     width: fit-content;
     font-family: 'Poppins', sans-serif;
-    margin-bottom: 10px;
+    margin-bottom: 1vh;
     background-color: #c1ebff;
-    font-size: 12px;
+    font-size: 1.3vh;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 
@@ -64,7 +64,7 @@
 .workspace {
     flex: 0 0 auto; 
     width: 20vw;
-    height: 30vh;
+    height: 25vh;
     background-color: white;
     margin: 0 2vw 2vh 0;
     border-radius: 9px;
