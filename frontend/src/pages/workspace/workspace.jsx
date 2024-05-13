@@ -7,7 +7,7 @@ import FileCard from '../../components/FileCard/fileCard';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-function Workspace({onFavorite}) {
+function Workspace() {
   const location = useLocation();
   const workspaceID = useParams();
   const [workspace, setWorkspace] = useState(location.state);
@@ -67,7 +67,7 @@ function Workspace({onFavorite}) {
         <div>Loading...</div>
         :
         <div className="workspace-container">
-          <Sidebar />
+          <Sidebar favoriteStatus={workspace.favorite}/>
           <div className="content">
             <div className="content-left gray-bg">
               {currentPDF ? (
