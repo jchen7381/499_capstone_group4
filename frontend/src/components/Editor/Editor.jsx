@@ -26,7 +26,9 @@ function Editor({ editor_id, workspace_id, title }) {
     }, []);
 
     useEffect(() => {
-        save();
+        if (value){
+            save();
+        }
     }, [value]);
 
     useEffect(() => {
