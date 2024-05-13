@@ -338,7 +338,7 @@ def getUserLibrary():
 
 @app.route('/convert', methods=['POST'])
 def convert():
-    convertapi_secret = 'vOlz7wkiOEGA54hD'
+    convertapi_secret = '8EcZKF73BAD2pOwB'
     
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'})
