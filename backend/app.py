@@ -231,7 +231,7 @@ def workspaceSave():
         workspace_title = request.json.get('workspace_title')
         response = supabase.auth.set_session(access_token, refresh_token)
         result = supabase.table('workspaces').update({'title': workspace_title}).eq('workspace_id', workspace_id).execute()
-        resp = make_response('saved')
+        resp = make_response(jsonify('saved'))
         if response.session.access_token != access_token:
             resp.set_cookie('access_token', response.session.access_token, httponly=True, samesite='None', secure=True)
             resp.set_cookie('refresh_token', response.session.refresh_token, httponly=True, samesite='None', secure=True)
