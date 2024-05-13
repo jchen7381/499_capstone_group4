@@ -9,6 +9,7 @@ function Editor({ editor_id, workspace_id, title }) {
     const [value, setValue] = useState('');
     const [workspaceTitle, setWorkspaceTitle] = useState(title);
     
+    
     useEffect(() => {
         if (!value) {
             editorGet();
