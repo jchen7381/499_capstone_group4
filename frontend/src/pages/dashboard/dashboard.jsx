@@ -11,7 +11,7 @@ function Dashboard() {
     const [filterOption, setFilterOption] = useState('All')
     const filteredWorkspaces = filterOption == 'All' ? workspaces :workspaces.filter(workspace => {
         switch(filterOption){
-            case 'Favorite':
+            case 'Favorites':
                 return workspace.favorite == true;
         }
     });
