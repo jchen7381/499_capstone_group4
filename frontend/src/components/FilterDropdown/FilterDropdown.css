@@ -1,8 +1,9 @@
-/* FilterDropdown.css */
+
 .dropdown {
     position: relative;
     display: inline-block;
-    margin-left: 2vw; 
+    margin-left: 1.3vw; 
+    
     
   }
   
@@ -12,14 +13,13 @@
     align-items: center;
     padding: 8px;
     font-family: 'Poppins', sans-serif;
-    font-size: 1.3vh;
+    font-size: 11px;
+    width: 154.5px;
     border: 1px solid #ccc;
     border-radius: 3px;
     background-color: #fff;
     color: #333;
     cursor: pointer;
-    width:7vw;
-    height: 3.9vh;
 }
   
   .dropdown-select:focus {
@@ -44,7 +44,7 @@
     text-align: center;
     margin:1vh;
     font-family: 'Poppins', sans-serif;
-    font-size: 1.3vh;
+    font-size: 11px;
     color: #333;
     cursor: pointer;
     transition: background-color 0.3s;
